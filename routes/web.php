@@ -15,4 +15,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('admin.dashboard');
-});
+})->name('dashboard');
+Route::get('/survey', function () {
+    return view('admin.survey');
+})->name('survey');
+Route::get('/student', function () {
+    return view('admin.student');
+})->name('student');
+Route::get('/lecture', function () {
+    return view('admin.lecture');
+})->name('lecture');
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');

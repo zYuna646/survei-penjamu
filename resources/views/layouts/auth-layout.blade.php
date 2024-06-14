@@ -1,6 +1,5 @@
 @extends('app')
-@section('title', 'Admin-Panel')
+@section('title', 'Auth')
 @section('content')
-@livewire('Navbar')
 @yield('body')
 @endsection

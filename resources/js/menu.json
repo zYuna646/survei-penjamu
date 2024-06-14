@@ -1,0 +1,45 @@
+{
+  "admin": [
+    {
+      "name": "Dashboard",
+      "link": "dashboard"
+    },
+    {
+      "name": "Master",
+      "link": [
+        {
+          "name": "Survey",
+          "link":  "survey" 
+        },
+        {
+          "name": "Student",
+          "link":  "student" 
+        },
+        {
+          "name": "Lecture",
+          "link":  "lecture" 
+        }
+      ]
+    },
+    {
+      "name": "Transaction",
+      "link": [
+        {
+          "name": "Survey",
+          "link":  "survey" 
+        },
+        {
+          "name": "Student",
+          "link":  "student" 
+        },
+        {
+          "name": "Lecture",
+          "link":  "lecture" 
+        }
+      ]
+    }
+  ],
+  "user": [
+    
+  ]
+}
