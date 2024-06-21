@@ -9,16 +9,16 @@ class Button extends Component
     public $size;
     public $type;
     public $outlined;
-    public $additionalClass;
+    public $customClass;
     public $colors;
     public $content;
 
-    public function mount($size = 'sm', $type = 'button', $outlined = false, $additionalClass = '', $colors = 'primary', $content = '')
+    public function mount($size = 'sm', $type = 'button', $outlined = false, $customClass = '', $colors = 'primary', $content = '')
     {
         $this->size = $size;
         $this->type = $type;
         $this->outlined = $outlined;
-        $this->additionalClass = $additionalClass;
+        $this->customClass = $customClass;
         $this->colors = $colors;
         $this->content = $content;
     }

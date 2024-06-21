@@ -13,18 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('admin.dashboard');
-})->name('dashboard');
-Route::get('/survey', function () {
-    return view('admin.survey');
-})->name('survey');
-Route::get('/student', function () {
-    return view('admin.student');
-})->name('student');
-Route::get('/lecture', function () {
-    return view('admin.lecture');
-})->name('lecture');
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
+use App\Livewire\Landing;
+use App\Livewire\Auth;
+
+Route::get('/auth', Auth::class)->name('auth');
+Route::get('/landing', Landing::class)->name('landing');

@@ -2,22 +2,22 @@
   "admin": [
     {
       "name": "Dashboard",
-      "link": "dashboard"
+      "link": "auth"
     },
     {
       "name": "Master",
       "link": [
         {
           "name": "Survey",
-          "link":  "survey" 
+          "link":  "auth" 
         },
         {
           "name": "Student",
-          "link":  "student" 
+          "link":  "auth" 
         },
         {
           "name": "Lecture",
-          "link":  "lecture" 
+          "link":  "auth" 
         }
       ]
     },
@@ -26,15 +26,15 @@
       "link": [
         {
           "name": "Survey",
-          "link":  "survey" 
+          "link":  "auth" 
         },
         {
           "name": "Student",
-          "link":  "student" 
+          "link":  "auth" 
         },
         {
           "name": "Lecture",
-          "link":  "lecture" 
+          "link":  "auth" 
         }
       ]
     }

@@ -62,7 +62,7 @@ $isOutlined = $outlined ? 'border ' . $colorClasses[$colors]['border'] . ' ' . $
 $colorClasses[$colors]['bg'] . ' ' . $colorClasses[$colors]['text'] . ' ' . $colorClasses[$colors]['hover'];
 
 // Combine classes
-$classes = $sizeClasses[$size] . ' font-medium rounded-lg transition-colors ' . $isOutlined . ' ' . $additionalClass;
+$classes = $sizeClasses[$size] . ' font-medium rounded-lg transition-colors ' . $isOutlined . ' ' . $customClass;
 @endphp
 
 <button type="{{ $type }}" class="{{ $classes }}">
