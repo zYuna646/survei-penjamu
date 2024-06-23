@@ -12,8 +12,9 @@ class Button extends Component
     public $customClass;
     public $colors;
     public $content;
+    public $onclick;
 
-    public function mount($size = 'sm', $type = 'button', $outlined = false, $customClass = '', $colors = 'primary', $content = '')
+    public function mount($size = 'sm', $type = 'button', $outlined = false, $customClass = '', $colors = 'primary', $content = '', $onclick ='')
     {
         $this->size = $size;
         $this->type = $type;
@@ -21,7 +22,10 @@ class Button extends Component
         $this->customClass = $customClass;
         $this->colors = $colors;
         $this->content = $content;
+        $this->onclick = $onclick;
     }
+
+    
 
     public function render()
     {

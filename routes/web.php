@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 
 use App\Livewire\Landing;
 use App\Livewire\Auth;
+use App\Livewire\AdminDashboard;
+use App\Livewire\MasterFakultas;
 
 Route::get('/auth', Auth::class)->name('auth');
 Route::get('/landing', Landing::class)->name('landing');
+Route::get('/admin_dashboard', AdminDashboard::class)->name('admin_dashboard');
+Route::get('/master_fakultas', MasterFakultas::class)->name('master_fakultas');

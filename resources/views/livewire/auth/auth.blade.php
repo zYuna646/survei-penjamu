@@ -35,7 +35,7 @@
                     <livewire:button colors="primary" customClass="w-full" size="lg" :content="'Login'" type="submit" />
                 </div>
                 <div class="mt-4">
-                    <livewire:button colors="primary" outlined="true" customClass="w-full" size="lg"
+                    <livewire:button colors="primary" outlined="true" customClass="w-full" size="lg" onclick="window.location.href='{{ route('landing') }}'"
                         :content="'Beranda'" />
                 </div>
             </form>

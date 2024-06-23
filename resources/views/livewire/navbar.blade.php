@@ -1,5 +1,5 @@
 <header class="border-b-2 border-color-primary-500 w-full absolute top-0 bg-white z-50" x-data="{ open: false }">
-  <div  x-transition x-show="open" class="absolute isolate w-[80%] h-screen top-0 shadow-md bg-white z-10 p-4">
+  <div x-transition x-show="open" class="absolute isolate w-[80%] h-screen top-0 shadow-md bg-white z-10 p-4">
     <div class="p-2 w-full inline-flex items-center justify-between">
       <div class="w-10">
         <img src="/logo/ung.png" alt="" class="w-full">
@@ -24,11 +24,12 @@
             </span>
           </div>
           <div x-show="open" @click.outside="open = false" x-transition
-            class="w-full flex flex-col gap-y-1 mt-3 text-sm">
+            class="w-full flex flex-col gap-y-1 mt-3 text-sm px-4">
             @foreach($menuItem['link'] as $submenuItem)
             <a href="{{ route($submenuItem['link']) }}" class="px-3 py-2  rounded-md">
               {{ $submenuItem['name'] }}
             </a>
+            <hr>
             @endforeach
           </div>
         </li>
@@ -45,7 +46,7 @@
       </ul>
     </div>
   </div>
-  <nav class="max-w-screen-xl mx-auto px-4 py-5 flex items-center justify-between">
+  <nav class="max-w-screen-xl mx-auto px-4 py-3.5 flex items-center justify-between">
 
     <div class="flex items-center gap-x-4">
       {{-- trigger nav mobile start --}}
@@ -56,14 +57,14 @@
       </div>
       {{-- trigger nav mobile end --}}
 
-      <img src="/logo/ung.png" alt="" class="w-12 hidden lg:block">
-      <ul class="hidden lg:flex items-center gap-x-1 flex-grow flex-shrink">
+      <img src="/logo/ung.png" alt="" class="w-10 hidden lg:block">
+      <ul class="hidden lg:flex items-center gap-x-1 flex-grow flex-shrink ">
         @foreach($menuItems as $menuItem)
         @isset($menuItem['link'])
         @if(is_array($menuItem['link']))
         <li class="relative" x-data="{ open: false }">
           <div @click="open = !open" :class="open ? 'bg-neutral-100' : ''"
-            class="select-none cursor-pointer px-4 py-2.5 inline-flex gap-x-2 items-center rounded-md text-base font-semibold text-neutral-700 hover:bg-neutral-100">
+            class="select-none cursor-pointer px-4 py-2.5 inline-flex gap-x-2 items-center rounded-md text-sm font-semibold text-neutral-700 hover:bg-neutral-100">
             {{ $menuItem['name'] }}
             <span>
               <i :class="open ? 'rotate-180' : ''" class="fas fa-chevron-down transition-transform text-xs w-4 h-4"></i>
@@ -83,7 +84,7 @@
         @else
         <li>
           <a href="{{ route($menuItem['link']) }}"
-            class="px-4 py-3 rounded-md text-base font-semibold text-neutral-700 hover:bg-neutral-100">
+            class="px-4 py-3 rounded-md font-semibold text-neutral-700 hover:bg-neutral-100 text-sm">
             {{ $menuItem['name'] }}
           </a>
         </li>
@@ -93,6 +94,10 @@
       </ul>
     </div>
     <div>
+      <livewire:button colors="primary" size="md" :content="'Masuk'"
+        onclick="window.location.href='{{ route('auth') }}'" />
+    </div>
+    {{-- <div>
       <div class="w-12 h-12 rounded-full relative" x-data="{ open: false }">
         <img src="/avatar/placeholder.jpg" alt="" class="w-full rounded-full" @click="open = !open">
         <div x-show="open" @click.outside="open = false" x-transition
@@ -106,6 +111,6 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> --}}
   </nav>
 </header>

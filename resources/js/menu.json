@@ -8,32 +8,32 @@
       "name": "Master",
       "link": [
         {
-          "name": "Survey",
+          "name": "Fakultas",
           "link":  "auth" 
         },
         {
-          "name": "Student",
+          "name": "Prodi",
           "link":  "auth" 
         },
         {
-          "name": "Lecture",
+          "name": "Target",
+          "link":  "auth" 
+        },
+        {
+          "name": "Jenis",
+          "link":  "auth" 
+        },
+        {
+          "name": "Pengguna",
           "link":  "auth" 
         }
       ]
     },
     {
-      "name": "Transaction",
+      "name": "Survei",
       "link": [
         {
-          "name": "Survey",
-          "link":  "auth" 
-        },
-        {
-          "name": "Student",
-          "link":  "auth" 
-        },
-        {
-          "name": "Lecture",
+          "name": "Sruvei",
           "link":  "auth" 
         }
       ]

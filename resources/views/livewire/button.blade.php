@@ -65,6 +65,6 @@ $colorClasses[$colors]['bg'] . ' ' . $colorClasses[$colors]['text'] . ' ' . $col
 $classes = $sizeClasses[$size] . ' font-medium rounded-lg transition-colors ' . $isOutlined . ' ' . $customClass;
 @endphp
 
-<button type="{{ $type }}" class="{{ $classes }}">
+<button type="{{ $type }}" class="{{ $classes }}" onclick="{{ $onclick }}">
     {{ $content }}
 </button>

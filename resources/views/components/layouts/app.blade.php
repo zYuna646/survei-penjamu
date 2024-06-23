@@ -20,6 +20,7 @@
     <livewire:navbar />
     @endif
     {{ $slot }}
+    <livewire:footer />
 </body>
 
 </html>
