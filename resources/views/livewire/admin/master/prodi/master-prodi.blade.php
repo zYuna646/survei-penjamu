@@ -36,16 +36,21 @@
                     <div class="p-4 md:p-5 space-y-4">
                         <form action="" class="grid grid-cols-12 p-2">
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                                <label for="fakultas" class="text-sm ">Nama {{ $master }} :</label>
-                                <input type="text" name="fakultas" wire:model="fakultas"
-                                    placeholder="Masukan Nama {{ $master }}"
+                                <label for="kode" class="text-sm ">Kode {{ $master }} :</label>
+                                <input type="text" name="Kode" placeholder="Masukan Kode {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                             </div>
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                                <label for="kode" class="text-sm ">Kode {{ $master }} :</label>
-                                <input type="text" name="Kode" wire:model="Kode"
-                                    placeholder="Masukan Kode {{ $master }}"
+                                <label for="fakultas" class="text-sm ">Nama {{ $master }} :</label>
+                                <input type="text" name="fakultas" placeholder="Masukan Nama {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                            </div>
+                            <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                                <label for="fakultas" class="text-sm ">Fakultas :</label>
+                                <select type="text" name="fakultas"
+                                    class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                    <option value="">Pilih</option>
+                                </select>
                             </div>
                             <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12" color="info">
                                 <span>
@@ -67,21 +72,23 @@
                         <tr>
                             <th>No.</th>
                             <th>Kode</th>
+                            <th>Fakultas</th>
                             <th>Nama</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($dataFakultas as $fakultas)
+                        @foreach($dataProdi as $prodi)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $fakultas['kode'] }}</td>
-                            <td>{{ $fakultas['nama'] }}</td>
+                            <td>{{ $prodi['kode'] }}</td>
+                            <td>{{ $prodi['fakultas'] }}</td>
+                            <td>{{ $prodi['nama'] }}</td>
                             <td>
                                 <div class="inline-flex gap-x-2">
                                     <!-- Edit button -->
                                     <x-button class="" color="info" size="sm"
-                                        onclick="window.location.href='{{ route('edit_fakultas' , $fakultas['id']) }}'">
+                                        onclick="window.location.href='{{ route('edit_prodi', $prodi['id']) }}'">
                                         Edit
                                     </x-button>
                                     <!-- Delete button (if needed) -->

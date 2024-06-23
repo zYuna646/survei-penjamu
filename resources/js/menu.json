@@ -9,11 +9,11 @@
       "link": [
         {
           "name": "Fakultas",
-          "link":  "auth" 
+          "link":  "master_fakultas" 
         },
         {
           "name": "Prodi",
-          "link":  "auth" 
+          "link":  "master_prodi" 
         },
         {
           "name": "Target",

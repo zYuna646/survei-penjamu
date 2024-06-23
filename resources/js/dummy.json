@@ -1,0 +1,40 @@
+{
+  "fakultas": [
+    {
+      "id": 1,
+      "kode": "1a",
+      "nama": "ilmu mesin"
+    },
+    {
+      "id": 2,
+      "kode": "2a",
+      "nama": "teknik"
+    }
+  ],
+  "prodi": [
+    {
+      "id": 1,
+      "kode": "1a",
+      "fakultas": "mesin",
+      "nama": "ilmu mesin"
+    },
+    {
+      "id": 2,
+      "kode": "2a",
+      "fakultas": "mesin",
+      "nama": "teknik"
+    }
+  ],
+  "Target": [
+    {
+      "id": 1,
+      "kode": "1a",
+      "nama": "ilmu mesin"
+    },
+    {
+      "id": 2,
+      "kode": "2a",
+      "nama": "teknik"
+    }
+  ]
+}
