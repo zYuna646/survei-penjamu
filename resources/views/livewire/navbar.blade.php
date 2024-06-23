@@ -94,8 +94,9 @@
       </ul>
     </div>
     <div>
-      <livewire:button colors="primary" size="md" :content="'Masuk'"
-        onclick="window.location.href='{{ route('auth') }}'" />
+      <x-button color="primary" size="md" onclick="window.location.href='{{ route('auth') }}'">
+        Masuk
+      </x-button>
     </div>
     {{-- <div>
       <div class="w-12 h-12 rounded-full relative" x-data="{ open: false }">

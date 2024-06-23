@@ -7,6 +7,7 @@ use Livewire\Component;
 class AdminDashboard extends Component
 {
     public $showNavbar = true;
+    public $showFooter = true;
 
     public $cards = [
         [
@@ -34,7 +35,7 @@ class AdminDashboard extends Component
     public function render()
     {
         return view('livewire.admin.admin-dashboard')
-        ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar])
+        ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar], ['showFooter' => $this->showFooter])
         ->title('UNG Survey - Admin Dashboard');;
     }
     

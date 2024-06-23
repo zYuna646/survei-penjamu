@@ -20,7 +20,9 @@
     <livewire:navbar />
     @endif
     {{ $slot }}
+    @if (isset($showFooter) && $showFooter)
     <livewire:footer />
+    @endif
 </body>
 
 </html>

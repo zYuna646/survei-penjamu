@@ -32,11 +32,15 @@
                     <label for="credential" class="text-sm ">Tampil Password</label>
                 </div>
                 <div class="mt-4">
-                    <livewire:button colors="primary" customClass="w-full" size="lg" :content="'Login'" type="submit" />
+                    <x-button color="primary" class="w-full" size="lg" type="submit">
+                        Login
+                    </x-button>
                 </div>
                 <div class="mt-4">
-                    <livewire:button colors="primary" outlined="true" customClass="w-full" size="lg" onclick="window.location.href='{{ route('landing') }}'"
-                        :content="'Beranda'" />
+                    <x-button color="primary" outlined="true" class="w-full" size="lg"
+                        onclick="window.location.href='{{ route('landing') }}'">
+                        Beranda
+                    </x-button>
                 </div>
             </form>
         </div>

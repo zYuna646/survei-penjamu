@@ -1,3 +1,11 @@
+@props([
+'color' => 'primary',
+'class' => '',
+'type' => 'button',
+'size' => 'md',
+'outlined' => false,
+])
+
 @php
 // Define size classes
 $sizeClasses = [
@@ -57,14 +65,14 @@ $colorClasses = [
 ];
 
 // Determine if button is outlined or filled
-$isOutlined = $outlined ? 'border ' . $colorClasses[$colors]['border'] . ' ' . $colorClasses[$colors]['outlined_bg'] . '
-' . $colorClasses[$colors]['outlined_text'] . ' ' . $colorClasses[$colors]['outlined_hover'] :
-$colorClasses[$colors]['bg'] . ' ' . $colorClasses[$colors]['text'] . ' ' . $colorClasses[$colors]['hover'];
+$isOutlined = $outlined ? 'border ' . $colorClasses[$color]['border'] . ' ' . $colorClasses[$color]['outlined_bg'] . ' '
+. $colorClasses[$color]['outlined_text'] . ' ' . $colorClasses[$color]['outlined_hover'] : $colorClasses[$color]['bg'] .
+' ' . $colorClasses[$color]['text'] . ' ' . $colorClasses[$color]['hover'];
 
 // Combine classes
-$classes = $sizeClasses[$size] . ' font-medium rounded-lg transition-colors ' . $isOutlined . ' ' . $customClass;
+$classes = $sizeClasses[$size] . ' font-medium rounded-lg transition-colors ' . $isOutlined . ' ' . $class;
 @endphp
 
-<button type="{{ $type }}" class="{{ $classes }}" onclick="{{ $onclick }}">
-    {{ $content }}
+<button type="{{ $type }}" {{ $attributes->merge(['class' => $classes]) }}>
+    {{ $slot }}
 </button>
