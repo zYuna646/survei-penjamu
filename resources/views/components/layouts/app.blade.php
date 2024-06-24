@@ -13,11 +13,11 @@
 
     {{-- datatables.net --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
-    
+
     {{-- jquery --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
-    
+
+
     @vite('resources/css/app.css')
     <title>{{ $title ?? 'Page Title' }}</title>
 </head>
@@ -30,9 +30,10 @@
     @if (isset($showFooter) && $showFooter)
     <livewire:footer />
     @endif
-    
+
     @stack('scripts')
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+  
 </body>
 
 </html>

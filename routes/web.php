@@ -20,6 +20,13 @@ use App\Livewire\MasterFakultas;
 use App\Livewire\EditFakultas;
 use App\Livewire\MasterProdi;
 use App\Livewire\EditProdi;
+use App\Livewire\MasterJurusan;
+use App\Livewire\EditJurusan;
+use App\Livewire\MasterTarget;
+use App\Livewire\EditTarget;
+use App\Livewire\MasterJenis;
+use App\Livewire\EditJenis;
+
 
 Route::get('/auth', Auth::class)->name('auth');
 Route::get('/landing', Landing::class)->name('landing');
@@ -28,3 +35,9 @@ Route::get('/master_fakultas', MasterFakultas::class)->name('master_fakultas');
 Route::get('/edit_fakultas/{id}', EditFakultas::class)->name('edit_fakultas');
 Route::get('/master_prodi', MasterProdi::class)->name('master_prodi');
 Route::get('/edit_prodi/{id}', EditProdi::class)->name('edit_prodi');
+Route::get('/master_jurusan', MasterJurusan::class)->name('master_jurusan');
+Route::get('/edit_jurusan/{id}', EditJurusan::class)->name('edit_jurusan');
+Route::get('/master_target', MasterTarget::class)->name('master_target');
+Route::get('/edit_target/{id}', EditTarget::class)->name('edit_target');
+Route::get('/master_jenis', MasterJenis::class)->name('master_jenis');
+Route::get('/edit_jenis/{id}', EditJenis::class)->name('edit_jenis');

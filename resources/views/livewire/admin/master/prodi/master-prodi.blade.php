@@ -34,27 +34,40 @@
                     </div>
                     <!-- Modal body -->
                     <div class="p-4 md:p-5 space-y-4">
-                        <form action="" class="grid grid-cols-12 p-2">
+                        <form wire:submit.prevent="addProdi" class="grid grid-cols-12 p-2">
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                                <label for="kode" class="text-sm ">Kode {{ $master }} :</label>
-                                <input type="text" name="Kode" placeholder="Masukan Kode {{ $master }}"
+                                <label for="nama" class="text-sm">Nama {{ $master }} :</label>
+                                <input type="text" name="nama" wire:model="prodi.nama"
+                                    placeholder="Masukan Nama {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                @error('prodi.nama') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                                <label for="fakultas" class="text-sm ">Nama {{ $master }} :</label>
-                                <input type="text" name="fakultas" placeholder="Masukan Nama {{ $master }}"
+                                <label for="kode" class="text-sm">Kode {{ $master }} :</label>
+                                <input type="text" name="kode" wire:model="prodi.kode"
+                                    placeholder="Masukan Kode {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                @error('prodi.kode') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                                <label for="fakultas" class="text-sm ">Fakultas :</label>
-                                <select type="text" name="fakultas"
+                                <label for="jurusan_id" class="text-sm">Jurusan :</label>
+                                <select name="jurusan_id" wire:model="prodi.jurusan_id"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                    <option value="">Pilih</option>
+                                    <option value="">Pilih Jurusan</option>
+                                    @foreach($dataJurusan as $jurusan)
+                                    <option value="{{ $jurusan->id }}">{{ $jurusan->name }} - {{ $jurusan->fakultas->name }}</option>
+                                    @endforeach
                                 </select>
+                                @error('prodi.jurusan_id') <span class="text-red-500 text-xs">{{ $message }}</span>
+                                @enderror
                             </div>
-                            <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12" color="info">
-                                <span>
+                            <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12" color="info"
+                                type="submit">
+                                <span wire:loading.remove>
                                     <i class="fas fa-plus"></i>
+                                </span>
+                                <span wire:loading class="animate-spin">
+                                    <i class="fas fa-circle-notch"></i>
                                 </span>
                                 Tambah {{ $master }}
                             </x-button>
@@ -64,7 +77,7 @@
             </div>
         </div>
     </section>
-    <section class="max-w-screen-xl w-full mx-auto px-4 mt-4">
+    <section class="max-w-screen-xl w-full mx-auto px-4 mt-4 pb-12">
         <div class="p-4 bg-white rounded-lg border-slate-100 shadow-sm ">
             <div class="p-4 overflow-x-auto text-sm">
                 <table id="myTable" class="cell-border stripe">
@@ -72,8 +85,9 @@
                         <tr>
                             <th>No.</th>
                             <th>Kode</th>
-                            <th>Fakultas</th>
                             <th>Nama</th>
+                            <th>Jurusan</th>
+                            <th>Fakultas</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -81,9 +95,10 @@
                         @foreach($dataProdi as $prodi)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $prodi['kode'] }}</td>
-                            <td>{{ $prodi['fakultas'] }}</td>
-                            <td>{{ $prodi['nama'] }}</td>
+                            <td>{{ $prodi['code'] }}</td>
+                            <td>{{ $prodi['name'] }}</td>
+                            <td>{{ $prodi->jurusan->name }}</td>
+                            <td>{{ $prodi->jurusan->fakultas->name }}</td>
                             <td>
                                 <div class="inline-flex gap-x-2">
                                     <!-- Edit button -->
@@ -92,7 +107,7 @@
                                         Edit
                                     </x-button>
                                     <!-- Delete button (if needed) -->
-                                    <x-button class="" color="danger" size="sm">
+                                    <x-button class="" color="danger" size="sm"  onclick="confirmDelete({{ $prodi['id'] }})">
                                         Hapus
                                     </x-button>
                                 </div>
@@ -111,6 +126,13 @@
         // Inisialisasi DataTables
         var table = $('#myTable').DataTable();
     });
+    </script>
+    <script>
+        function confirmDelete(id) {
+            if(confirm(`Hapus prodi?`)) {
+                @this.call('deleteProdi', id);
+            }
+        }
     </script>
     @endpush
 </main>

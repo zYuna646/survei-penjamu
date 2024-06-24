@@ -35,20 +35,28 @@
                     </div>
                     <!-- Modal body -->
                     <div class="p-4 md:p-5 space-y-4">
-                        <form wire:submit.prevent="addFakultas" class="grid grid-cols-12 p-2">
+                        <form wire:submit.prevent="addJurusan" class="grid grid-cols-12 p-2">
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                                 <label for="fakultas" class="text-sm ">Nama {{ $master }} :</label>
-                                <input type="text" name="fakultas" wire:model="fakultas.nama"
+                                <input type="text" name="fakultas" wire:model="jurusan.nama"
                                     placeholder="Masukan Nama {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                @error('fakultas.nama') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                                 <label for="kode" class="text-sm ">Kode {{ $master }} :</label>
-                                <input type="text" name="Kode" wire:model="fakultas.kode"
+                                <input type="text" name="Kode" wire:model="jurusan.kode"
                                     placeholder="Masukan Kode {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                    @error('fakultas.nama') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                            </div>
+                            <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                                <label for="fakultas" class="text-sm ">Fakultas :</label>
+                                <select name="fakultas_id" wire:model="jurusan.fakultas_id"
+                                    class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                    <option value="">Pilih Fakultas</option>
+                                    @foreach($dataFakultas as $fakultas)
+                                    <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12" color="info"
                                 type="submit">
@@ -75,25 +83,27 @@
                             <th>No.</th>
                             <th>Kode</th>
                             <th>Nama</th>
+                            <th>Fakultas</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($dataFakultas as $fakultas)
+                        @foreach($dataJurusan as $jurusan)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $fakultas['code'] }}</td>
-                            <td>{{ $fakultas['name'] }}</td>
+                            <td>{{ $jurusan['code'] }}</td>
+                            <td>{{ $jurusan['name'] }}</td>
+                            <td>{{ $jurusan->fakultas->name }}</td>
                             <td>
                                 <div class="inline-flex gap-x-2">
                                     <!-- Edit button -->
                                     <x-button class="" color="info" size="sm"
-                                        onclick="window.location.href='{{ route('edit_fakultas' , $fakultas['id']) }}'">
+                                        onclick="window.location.href='{{ route('edit_jurusan' , $jurusan['id']) }}'">
                                         Edit
                                     </x-button>
                                     <!-- Delete button (if needed) -->
                                     <x-button class="" color="danger" size="sm"
-                                        onclick="confirmDelete({{ $fakultas['id'] }})">
+                                        onclick="confirmDelete({{ $jurusan['id'] }})">
                                         Hapus
                                     </x-button>
                                 </div>
@@ -115,8 +125,8 @@
     </script>
     <script>
         function confirmDelete(id) {
-            if(confirm(`Hapus fakultas? ${id}`)) {
-                @this.call('deleteFakultas', id);
+            if(confirm(`Hapus jurusan?`)) {
+                @this.call('deleteJurusan', id);
             }
         }
     </script>

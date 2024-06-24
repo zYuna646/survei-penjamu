@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use App\Models\Fakultas;
 
 class EditFakultas extends Component
 {
@@ -14,12 +15,11 @@ class EditFakultas extends Component
 
     public function mount($id)
     {
-        // Replace this with your logic to fetch fakultas data by ID
-        $dataJson = file_get_contents(resource_path('js/dummy.json'));
-        $fakultasData = json_decode($dataJson, true)['fakultas'];
+        // Fetch fakultas data by ID from the model
+        $fakultas = Fakultas::findOrFail($id);
 
-        // Find the fakultas by ID (assuming fakultas has 'id' field)
-        $this->fakultas = collect($fakultasData)->where('id', $id)->first();
+        // Assign all data to the fakultas property
+        $this->fakultas = $fakultas->toArray();
     }
 
     public function render()
@@ -27,6 +27,18 @@ class EditFakultas extends Component
         return view('livewire.admin.master.fakultas.edit-fakultas')
         ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar, 'showFooter' => $this->showFooter])
         ->title('UNG Survey - Master Fakultas');
+    }
+
+    public function updateFakultas(){
+        $this->validate([
+            'fakultas.name' => 'required|string|max:255',
+            'fakultas.code' => 'required|string|max:10|unique:fakultas,code,' . $this->fakultas['id'],
+        ]);
+
+        $fakultas = Fakultas::findOrFail($this->fakultas['id']);
+        $fakultas->update($this->fakultas);
+
+        return redirect()->to('master_fakultas');
     }
 
     public function redirectToAdd()

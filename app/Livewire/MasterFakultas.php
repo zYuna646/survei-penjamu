@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use App\Models\Fakultas;
 
 class MasterFakultas extends Component
 {
@@ -10,13 +11,17 @@ class MasterFakultas extends Component
     public $showFooter = true;
     public $master = 'Fakultas';
 
+    public $fakultas = [
+        'nama' => '',
+        'kode' => '',
+    ];
+
+    public $dataFakultas;
+
     public function mount()
     {
-        // Data JSON
-        $dataJson = file_get_contents(resource_path('js/dummy.json'));
-
         // Dekode data JSON
-        $this->dataFakultas = json_decode($dataJson, true)['fakultas'];
+        $this->dataFakultas = Fakultas::all();
     }
 
     public function render()
@@ -26,6 +31,26 @@ class MasterFakultas extends Component
         ->title('UNG Survey - Master Fakultas');
     }
 
-   
+    public function addFakultas()
+    {
+        // Validate the input
+        $this->validate([
+            'fakultas.nama' => 'required|string|max:255',
+            'fakultas.kode' => 'required|string|max:10|unique:fakultas,code',
+        ]);
+
+        Fakultas::create([
+            'name' => $this->fakultas['nama'],
+            'code' => $this->fakultas['kode'],
+        ]);    
+    
+        return redirect()->to('master_fakultas');
+    }
+
+    public function deleteFakultas($id)
+    {
+        Fakultas::findOrFail($id)->delete();
+       return redirect()->to('master_fakultas');
+    }
 
 }

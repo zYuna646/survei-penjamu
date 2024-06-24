@@ -1,4 +1,3 @@
-<!-- resources/views/livewire/admin/master/fakultas/edit-fakultas.blade.php -->
 <main class="bg-[#f9fafc] min-h-screen">
     <section class="max-w-screen-xl w-full mx-auto px-4 pt-24">
         <div
@@ -16,19 +15,30 @@
     </section>
     <section class="max-w-screen-xl w-full mx-auto px-4 mt-4 pb-12">
         <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm">
-            <form wire:submit.prevent="updateFakultas" class="grid grid-cols-12">
+            <form wire:submit.prevent="updateJurusan" class="grid grid-cols-12">
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                    <label for="fakultas" class="text-sm ">Nama {{ $master }} :</label>
-                    <input type="text" name="fakultas" wire:model="fakultas.name"
+                    <label for="name" class="text-sm">Nama {{ $master }} :</label>
+                    <input type="text" name="name" wire:model="jurusan.name"
                         placeholder="Masukan Nama {{ $master }}"
                         class="p-4 text-sm rounded-md bg-neutral-50 text-slate-800 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                    @error('fakultas.name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        @error('jurusan.name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                    <label for="kode" class="text-sm ">Kode {{ $master }} :</label>
-                    <input type="text" name="Kode" wire:model="fakultas.code" placeholder="Masukan Kode {{ $master }}"
+                    <label for="code" class="text-sm">Kode {{ $master }} :</label>
+                    <input type="text" name="code" wire:model="jurusan.code" placeholder="Masukan Kode {{ $master }}"
                         class="p-4 text-sm rounded-md bg-neutral-50 text-slate-800 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                        @error('fakultas.code') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        @error('jurusan.code') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                </div>
+                <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                    <label for="fakultas_id" class="text-sm">Fakultas :</label>
+                    <select name="fakultas_id" wire:model="jurusan.fakultas_id"
+                        class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                        <option value="">Pilih Fakultas</option>
+                        @foreach($dataFakultas as $fakultas)
+                        <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('jurusan.fakultas_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
                 <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12" color="info" type="submit">
                     <span wire:loading.remove>

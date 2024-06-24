@@ -12,16 +12,20 @@
           "link":  "master_fakultas" 
         },
         {
+          "name": "Jurusan",
+          "link":  "master_jurusan" 
+        },
+        {
           "name": "Prodi",
           "link":  "master_prodi" 
         },
         {
           "name": "Target",
-          "link":  "auth" 
+          "link":  "master_target" 
         },
         {
           "name": "Jenis",
-          "link":  "auth" 
+          "link":  "master_jenis" 
         },
         {
           "name": "Pengguna",
