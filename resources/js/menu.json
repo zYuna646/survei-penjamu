@@ -2,7 +2,7 @@
   "admin": [
     {
       "name": "Dashboard",
-      "link": "auth"
+      "link": "admin_dashboard"
     },
     {
       "name": "Master",
@@ -38,7 +38,7 @@
       "link": [
         {
           "name": "Sruvei",
-          "link":  "auth" 
+          "link":  "master_survei" 
         }
       ]
     }

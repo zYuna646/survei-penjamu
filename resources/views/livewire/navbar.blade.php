@@ -1,4 +1,4 @@
-<header class="border-b-2 border-color-primary-500 w-full absolute top-0 bg-white z-50" x-data="{ open: false }">
+<header class="border-b-2 border-color-primary-500 w-full fixed bg-white z-50" x-data="{ open: false }">
   <div x-transition x-show="open" class="absolute isolate w-[80%] h-screen top-0 shadow-md bg-white z-10 p-4">
     <div class="p-2 w-full inline-flex items-center justify-between">
       <div class="w-10">
