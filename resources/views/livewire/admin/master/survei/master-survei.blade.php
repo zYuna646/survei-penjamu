@@ -101,12 +101,12 @@
                                     <!--Fill button -->
                                     <x-button class="" color="info" size="sm"
                                         onclick="window.location.href='{{ route('create_survei') }}'">
-                                        Isi Survei
+                                        Edit
                                     </x-button>
                                     <!-- Edit button -->
                                     <x-button class="" color="info" size="sm"
-                                        onclick="window.location.href='{{ route('edit_fakultas' , $survei['id']) }}'">
-                                        Edit
+                                        onclick="window.location.href='{{ route('detail_survei') }}'">
+                                        Detail
                                     </x-button>
                                     <!-- Delete button (if needed) -->
                                     <x-button class="" color="danger" size="sm"

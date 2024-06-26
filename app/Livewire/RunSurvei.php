@@ -26,7 +26,7 @@ class RunSurvei extends Component
     {
         return view('livewire.landing.run-survei')
         ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar, 'showFooter' => $this->showFooter])
-        ->title('UNG Survey - Master Survei');
+        ->title('UNG Survey - Survei '.$this->survey['name']);
     }
 
     public function sendSurveiRespon(){

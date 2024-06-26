@@ -1,7 +1,7 @@
 <main class="bg-[#f9fafc] min-h-screen">
     <section class="max-w-screen-xl w-full mx-auto px-4 pt-24 grid grid-cols-12 gap-4 pb-12">
         <div
-            class="p-8 col-span-4 h-fit bg-white flex flex-col lg:flex-row  gap-y-2 gap-x-4 rounded-lg border border-slate-100 shadow-sm">
+            class="p-8 col-span-12 lg:col-span-4 h-fit bg-white flex flex-col lg:flex-row  gap-y-2 gap-x-4 rounded-lg border border-slate-100 shadow-sm">
             <div class="max-w-lg flex flex-col gap-y-2">
                 <h1 class="font-bold text-lg">{{ $survey['name'] }}</h1>
                 <p class="text-slate-500 text-sm">{{ $survey['description'] }}</p>
@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        <form wire:submit.prevent="sendSurveiRespon" class="col-span-8 w-full flex flex-col gap-y-4 h-fit"
+        <form wire:submit.prevent="sendSurveiRespon" class="col-span-12 lg:col-span-8 w-full flex flex-col gap-y-4 h-fit"
             x-data="{ sendModal: false, resetModal: false }">
             <div class="p-6  bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
                 <div class="mb-4">
@@ -56,7 +56,7 @@
                     <p class="text-lg font-bold">Aspek Pemersatu Bangsa</p>
                 </div>
                 <fieldset class="grid grid-cols-12 mb-4">
-                    <legend class="font-semibold col-span-12 mb-4">Kemudahan dalam mendapatkan informasi dalam menunjang
+                    <legend class="text-sm font-semibold col-span-12 mb-4">Kemudahan dalam mendapatkan informasi dalam menunjang
                         kegiatan
                         sesuai dengan uraian jabatan serta tugas pokok dan fungsi. (Aspek Tangibles) :</legend>
                     <div class="flex flex-col gap-y-2 col-span-12 text-sm">
