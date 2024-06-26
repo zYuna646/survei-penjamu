@@ -28,6 +28,7 @@ use App\Livewire\MasterJenis;
 use App\Livewire\EditJenis;
 use App\Livewire\MasterSurvei;
 use App\Livewire\CreateSurvei;
+use App\Livewire\RunSurvei;
 
 
 
@@ -46,3 +47,4 @@ Route::get('/master_jenis', MasterJenis::class)->name('master_jenis');
 Route::get('/edit_jenis/{id}', EditJenis::class)->name('edit_jenis');
 Route::get('/master_survei', MasterSurvei::class)->name('master_survei');
 Route::get('/create_survei', CreateSurvei::class)->name('create_survei');
+Route::get('/run_survei', RunSurvei::class)->name('run_survei');
