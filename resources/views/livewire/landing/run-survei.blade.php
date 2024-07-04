@@ -27,7 +27,8 @@
                 </div>
             </div>
         </div>
-        <form wire:submit.prevent="sendSurveiRespon" class="col-span-12 lg:col-span-8 w-full flex flex-col gap-y-4 h-fit"
+        <form wire:submit.prevent="sendSurveiRespon"
+            class="col-span-12 lg:col-span-8 w-full flex flex-col gap-y-4 h-fit"
             x-data="{ sendModal: false, resetModal: false }">
             <div class="p-6  bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
                 <div class="mb-4">
@@ -51,42 +52,93 @@
                     </div>
                 </div>
             </div>
-            <div class="p-6  bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+            {{-- aspek 1 --}}
+            <div class="p-4 lg:p-6  bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
                 <div class="mb-4">
                     <p class="text-lg font-bold">Aspek Pemersatu Bangsa</p>
                 </div>
-                <fieldset class="grid grid-cols-12 mb-4">
-                    <legend class="text-sm font-semibold col-span-12 mb-4">Kemudahan dalam mendapatkan informasi dalam menunjang
+                <fieldset class="grid grid-cols-12 divide-x-2 mb-4 border p-2 rounded-lg">
+                    <p class="text-xs lg:text-sm font-semibold col-span-6 lg:col-span-8 p-2 lg:p-4">Kemudahan dalam
+                        mendapatkan informasi dalam
+                        menunjang
                         kegiatan
-                        sesuai dengan uraian jabatan serta tugas pokok dan fungsi. (Aspek Tangibles) :</legend>
-                    <div class="flex flex-col gap-y-2 col-span-12 text-sm">
-                        <label class="flex items-center">
-                            <input type="radio" name="aspek_tangibles" value="1" wire:model="responses.1" class="mr-2">
-                            Sangat Tidak Setuju
-                        </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="aspek_tangibles" value="2"
-                                wire:model="responses.aspek_1_indicator_2" class="mr-2">
-                            Tidak Setuju
-                        </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="aspek_tangibles" value="3" wire:model="responses.3" class="mr-2">
-                            Netral
-                        </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="aspek_tangibles" value="4" wire:model="responses.4" class="mr-2">
-                            Setuju
-                        </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="aspek_tangibles" value="5" wire:model="responses.5" class="mr-2">
-                            Sangat Setuju
-                        </label>
+                        sesuai dengan uraian jabatan serta tugas pokok dan fungsi. (Aspek Tangibles) :</p>
+                    <div class="flex items-center justify-between p-2 lg:p-4 col-span-6 lg:col-span-4 text-sm">
+                        <div class=" rounded-full bg-color-danger-500 p-2 flex items-center justify-center">
+                            <input type="radio" name="responses[aspek_1][indicator_1]" value="1"
+                                wire:model="responses.aspek_1.indicator_1" class="">
+                        </div>
+                        <div class="rounded-full bg-color-warning-500 p-2 flex items-center justify-center">
+                            <input type="radio" name="responses[aspek_1][indicator_1]" value="2"
+                                wire:model="responses.aspek_1.indicator_1" class="">
+                        </div>
+                        <div class="rounded-full bg-color-success-500 p-2 flex items-center justify-center">
+                            <input type="radio" name="responses[aspek_1][indicator_1]" value="3"
+                                wire:model="responses.aspek_1.indicator_1" class="">
+                        </div>
+                        <div class="rounded-full bg-color-info-500 p-2 flex items-center justify-center">
+                            <input type="radio" name="responses[aspek_1][indicator_1]" value="4"
+                                wire:model="responses.aspek_1.indicator_1" class="">
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="grid grid-cols-12 divide-x-2 mb-4 border p-2 rounded-lg">
+                    <p class="text-xs lg:text-sm font-semibold col-span-6 lg:col-span-8 p-2 lg:p-4">Lorem ipsum dolor
+                        sit amet consectetur adipisicing elit. Ratione, voluptatem id. Aut placeat cumque voluptas
+                        blanditiis, perferendis ad.</p>
+                    <div class="flex items-center justify-between p-2 lg:p-4 col-span-6 lg:col-span-4 text-sm">
+                        <div class=" rounded-full bg-color-danger-500 p-2 flex items-center justify-center">
+                            <input type="radio" name="responses[aspek_1][indicator_2]" value="1"
+                                wire:model="responses.aspek_1.indicator_2" class="">
+                        </div>
+                        <div class="rounded-full bg-color-warning-500 p-2 flex items-center justify-center">
+                            <input type="radio" name="responses[aspek_1][indicator_2]" value="2"
+                                wire:model="responses.aspek_1.indicator_2" class="">
+                        </div>
+                        <div class="rounded-full bg-color-success-500 p-2 flex items-center justify-center">
+                            <input type="radio" name="responses[aspek_1][indicator_2]" value="3"
+                                wire:model="responses.aspek_1.indicator_2" class="">
+                        </div>
+                        <div class="rounded-full bg-color-info-500 p-2 flex items-center justify-center">
+                            <input type="radio" name="responses[aspek_1][indicator_2]" value="4"
+                                wire:model="responses.aspek_1.indicator_2" class="">
+                        </div>
                     </div>
                 </fieldset>
             </div>
+            {{-- aspek 2 --}}
+            <div class="p-4 lg:p-6  bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                <div class="mb-4">
+                    <p class="text-lg font-bold">Aspek Kewarganegaraan</p>
+                </div>
+                <fieldset class="grid grid-cols-12 divide-x-2 mb-4 border p-2 rounded-lg">
+                    <p class="text-xs lg:text-sm font-semibold col-span-6 lg:col-span-8 p-2 lg:p-4">Lorem ipsum dolor
+                        sit amet consectetur adipisicing elit. Consequuntur sapiente debitis impedit, laboriosam porro
+                        molestiae provident.</p>
+                    <div class="flex items-center justify-between p-2 lg:p-4 col-span-6 lg:col-span-4 text-sm">
+                        <div class=" rounded-full bg-color-danger-500 p-2 flex items-center justify-center">
+                            <input type="radio" name="responses[aspek_2][indicator_1]" value="1"
+                                wire:model="responses.aspek_2.indicator_1" class="">
+                        </div>
+                        <div class="rounded-full bg-color-warning-500 p-2 flex items-center justify-center">
+                            <input type="radio" name="responses[aspek_2][indicator_1]" value="2"
+                                wire:model="responses.aspek_2.indicator_1" class="">
+                        </div>
+                        <div class="rounded-full bg-color-success-500 p-2 flex items-center justify-center">
+                            <input type="radio" name="responses[aspek_2][indicator_1]" value="3"
+                                wire:model="responses.aspek_2.indicator_1" class="">
+                        </div>
+                        <div class="rounded-full bg-color-info-500 p-2 flex items-center justify-center">
+                            <input type="radio" name="responses[aspek_2][indicator_1]" value="4"
+                                wire:model="responses.aspek_2.indicator_1" class="">
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
             <div class="p-6  bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
                 <div class="flex gap-x-4 items-center">
-                    <x-button class="" size="md" color="primary" @click="sendModal = !sendModal">
+                    <x-button class="" size="md" color="info" @click="sendModal = !sendModal">
                         Kirim Jawaban
                     </x-button>
                     {{-- tombol reset --}}
@@ -100,69 +152,63 @@
                     </div>
                 </div>
             </div>
-            <div>
-                <div x-show="resetModal" x-transition
-                    class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 h-full max-h-full bg-black/20">
-                    <div class="relative p-4 w-full max-w-md max-h-full" @click.outside="resetModal = false">
-                        <!-- Modal content -->
-                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                            <button type="button" @click="resetModal = false"
-                                class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                data-modal-hide="popup-modal">
-                                <span>
-                                    <i class="fas fa-times"></i>
-                                </span>
-                                <span class="sr-only">Close modal</span>
-                            </button>
-                            <div class="p-4 md:p-5 text-center">
-                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400 mt-6">Apakah kamu
-                                    yakin ingin mereset jawaban survei kamu?</h3>
+            <div x-show="resetModal" x-transition
+                class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 h-full max-h-full bg-black/20">
+                <div class="relative p-4 w-full max-w-md max-h-full" @click.outside="resetModal = false">
+                    <!-- Modal content -->
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                        <button type="button" @click="resetModal = false"
+                            class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            data-modal-hide="popup-modal">
+                            <span>
+                                <i class="fas fa-times"></i>
+                            </span>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                        <div class="p-4 md:p-5 text-center">
+                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400 mt-6">Apakah kamu
+                                yakin ingin mereset jawaban survei kamu?</h3>
 
-                                <div class="inline-flex gap-x-2">
-                                    <x-button class="" color="primary" size="md" type="reset"
-                                        @click="resetModal = false">
-                                        Yakin
-                                    </x-button>
-                                    <x-button class="" color="primary" size="md" outlined="true"
-                                        @click="resetModal = false">
-                                        Batal
-                                    </x-button>
-                                </div>
-
+                            <div class="inline-flex gap-x-2">
+                                <x-button class="" color="primary" size="sm" type="reset" @click="resetModal = false">
+                                    Yakin
+                                </x-button>
+                                <x-button class="" color="primary" size="sm" outlined="true"
+                                    @click="resetModal = false">
+                                    Batal
+                                </x-button>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
-            <div>
-                <div x-show="sendModal" x-transition
-                    class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 h-full max-h-full bg-black/20">
-                    <div class="relative p-4 w-full max-w-md max-h-full" @click.outside="sendModal = false">
-                        <!-- Modal content -->
-                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                            <button type="button" @click="sendModal = false"
-                                class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                data-modal-hide="popup-modal">
-                                <span>
-                                    <i class="fas fa-times"></i>
-                                </span>
-                                <span class="sr-only">Close modal</span>
-                            </button>
-                            <div class="p-4 md:p-5 text-center">
-                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400 mt-6">Apakah kamu
-                                    yakin ingin mengirim jawban survei kamu?</h3>
+            <div x-show="sendModal" x-transition
+                class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 h-full max-h-full bg-black/20">
+                <div class="relative p-4 w-full max-w-md max-h-full" @click.outside="sendModal = false">
+                    <!-- Modal content -->
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                        <button type="button" @click="sendModal = false"
+                            class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            data-modal-hide="popup-modal">
+                            <span>
+                                <i class="fas fa-times"></i>
+                            </span>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                        <div class="p-4 md:p-5 text-center">
+                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400 mt-6">Apakah kamu
+                                yakin ingin mengirim jawban survei kamu?</h3>
 
-                                <div class="inline-flex gap-x-2">
-                                    <x-button class="" color="primary" size="md" type="submit">
-                                        Yakin
-                                    </x-button>
-                                    <x-button class="" color="primary" size="md" outlined="true"
-                                        @click="sendModal = false">
-                                        Batal
-                                    </x-button>
-                                </div>
-
+                            <div class="inline-flex gap-x-2">
+                                <x-button class="" color="info" size="sm" type="submit">
+                                    Yakin
+                                </x-button>
+                                <x-button class="" color="primary" size="sm" outlined="true" @click="sendModal = false">
+                                    Batal
+                                </x-button>
                             </div>
+
                         </div>
                     </div>
                 </div>
