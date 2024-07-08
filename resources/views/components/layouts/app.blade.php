@@ -19,6 +19,7 @@
 
     @vite('resources/css/app.css')
     <title>{{ $title ?? 'Page Title' }}</title>
+    @stack('styles')
 </head>
 
 <body>

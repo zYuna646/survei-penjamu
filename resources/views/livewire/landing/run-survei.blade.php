@@ -52,89 +52,87 @@
                     </div>
                 </div>
             </div>
-            {{-- aspek 1 --}}
-            <div class="p-4 lg:p-6  bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+            @foreach($survey['aspects'] as $index => $aspect)
+            <div class="p-4 lg:p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
                 <div class="mb-4">
-                    <p class="text-lg font-bold">Aspek Pemersatu Bangsa</p>
+                    <p class="text-lg font-bold">{{ $aspect['name'] }}</p>
                 </div>
-                <fieldset class="grid grid-cols-12 divide-x-2 mb-4 border p-2 rounded-lg">
-                    <p class="text-xs lg:text-sm font-semibold col-span-6 lg:col-span-8 p-2 lg:p-4">Kemudahan dalam
-                        mendapatkan informasi dalam
-                        menunjang
-                        kegiatan
-                        sesuai dengan uraian jabatan serta tugas pokok dan fungsi. (Aspek Tangibles) :</p>
-                    <div class="flex items-center justify-between p-2 lg:p-4 col-span-6 lg:col-span-4 text-sm">
-                        <div class=" rounded-full bg-color-danger-500 p-2 flex items-center justify-center">
-                            <input type="radio" name="responses[aspek_1][indicator_1]" value="1"
-                                wire:model="responses.aspek_1.indicator_1" class="">
+                <div class="w-full p-4 rounded-lg border mb-6">
+                    <div class="w-full inline-flex items-center gap-x-2 text-sm font-semibold mb-4">
+                        <span
+                            class="w-2 h-2 p-2.5 inline-flex justify-center items-center bg-color-danger-500 rounded-full">
+                            <i class="fas fa-exclamation text-white text-xs"></i>
+                        </span>
+                        Perhatikan!!
+                    </div>
+                    <div class="w-full text-xs font-semibold mb-4">
+                        Lengkapi seluruh bagan survei dengan memilih jawaban: tidak setuju, netral, setuju, atau sangat
+                        setuju. Setiap warna tombol pilihan merepresentasikan pilihan tersebut.
+                    </div>
+                    <div class="w-full grid grid-cols-12">
+                        <div
+                            class="group hover:cursor-pointer hover:text-color-danger-500 transition-all duration-300 lg:col-span-3 col-span-12 inline-flex lg:rounded-s-lg items-center border justify-center p-2 gap-x-2 text-xs font-semibold">
+                            <span class="p-1 bg-color-danger-500 rounded-full">
+                                <div
+                                    class="w-2 h-2 bg-white group-hover:bg-color-danger-500  group-hover:transition-colors group-hover:duration-300 rounded-full">
+                                </div>
+                            </span>
+                            Tidak Setuju
                         </div>
-                        <div class="rounded-full bg-color-warning-500 p-2 flex items-center justify-center">
-                            <input type="radio" name="responses[aspek_1][indicator_1]" value="2"
-                                wire:model="responses.aspek_1.indicator_1" class="">
+                        <div
+                            class="group hover:cursor-pointer hover:text-color-warning-500 transition-colors duration-300 lg:col-span-3 col-span-12 inline-flex items-center border justify-center p-2 gap-x-2 text-xs font-semibold">
+                            <span class="p-1 bg-color-warning-500 rounded-full">
+                                <div
+                                    class="w-2 h-2 bg-white group-hover:bg-color-warning-500 group-hover:transition-colors group-hover:duration-300 rounded-full">
+                                </div>
+                            </span>
+                            Netral
                         </div>
-                        <div class="rounded-full bg-color-success-500 p-2 flex items-center justify-center">
-                            <input type="radio" name="responses[aspek_1][indicator_1]" value="3"
-                                wire:model="responses.aspek_1.indicator_1" class="">
+                        <div
+                            class="group hover:cursor-pointer hover:text-color-success-500 transition-colors duration-300 lg:col-span-3 col-span-12 inline-flex items-center border justify-center p-2 gap-x-2 text-xs font-semibold">
+                            <span class="p-1 bg-color-success-500 rounded-full">
+                                <div
+                                    class="w-2 h-2 bg-white group-hover:bg-color-success-500 group-hover:transition-colors group-hover:duration-300 rounded-full">
+                                </div>
+                            </span>
+                            Setuju
                         </div>
-                        <div class="rounded-full bg-color-info-500 p-2 flex items-center justify-center">
-                            <input type="radio" name="responses[aspek_1][indicator_1]" value="4"
-                                wire:model="responses.aspek_1.indicator_1" class="">
+                        <div
+                            class="group hover:cursor-pointer hover:text-color-info-500 transition-colors duration-300 lg:col-span-3 col-span-12 inline-flex lg:rounded-e-lg items-center border justify-center p-2  gap-x-2 text-xs font-semibold">
+                            <span class="p-1 bg-color-info-500 rounded-full">
+                                <div
+                                    class="w-2 h-2 bg-white group-hover:bg-color-info-500 group-hover:transition-colors group-hover:duration-300 rounded-full">
+                                </div>
+                            </span>
+                            Sangat Setuju
                         </div>
                     </div>
-                </fieldset>
-                <fieldset class="grid grid-cols-12 divide-x-2 mb-4 border p-2 rounded-lg">
-                    <p class="text-xs lg:text-sm font-semibold col-span-6 lg:col-span-8 p-2 lg:p-4">Lorem ipsum dolor
-                        sit amet consectetur adipisicing elit. Ratione, voluptatem id. Aut placeat cumque voluptas
-                        blanditiis, perferendis ad.</p>
-                    <div class="flex items-center justify-between p-2 lg:p-4 col-span-6 lg:col-span-4 text-sm">
-                        <div class=" rounded-full bg-color-danger-500 p-2 flex items-center justify-center">
-                            <input type="radio" name="responses[aspek_1][indicator_2]" value="1"
-                                wire:model="responses.aspek_1.indicator_2" class="">
-                        </div>
-                        <div class="rounded-full bg-color-warning-500 p-2 flex items-center justify-center">
-                            <input type="radio" name="responses[aspek_1][indicator_2]" value="2"
-                                wire:model="responses.aspek_1.indicator_2" class="">
-                        </div>
-                        <div class="rounded-full bg-color-success-500 p-2 flex items-center justify-center">
-                            <input type="radio" name="responses[aspek_1][indicator_2]" value="3"
-                                wire:model="responses.aspek_1.indicator_2" class="">
-                        </div>
-                        <div class="rounded-full bg-color-info-500 p-2 flex items-center justify-center">
-                            <input type="radio" name="responses[aspek_1][indicator_2]" value="4"
-                                wire:model="responses.aspek_1.indicator_2" class="">
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
-            {{-- aspek 2 --}}
-            <div class="p-4 lg:p-6  bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
-                <div class="mb-4">
-                    <p class="text-lg font-bold">Aspek Kewarganegaraan</p>
                 </div>
+                @foreach($aspect['indicators'] as $indicatorIndex => $indicator)
                 <fieldset class="grid grid-cols-12 divide-x-2 mb-4 border p-2 rounded-lg">
-                    <p class="text-xs lg:text-sm font-semibold col-span-6 lg:col-span-8 p-2 lg:p-4">Lorem ipsum dolor
-                        sit amet consectetur adipisicing elit. Consequuntur sapiente debitis impedit, laboriosam porro
-                        molestiae provident.</p>
+                    <p class="text-xs lg:text-sm font-semibold col-span-6 lg:col-span-8 p-2 lg:p-4">{{ $indicator }}</p>
                     <div class="flex items-center justify-between p-2 lg:p-4 col-span-6 lg:col-span-4 text-sm">
-                        <div class=" rounded-full bg-color-danger-500 p-2 flex items-center justify-center">
-                            <input type="radio" name="responses[aspek_2][indicator_1]" value="1"
-                                wire:model="responses.aspek_2.indicator_1" class="">
+                        <div class="rounded-full bg-color-danger-500 p-1 flex items-center justify-center">
+                            <input type="radio" name="responses[{{ $index }}][{{ $indicatorIndex }}]" value="1"
+                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}" class="w-4 h-4">
                         </div>
-                        <div class="rounded-full bg-color-warning-500 p-2 flex items-center justify-center">
-                            <input type="radio" name="responses[aspek_2][indicator_1]" value="2"
-                                wire:model="responses.aspek_2.indicator_1" class="">
+                        <div class="rounded-full bg-color-warning-500 p-1 flex items-center justify-center">
+                            <input type="radio" name="responses[{{ $index }}][{{ $indicatorIndex }}]" value="2"
+                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}" class="w-4 h-4">
                         </div>
-                        <div class="rounded-full bg-color-success-500 p-2 flex items-center justify-center">
-                            <input type="radio" name="responses[aspek_2][indicator_1]" value="3"
-                                wire:model="responses.aspek_2.indicator_1" class="">
+                        <div class="rounded-full bg-color-success-500 p-1 flex items-center justify-center">
+                            <input type="radio" name="responses[{{ $index }}][{{ $indicatorIndex }}]" value="3"
+                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}" class="w-4 h-4">
                         </div>
-                        <div class="rounded-full bg-color-info-500 p-2 flex items-center justify-center">
-                            <input type="radio" name="responses[aspek_2][indicator_1]" value="4"
-                                wire:model="responses.aspek_2.indicator_1" class="">
+                        <div class="rounded-full bg-color-info-500 p-1 flex items-center justify-center">
+                            <input type="radio" name="responses[{{ $index }}][{{ $indicatorIndex }}]" value="4"
+                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}" class="w-4 h-4">
                         </div>
                     </div>
                 </fieldset>
+                @endforeach
             </div>
+            @endforeach
 
             <div class="p-6  bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
                 <div class="flex gap-x-4 items-center">

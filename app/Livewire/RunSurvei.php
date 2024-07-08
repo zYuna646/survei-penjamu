@@ -15,7 +15,22 @@ class RunSurvei extends Component
       'target' => 'Universitas',
       'type' => 'Reguler',
       'aspek_total' => 3,
-    ];
+      'aspects' => [
+          [
+              'name' => 'Aspek Pemersatu Bangsa',
+              'indicators' => [
+                  'Kemudahan dalam mendapatkan informasi dalam menunjang kegiatan sesuai dengan uraian jabatan serta tugas pokok dan fungsi. (Aspek Tangibles)',
+                  'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione, voluptatem id. Aut placeat cumque voluptas blanditiis, perferendis ad.'
+              ]
+          ],
+          [
+              'name' => 'Aspek Kewarganegaraan',
+              'indicators' => [
+                  'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur sapiente debitis impedit, laboriosam porro molestiae provident.',
+              ]
+          ]
+      ]
+  ];
 
     public $nama;
     public $nim;
