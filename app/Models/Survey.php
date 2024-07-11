@@ -11,7 +11,7 @@ class Survey extends Model
     protected $fillable = [
         'name',
         'code',
-        'survey_id',
+        'jenis_id',
         'target_id',
     ];
 
@@ -20,9 +20,9 @@ class Survey extends Model
         return $this->belongsTo(Target::class);
     }
 
-    public function survey()
+    public function jenis()
     {
-        return $this->belongsTo(Survey::class);
+        return $this->belongsTo(Jenis::class);
     }
 
     public function aspek()

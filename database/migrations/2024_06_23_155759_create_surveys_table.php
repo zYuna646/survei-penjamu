@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code');
-            $table->unsignedBigInteger('survey_id')->nullable();
+            $table->unsignedBigInteger('jenis_id')->nullable();
             $table->unsignedBigInteger('target_id');
             $table->timestamps();
 
-            $table->foreign('survey_id')->references('id')->on('surveys')->onDelete('cascade');
+            $table->foreign('jenis_id')->references('id')->on('surveys')->onDelete('cascade');
             $table->foreign('target_id')->references('id')->on('targets')->onDelete('cascade');
         });
     }
