@@ -17,9 +17,9 @@
     {{-- jquery --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-
     @vite('resources/css/app.css')
     <title>{{ $title ?? 'Page Title' }}</title>
+    @stack('styles')
 </head>
 
 <body>

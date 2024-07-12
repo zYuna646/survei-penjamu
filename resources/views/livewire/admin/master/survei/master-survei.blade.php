@@ -86,6 +86,7 @@
                             <th>Kode</th>
                             <th>Nama</th>
                             <th>Target</th>
+                            <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -97,16 +98,32 @@
                             <td>{{ $survei['name'] }}</td>
                             <td>{{ $survei['target'] }}</td>
                             <td>
+                                {{-- <x-button color="success" size="sm" class="inline-flex gap-x-2">
+                                    <span>
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                    Aktif
+                                </x-button> --}}
+                                <x-button color="danger" size="sm" class="inline-flex gap-x-2">
+                                    <span>
+                                        <i class="fas fa-times"></i>
+                                    </span>
+                                    Nonaktif
+                                </x-button>
+                            </td>
+                            <td>
                                 <div class="inline-flex gap-x-1">
                                     <!--Fill button -->
                                     <x-button class="" color="info" size="sm"
                                         onclick="window.location.href='{{ route('create_survei') }}'">
-                                        Isi Survei
+                                        <span>
+                                            <i class="fas fa-cog"></i>
+                                        </span>
                                     </x-button>
                                     <!-- Edit button -->
                                     <x-button class="" color="info" size="sm"
-                                        onclick="window.location.href='{{ route('edit_fakultas' , $survei['id']) }}'">
-                                        Edit
+                                        onclick="window.location.href='{{ route('detail_survei') }}'">
+                                        Detail
                                     </x-button>
                                     <!-- Delete button (if needed) -->
                                     <x-button class="" color="danger" size="sm"

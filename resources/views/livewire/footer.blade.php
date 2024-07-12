@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="py-8 border-t-[1px] mt-6 inline-flex justify-center">
-            <p class="text-sm text-slate-500">©2024 Universitas Negeri Gorontalo, All Right Reserved</p>
+            <p class="text-xs text-slate-500">©2024 Universitas Negeri Gorontalo, All Right Reserved</p>
         </div>
     </div>
 </footer>

@@ -48,7 +48,7 @@
                                 <input type="text" name="Kode" wire:model="fakultas.kode"
                                     placeholder="Masukan Kode {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                    @error('fakultas.nama') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                    @error('fakultas.kode') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
                             <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12" color="info"
                                 type="submit">

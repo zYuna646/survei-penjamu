@@ -54,4 +54,8 @@ class CreateSurvei extends Component
     public function updateSurvei(){
         dd($this->aspeks);
     }
+    public function redirectToAdd()
+    {
+        return redirect()->to('master_survei');
+    }
 }
