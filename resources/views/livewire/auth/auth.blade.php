@@ -28,8 +28,8 @@
                         class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-primary-500">
                 </div>
                 <div class="flex mt-6 px-2">
-                    <input class="mr-2 leading-tight" type="checkbox">
-                    <label for="credential" class="text-sm ">Tampil Password</label>
+                    <input name="show_pass" id="show_pass" class="mr-2 leading-tight" type="checkbox">
+                    <label for="show_pass" class="text-sm ">Tampil Password</label>
                 </div>
                 <div class="mt-4">
                     <x-button color="primary" class="w-full" size="lg" type="submit">
