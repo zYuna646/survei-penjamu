@@ -2,11 +2,11 @@
 
 namespace App\Livewire;
 
+use App\Models\Aspek;
+use App\Models\Indikator;
 use App\Models\Survey;
 use App\Models\Target;
 use App\Models\Jenis;
-use App\Models\Aspek;
-use App\Models\Indikator;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Component;
