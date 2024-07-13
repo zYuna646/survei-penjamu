@@ -71,7 +71,7 @@
                     </div>
                     <div class="w-full grid grid-cols-12">
                         <div
-                            class="group hover:cursor-pointer hover:text-color-danger-500 transition-all duration-300 lg:col-span-3 col-span-12 inline-flex lg:rounded-s-lg items-center border justify-center p-2 gap-x-2 text-xs font-semibold">
+                            class="group hover:cursor-default hover:text-color-danger-500 transition-all duration-300 lg:col-span-3 col-span-12 inline-flex lg:rounded-s-lg items-center border justify-center p-2 gap-x-2 text-xs font-semibold">
                             <span class="p-1 bg-color-danger-500 rounded-full">
                                 <div
                                     class="w-2 h-2 bg-white group-hover:bg-color-danger-500  group-hover:transition-colors group-hover:duration-300 rounded-full">
@@ -80,7 +80,7 @@
                             Tidak Setuju
                         </div>
                         <div
-                            class="group hover:cursor-pointer hover:text-color-warning-500 transition-colors duration-300 lg:col-span-3 col-span-12 inline-flex items-center border justify-center p-2 gap-x-2 text-xs font-semibold">
+                            class="group hover:cursor-default hover:text-color-warning-500 transition-colors duration-300 lg:col-span-3 col-span-12 inline-flex items-center border justify-center p-2 gap-x-2 text-xs font-semibold">
                             <span class="p-1 bg-color-warning-500 rounded-full">
                                 <div
                                     class="w-2 h-2 bg-white group-hover:bg-color-warning-500 group-hover:transition-colors group-hover:duration-300 rounded-full">
@@ -89,7 +89,7 @@
                             Netral
                         </div>
                         <div
-                            class="group hover:cursor-pointer hover:text-color-success-500 transition-colors duration-300 lg:col-span-3 col-span-12 inline-flex items-center border justify-center p-2 gap-x-2 text-xs font-semibold">
+                            class="group hover:cursor-default hover:text-color-success-500 transition-colors duration-300 lg:col-span-3 col-span-12 inline-flex items-center border justify-center p-2 gap-x-2 text-xs font-semibold">
                             <span class="p-1 bg-color-success-500 rounded-full">
                                 <div
                                     class="w-2 h-2 bg-white group-hover:bg-color-success-500 group-hover:transition-colors group-hover:duration-300 rounded-full">
@@ -98,7 +98,7 @@
                             Setuju
                         </div>
                         <div
-                            class="group hover:cursor-pointer hover:text-color-info-500 transition-colors duration-300 lg:col-span-3 col-span-12 inline-flex lg:rounded-e-lg items-center border justify-center p-2  gap-x-2 text-xs font-semibold">
+                            class="group hover:cursor-default hover:text-color-info-500 transition-colors duration-300 lg:col-span-3 col-span-12 inline-flex lg:rounded-e-lg items-center border justify-center p-2  gap-x-2 text-xs font-semibold">
                             <span class="p-1 bg-color-info-500 rounded-full">
                                 <div
                                     class="w-2 h-2 bg-white group-hover:bg-color-info-500 group-hover:transition-colors group-hover:duration-300 rounded-full">
@@ -114,19 +114,19 @@
                     <div class="flex items-center justify-between p-2 lg:p-4 col-span-6 lg:col-span-4 text-sm">
                         <div class="rounded-full bg-color-danger-500 p-1 flex items-center justify-center">
                             <input type="radio" name="responses[{{ $index }}][{{ $indicatorIndex }}]" value="1"
-                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}" class="w-4 h-4">
+                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}" class="w-4 h-4 hover:cursor-pointer">
                         </div>
                         <div class="rounded-full bg-color-warning-500 p-1 flex items-center justify-center">
                             <input type="radio" name="responses[{{ $index }}][{{ $indicatorIndex }}]" value="2"
-                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}" class="w-4 h-4">
+                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}" class="w-4 h-4 hover:cursor-pointer">
                         </div>
                         <div class="rounded-full bg-color-success-500 p-1 flex items-center justify-center">
                             <input type="radio" name="responses[{{ $index }}][{{ $indicatorIndex }}]" value="3"
-                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}" class="w-4 h-4">
+                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}" class="w-4 h-4 hover:cursor-pointer">
                         </div>
                         <div class="rounded-full bg-color-info-500 p-1 flex items-center justify-center">
                             <input type="radio" name="responses[{{ $index }}][{{ $indicatorIndex }}]" value="4"
-                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}" class="w-4 h-4">
+                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}" class="w-4 h-4 hover:cursor-pointer">
                         </div>
                     </div>
                 </fieldset>

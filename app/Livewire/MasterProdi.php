@@ -56,7 +56,8 @@ class MasterProdi extends Component
 
         return redirect()->to('master_prodi');
     }
-    public function deleteProdi($id)
+    
+    public function deleteProdi($id)    
     {
         Prodi::findOrFail($id)->delete();
         return redirect()->to('master_prodi');

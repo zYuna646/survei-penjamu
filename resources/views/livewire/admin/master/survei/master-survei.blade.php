@@ -45,20 +45,28 @@
                             </div>
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                                 <label for="kode" class="text-sm ">Kode {{ $master }} :</label>
-                                <input type="text" name="Kode" wire:model="survei.kode"
+                                <select type="text" name="Kode" wire:model="survei.jenis_id"
                                     placeholder="Masukan Kode {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                @error('survei.nama') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                    <option value="">Pilih Jenis</option>
+                                    @foreach($dataJenis as $jenis)
+                                    <option value="{{ $jenis->id }}">{{ $jenis->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('survei.jenis_id') <span class="text-red-500 text-xs">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                                 <label for="target" class="text-sm ">Target :</label>
-                                <select name="target_id" wire:model="master.target_id"
+                                <select name="target_id" wire:model="survei.target_id"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                     <option value="">Pilih Target</option>
                                     @foreach($dataTarget as $target)
                                     <option value="{{ $target->id }}">{{ $target->name }}</option>
                                     @endforeach
                                 </select>
+                                @error('survei.target_id') <span class="text-red-500 text-xs">{{ $message }}</span>
+                                @enderror
                             </div>
                             <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12" color="info"
                                 type="submit">
@@ -96,20 +104,40 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $survei['code'] }}</td>
                             <td>{{ $survei['name'] }}</td>
-                            <td>{{ $survei['target'] }}</td>
+                            <td>{{ $survei['target']->name }}</td>
                             <td>
-                                {{-- <x-button color="success" size="sm" class="inline-flex gap-x-2">
-                                    <span>
-                                        <i class="fas fa-check"></i>
+                                @if($survei['isAktif'])
+                                <div class="inline-flex gap-x-2 items-center">
+                                    <span
+                                        class=" font-semibold text-color-success-500 px-3 py-1 bg-color-success-100 rounded-lg">
+                                        Aktif
                                     </span>
-                                    Aktif
-                                </x-button> --}}
-                                <x-button color="danger" size="sm" class="inline-flex gap-x-2">
-                                    <span>
-                                        <i class="fas fa-times"></i>
+                                    
+                                    <button class="inline-flex gap-x-1 text-color-info-500 text-xs font-semibold"
+                                        onclick="confirmStatus({{ $survei['id'] }})">
+                                        <span>
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                        Ubah
+                                    </button>
+                                </div>
+
+                                @else
+                                <div class="inline-flex gap-x-2 items-center">
+                                    <span
+                                        class=" font-semibold text-color-danger-500 px-3 py-1 bg-color-danger-100 rounded-lg">
+                                        Non-Aktif
                                     </span>
-                                    Nonaktif
-                                </x-button>
+                                    
+                                    <button class="inline-flex gap-x-1 text-color-info-500 text-xs font-semibold"
+                                        onclick="confirmStatus({{ $survei['id'] }})">
+                                        <span>
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                        Ubah
+                                    </button>
+                                </div>
+                                @endif
                             </td>
                             <td>
                                 <div class="inline-flex gap-x-1">
@@ -149,8 +177,15 @@
     </script>
     <script>
         function confirmDelete(id) {
-            if(confirm(`Hapus fakultas? ${id}`)) {
-                @this.call('deleteFakultas', id);
+            if(confirm(`Hapus Survei?`)) {
+                @this.call('deleteSurvei', id);
+            }
+        }
+    </script>
+    <script>
+        function confirmStatus(id) {
+            if(confirm(`Ubah Status Survei?`)) {
+                @this.call('changeSurveiStatus', id);
             }
         }
     </script>

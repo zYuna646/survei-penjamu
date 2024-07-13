@@ -53,26 +53,22 @@ class CreateSurvei extends Component
             $table->id();
             $table->unsignedBigInteger('jurusan_id')->nullable();
             $table->foreign('jurusan_id')->references('id')->on('jurusans')->onDelete('cascade');
-            foreach ($this->aspeks as $key => $value) {
-                $table->enum($value->id, [1, 2, 3, 4])->nullable();
-            }
             $table->timestamps();
         });
     }
 
-    //DELETE FUNCTION
-//     public function removeSurvei($surveyId)
-// {
-//     // Ensure this action is secure and authorized as needed
+    public function removeSurvei($surveyId)
+    {
+        // Ensure this action is secure and authorized as needed
 
-//     // Drop the table associated with the survey ID
-//     Schema::dropIfExists($surveyId);
+        // Drop the table associated with the survey ID
+        Schema::dropIfExists($surveyId);
 
-//     // Optionally, you may also delete the survey record itself
-//     Survey::find($surveyId)->delete();
+        // Optionally, you may also delete the survey record itself
+        Survey::find($surveyId)->delete();
 
-//     return "Survey and associated table dropped successfully.";
-// }
+        return "Survey and associated table dropped successfully.";
+    }
 
 
 //UPDATE FUNCTION
@@ -89,15 +85,13 @@ class CreateSurvei extends Component
 
 //     // Update the table associated with the survey ID
 //     Schema::table($surveyId, function (Blueprint $table) {
-//         // Drop all columns
-//         $table->dropColumn('jurusan_id');
-//         foreach ($this->aspeks as $key => $value) {
+//         foreach ($this->indikator as $key => $value) {
 //             $table->dropColumn($value->id);
 //         }
 
 //         // Add new columns
-//         foreach ($this->aspeks as $key => $value) {
-//             $table->string($value->id);
+//         foreach ($this->indikator as $key => $value) {
+//             $table->enum($value->id, [1, 2, 3, 4]->nullable());
 //         }
 //     });
 
