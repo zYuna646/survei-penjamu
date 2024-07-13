@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'fakultas_id',
         'jurusan_id',
         'role_id'
     ];
@@ -33,6 +34,11 @@ class User extends Authenticatable
     public function jurusan()
     {
         return $this->belongsTo(Jurusan::class);
+    }
+
+    public function fakultas()
+    {
+        return $this->belongsTo(Fakultas::class);
     }
     /**
      * The attributes that should be hidden for serialization.

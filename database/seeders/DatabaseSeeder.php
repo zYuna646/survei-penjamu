@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Fakultas;
 use App\Models\Jurusan;
 use App\Models\Role;
 use App\Models\User;
@@ -26,12 +27,14 @@ class DatabaseSeeder extends Seeder
         $this->call(FakultasSeeder::class);
         $admin = Role::where('slug', 'universitas')->first();
         $jurusan = Jurusan::where('code', '0')->first();
+        $fakultas = Fakultas::where('code', '0')->first();
         User::create([
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('admin'),
             'role_id' => $admin->id,
-            'jurusan_id' => $jurusan->id
+            'jurusan_id' => $jurusan->id,
+            'fakultas_id' => $fakultas->id,
         ]);
     }
 }
