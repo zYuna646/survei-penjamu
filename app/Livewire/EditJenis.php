@@ -17,7 +17,6 @@ class EditJenis extends Component
     {
         // Fetch fakultas data by ID from the model
         $jenis = Jenis::findOrFail($id);
-
         // Assign all data to the fakultas property
         $this->jenis = $jenis->toArray();
     }

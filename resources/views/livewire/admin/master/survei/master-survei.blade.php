@@ -109,10 +109,10 @@
                                 @if($survei['isAktif'])
                                 <div class="inline-flex gap-x-2 items-center">
                                     <span
-                                        class=" font-semibold text-color-success-500 px-3 py-1 bg-color-success-100 rounded-lg">
+                                        class="text-xs font-bold text-color-success-500 px-3 py-1 bg-color-success-100 rounded-lg">
                                         Aktif
                                     </span>
-                                    
+
                                     <button class="inline-flex gap-x-1 text-color-info-500 text-xs font-semibold"
                                         onclick="confirmStatus({{ $survei['id'] }})">
                                         <span>
@@ -125,10 +125,10 @@
                                 @else
                                 <div class="inline-flex gap-x-2 items-center">
                                     <span
-                                        class=" font-semibold text-color-danger-500 px-3 py-1 bg-color-danger-100 rounded-lg">
+                                        class="text-xs font-bold text-color-danger-500 px-3 py-1 bg-color-danger-100 rounded-lg">
                                         Non-Aktif
                                     </span>
-                                    
+
                                     <button class="inline-flex gap-x-1 text-color-info-500 text-xs font-semibold"
                                         onclick="confirmStatus({{ $survei['id'] }})">
                                         <span>
@@ -143,7 +143,7 @@
                                 <div class="inline-flex gap-x-1">
                                     <!--Fill button -->
                                     <x-button class="" color="info" size="sm"
-                                        onclick="window.location.href='{{ route('create_survei') }}'">
+                                        onclick="window.location.href='{{ route('create_survei', $survei['id']) }}'">
                                         <span>
                                             <i class="fas fa-cog"></i>
                                         </span>

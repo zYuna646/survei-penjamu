@@ -20,7 +20,7 @@ class MasterSurvei extends Component
         'jenis_id' => '',
         'target_id' => '',
     ];
-    public $aspeks = [];
+    public $indikators = [];
 
     public $dataSurvei;
     public $dataTarget;
@@ -60,9 +60,6 @@ class MasterSurvei extends Component
             $table->id();
             $table->unsignedBigInteger('jurusan_id')->nullable();
             $table->foreign('jurusan_id')->references('id')->on('jurusans')->onDelete('cascade');
-            foreach ($this->aspeks as $key => $value) {
-                $table->enum($value->id, [1, 2, 3, 4])->nullable();
-            }
             $table->timestamps();
         }); 
 

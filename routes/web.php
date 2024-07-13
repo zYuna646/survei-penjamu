@@ -52,7 +52,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/edit_jenis/{id}', EditJenis::class)->name('edit_jenis');
     Route::get('/master_survei', MasterSurvei::class)->name('master_survei');
     Route::get('/detail_survei', DetailSurvei::class)->name('detail_survei');
-    Route::get('/create_survei', CreateSurvei::class)->name('create_survei');
+    Route::get('/create_survei/{id}', CreateSurvei::class)->name('create_survei');
     Route::get('/run_survei', RunSurvei::class)->name('run_survei');
     Route::get('/recap_survei', RecapSurvei::class)->name('recap_survei');
     

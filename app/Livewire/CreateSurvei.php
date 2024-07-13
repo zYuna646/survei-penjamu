@@ -12,19 +12,30 @@ class CreateSurvei extends Component
     public $showNavbar = true;
     public $showFooter = true;
     public $master = 'Survei';
-    
+
+    public $survei = [];
+    public $aspeks = [
+        ['name' => '', 'indikators' => [['name' => '']]]
+    ];
+
+    protected $rules = [
+        'survei.name' => 'required|string|max:255',
+        'aspeks.*.name' => 'required|string|max:255',
+        'aspeks.*.indikators.*.name' => 'required|string|max:255',
+    ]; 
+
+    public function mount($id)
+    {
+        $survei = Survey::findOrFail($id);
+        $this->survei = $survei->toArray();
+    }
 
     public function render()
     {
         return view('livewire.admin.master.survei.create-survei')
-        ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar, 'showFooter' => $this->showFooter])
-        ->title('UNG Survey - Master Survei');
+            ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar, 'showFooter' => $this->showFooter])
+            ->title('UNG Survey - Master Survei');
     }
-
-    public $survei = ['name' => '']; // This should be initialized with the actual survey name
-    public $aspeks = [
-        ['name' => '', 'indikators' => [['name' => '']]]
-    ];
 
     public function addAspek()
     {
@@ -42,78 +53,40 @@ class CreateSurvei extends Component
         $this->aspeks[$aspekIndex]['indikators'][] = ['name' => ''];
     }
 
-    public function addSurvei()
-    {
-        $survey = Survey::create([
-            'name' => $this->survei['name'],
-            'jenis_id' => $this->survei['jenis_id'],
-            'target_id' => $this->survei['target_id'],
-        ]);
-        Schema::create($survey->id, function  (Blueprint $table){
-            $table->id();
-            $table->unsignedBigInteger('jurusan_id')->nullable();
-            $table->foreign('jurusan_id')->references('id')->on('jurusans')->onDelete('cascade');
-            $table->timestamps();
-        });
-    }
-
-    public function removeSurvei($surveyId)
-    {
-        // Ensure this action is secure and authorized as needed
-
-        // Drop the table associated with the survey ID
-        Schema::dropIfExists($surveyId);
-
-        // Optionally, you may also delete the survey record itself
-        Survey::find($surveyId)->delete();
-
-        return "Survey and associated table dropped successfully.";
-    }
-
-
-//UPDATE FUNCTION
-// public function updateSurvei($surveyId)
-// {
-//     // Ensure this action is secure and authorized as needed
-
-//     // Update the survey record
-//     Survey::find($surveyId)->update([
-//         'name' => $this->survei['name'],
-//         'jenis_id' => $this->survei['jenis_id'],
-//         'target_id' => $this->survei['target_id'],
-//     ]);
-
-//     // Update the table associated with the survey ID
-//     Schema::table($surveyId, function (Blueprint $table) {
-//         foreach ($this->indikator as $key => $value) {
-//             $table->dropColumn($value->id);
-//         }
-
-//         // Add new columns
-//         foreach ($this->indikator as $key => $value) {
-//             $table->enum($value->id, [1, 2, 3, 4]->nullable());
-//         }
-//     });
-
-// }
-
-   
-
     public function removeIndikator($aspekIndex, $indikatorIndex)
     {
         unset($this->aspeks[$aspekIndex]['indikators'][$indikatorIndex]);
         $this->aspeks[$aspekIndex]['indikators'] = array_values($this->aspeks[$aspekIndex]['indikators']); // reindex array
     }
 
-    protected $rules = [
-        'survei.name' => 'required|string|max:255',
-        'aspeks.*.name' => 'required|string|max:255',
-        'aspeks.*.indikators.*.name' => 'required|string|max:255',
-    ];
+    public function updateSurvei($surveyId)
+    {
+        $this->validate();
 
-    public function updateSurvei(){
-        dd($this->aspeks);
+        // Update the survey record
+        Survey::find($surveyId)->update([
+            'name' => $this->survei['name'],
+            // Add jenis_id and target_id if needed
+        ]);
+
+        // Update the table associated with the survey ID
+        Schema::table($surveyId, function (Blueprint $table) use ($surveyId) {
+            // Drop all existing columns
+            $table->dropColumn(array_map(function ($indikator) {
+                return $indikator['id'];
+            }, $this->aspeks));
+
+            // Add new columns
+            foreach ($this->aspeks as $aspek) {
+                foreach ($aspek['indikators'] as $indikator) {
+                    $table->enum($indikator['id'], [1, 2, 3, 4])->nullable();
+                }
+            }
+        });
+
+        // Refresh data or redirect as needed
     }
+
     public function redirectToAdd()
     {
         return redirect()->to('master_survei');
