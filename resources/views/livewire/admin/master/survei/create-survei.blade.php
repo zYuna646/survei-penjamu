@@ -1,27 +1,60 @@
-<main class="bg-[#f9fafc] min-h-screen">
-    <section class="max-w-screen-xl w-full mx-auto px-4 pt-24">
-        <div
-            class="p-6 bg-white flex flex-col lg:flex-row lg:items-center gap-y-2 justify-between rounded-lg border border-slate-100 shadow-sm">
-            <div>
-                <h1 class="font-bold text-lg">Lengkapi {{ $master }}</h1>
-                <p class="text-slate-500 text-sm">Lengkapi data {{ $master }} yang berhasil terinput dalam Database</p>
+    <main class="bg-[#f9fafc] min-h-screen">
+        <section class="max-w-screen-xl w-full mx-auto px-4 pt-24">
+            <div
+                class="p-6 bg-white flex flex-col lg:flex-row lg:items-center gap-y-2 justify-between rounded-lg border border-slate-100 shadow-sm">
+                <div>
+                    <h1 class="font-bold text-lg">Lengkapi {{ $master }}</h1>
+                    <p class="text-slate-500 text-sm">Lengkapi data {{ $master }} yang berhasil terinput dalam Database</p>
+                </div>
+                <div>
+                    <x-button color="danger" size="sm" wire:click="redirectToAdd">
+                        Kembali
+                    </x-button>
+                </div>
             </div>
-            <div>
-                <x-button color="danger" size="sm" wire:click="redirectToAdd">
-                    Kembali
-                </x-button>
-            </div>
-        </div>
-    </section>
+        </section>
         <section class="max-w-screen-xl w-full mx-auto px-4 mt-4 pb-12">
             <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm">
-                <form wire:submit.prevent="updateSurvei({{ $survei['id'] }})" class="grid grid-cols-12">
-                    <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                        <label for="survei" class="text-sm">Nama {{ $master }}</label>
-                        <input type="text" name="survei" wire:model="survei.name" placeholder="Masukan Nama {{ $master }}"
+                <form wire:submit.prevent="dumpRequestData" class="grid grid-cols-12 gap-4">
+
+                    {{-- Detail Survei section --}}
+                    <div class="col-span-12 text-lg font-bold mb-2">
+                        <p>Detail Survei</p>
+                    </div>
+                    <div class="flex flex-col gap-y-2 col-span-4 mb-4 ">
+                        <label for="name" class="text-sm">Nama {{ $master }}</label>
+                        <input type="text" name="name" wire:model="survei.name" placeholder="Masukan Nama {{ $master }}"
                             class="p-4 text-sm rounded-md bg-neutral-50 text-slate-800 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                         @error('survei.name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
+                    <div class="flex flex-col gap-y-2 col-span-4 mb-4 ">
+                        <label for="jenis" class="text-sm">Jenis {{ $master }}</label>
+                        <select type="text" name="jenis" wire:model="survei.jenis_id" placeholder="Masukan Nama {{ $master }}"
+                            class="p-4 text-sm rounded-md bg-neutral-50 text-slate-800 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                            <option value="">Pilih Jenis</option>
+                            @foreach($dataJenis as $jenis)
+                            <option value="{{ $jenis->id }}">{{ $jenis->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('survei.jenis_id') <span class="text-red-500 text-xs">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="flex flex-col gap-y-2 col-span-4 mb-4 ">
+                        <label for="target" class="text-sm">Target {{ $master }}</label>
+                        <select type="text" name="target" wire:model="survei.target_id" placeholder="Masukan Nama {{ $master }}"
+                            class="p-4 text-sm rounded-md bg-neutral-50 text-slate-800 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                            <option value="">Pilih Target</option>
+                            @foreach($dataTarget as $target)
+                            <option value="{{ $target->id }}">{{ $target->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('survei.target_id') <span class="text-red-500 text-xs">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    {{-- End Detail survei section --}}
+
+                    <hr class="col-span-12">
                     <div class="col-span-12 w-full inline-flex justify-between mb-4">
                         <div class="text-lg font-bold">
                             <p>Aspek</p>
@@ -90,4 +123,4 @@
                 </form>
             </div>
         </section>
-</main>
+    </main>
