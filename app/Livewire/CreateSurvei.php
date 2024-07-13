@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Models\Aspek;
+use App\Models\Indikator;
 use App\Models\Survey;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -39,17 +41,29 @@ class CreateSurvei extends Component
 
     public function addAspek()
     {
+        $survey = Survey::find($this->survei['id']);
+        Aspek::create([
+            'name ' => '',
+            'survey_id' => '',
+        ]);
         $this->aspeks[] = ['name' => '', 'indikators' => [['name' => '']]];
     }
 
     public function removeAspek($index)
     {
+        $survey = Survey::find($this->survei['id']);
+        $survey->aspek::where('id', $this->aspeks[$index]['id'])->delete();
         unset($this->aspeks[$index]);
         $this->aspeks = array_values($this->aspeks); // reindex array
     }
 
     public function addIndikator($aspekIndex)
     {
+        $aspek = Aspek::find($this->aspeks[$aspekIndex]['id']);
+        $indikator = Indikator::create([
+            'name' => '',
+            'aspek_id' => $aspek->id,
+        ]);
         $this->aspeks[$aspekIndex]['indikators'][] = ['name' => ''];
     }
 
@@ -64,24 +78,37 @@ class CreateSurvei extends Component
         $this->validate();
 
         // Update the survey record
-        Survey::find($surveyId)->update([
+        $survey = Survey::find($surveyId)->update([
             'name' => $this->survei['name'],
             // Add jenis_id and target_id if needed
         ]);
 
         // Update the table associated with the survey ID
-        Schema::table($surveyId, function (Blueprint $table) use ($surveyId) {
-            // Drop all existing columns
-            $table->dropColumn(array_map(function ($indikator) {
-                return $indikator['id'];
-            }, $this->aspeks));
-
-            // Add new columns
-            foreach ($this->aspeks as $aspek) {
-                foreach ($aspek['indikators'] as $indikator) {
-                    $table->enum($indikator['id'], [1, 2, 3, 4])->nullable();
+        Schema::table( $surveyId, function (Blueprint $table) use ($survey) {
+            // Drop existing columns
+            if (Schema::hasColumn($survey->id, 'jurusan_id')) {
+                $table->dropForeign(['jurusan_id']);
+                $table->dropColumn('jurusan_id');
+            }
+    
+            foreach ($survey->aspek as $aspek) {
+                foreach ($aspek->indicator as $indikator) {
+                    if (Schema::hasColumn( $survey->id, $indikator->id)) {
+                        $table->dropColumn($indikator->id);
+                    }
                 }
             }
+    
+            // Add new columns
+            foreach ($survey->aspek as $aspek) {
+                foreach ($aspek->indicator as $indikator) {
+                    $table->enum($indikator->id, ['1', '2', '3', '4'])->nullable();
+                }
+            }
+    
+            // Add jurusan_id column
+            $table->unsignedBigInteger('jurusan_id')->nullable();
+            $table->foreign('jurusan_id')->references('id')->on('jurusans')->onDelete('cascade');
         });
 
         // Refresh data or redirect as needed

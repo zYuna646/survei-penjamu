@@ -64,10 +64,11 @@ class DetailSurvei extends Component
                     'predikat_kepuasan' => $predikat_kepuasan
                 ];
             }
-            $tm = array_sum($avg_tm)/count($avg_tm);
-            $cm = array_sum($avg_cm)/count($avg_cm);
-            $m = array_sum($avg_m)/count($avg_m);
-            $sm = array_sum($avg_sm)/count($avg_sm);
+            $tm = round(array_sum($avg_tm) / count($avg_tm));
+            $cm = round(array_sum($avg_cm) / count($avg_cm));
+            $m = round(array_sum($avg_m) / count($avg_m));
+            $sm = round(array_sum($avg_sm) / count($avg_sm));
+            
             $total = $tm + $cm + $m + $sm;
             $nilai_butir = ($tm*1+2*$cm+3*$m+4*$sm)/($total);
             $ikm = $nilai_butir*25;
