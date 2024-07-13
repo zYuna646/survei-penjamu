@@ -24,12 +24,12 @@ class DatabaseSeeder extends Seeder
 
         $this->call(RoleSeeder::class);
         $this->call(FakultasSeeder::class);
-        $admin = Role::where('slug', 'admin')->first();
+        $admin = Role::where('slug', 'universitas')->first();
         $jurusan = Jurusan::where('code', '0')->first();
         User::create([
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
-            'password' => bcrypt('12345'),
+            'password' => bcrypt('admin'),
             'role_id' => $admin->id,
             'jurusan_id' => $jurusan->id
         ]);

@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-
+use Illuminate\Support\Facades\Auth as Login;
 class Auth extends Component
 {
     public $credential;
@@ -17,6 +17,21 @@ class Auth extends Component
         ->title('UNG Survey - Auth');
     }
     public function handleLogin(){
-       dd($this->password, $this->credential);
+       if (Login::attempt(['email' => $this->credential, 'password' => $this->password])) {
+        session()->regenerate();
+        $role = Login::user()->role->slug;
+
+        switch ($role) {
+            case 'universitas':
+                return redirect()->to('admin_dashboard');
+                break;
+            
+            default:
+                # code...
+
+                break;
+        }
+       }else{
+       }
     }
 }

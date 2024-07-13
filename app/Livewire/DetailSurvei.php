@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Survey;
 use Livewire\Component;
 use App\Charts\RecapChart;
 
@@ -20,8 +21,14 @@ class DetailSurvei extends Component
 
     public function render(RecapChart $chart)
     {
+
+        $surveyId = 1;
+        $survey = Survey::find($surveyId);
+        
+
         return view('livewire.admin.master.survei.detail-survei', ['chart'  => $chart->build($this->survey['name'])])
         ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar, 'showFooter' => $this->showFooter])
         ->title('UNG Survey - Detil '. $this->survey['name']);
     }
+
 }

@@ -94,7 +94,7 @@
       </ul>
     </div>
     <div>
-      <x-button color="primary" size="md" outlined="true" onclick="window.location.href='{{ route('auth') }}'">
+      <x-button color="primary" size="md" outlined="true" onclick="window.location.href='{{ route('login') }}'">
         Masuk
       </x-button>
     </div>
