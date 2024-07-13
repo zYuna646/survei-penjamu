@@ -24,6 +24,8 @@ class DetailSurvei extends Component
 
         $surveyId = 1;
         $survey = Survey::find($surveyId);
+
+        
         
 
         return view('livewire.admin.master.survei.detail-survei', ['chart'  => $chart->build($this->survey['name'])])

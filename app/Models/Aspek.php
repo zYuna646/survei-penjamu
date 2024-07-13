@@ -17,4 +17,9 @@ class Aspek extends Model
     {
         return $this->belongsTo(Survey::class);
     }
+
+    public function indicator()
+    {
+        return $this->hasMany(Indikator::class);
+    }
 }
