@@ -38,7 +38,7 @@
                 </div>
                 <div class="mt-4">
                     <x-button color="primary" outlined="true" class="w-full" size="lg"
-                        onclick="window.location.href='{{ route('landing') }}'">
+                        onclick="window.location.href='{{ route('home') }}'">
                         Beranda
                     </x-button>
                 </div>

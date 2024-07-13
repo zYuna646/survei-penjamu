@@ -34,21 +34,26 @@ use App\Livewire\RecapSurvei;
 
 
 
-Route::get('/auth', Auth::class)->name('auth');
-Route::get('/landing', Landing::class)->name('landing');
-Route::get('/admin_dashboard', AdminDashboard::class)->name('admin_dashboard');
-Route::get('/master_fakultas', MasterFakultas::class)->name('master_fakultas');
-Route::get('/edit_fakultas/{id}', EditFakultas::class)->name('edit_fakultas');
-Route::get('/master_prodi', MasterProdi::class)->name('master_prodi');
-Route::get('/edit_prodi/{id}', EditProdi::class)->name('edit_prodi');
-Route::get('/master_jurusan', MasterJurusan::class)->name('master_jurusan');
-Route::get('/edit_jurusan/{id}', EditJurusan::class)->name('edit_jurusan');
-Route::get('/master_target', MasterTarget::class)->name('master_target');
-Route::get('/edit_target/{id}', EditTarget::class)->name('edit_target');
-Route::get('/master_jenis', MasterJenis::class)->name('master_jenis');
-Route::get('/edit_jenis/{id}', EditJenis::class)->name('edit_jenis');
-Route::get('/master_survei', MasterSurvei::class)->name('master_survei');
-Route::get('/detail_survei', DetailSurvei::class)->name('detail_survei');
-Route::get('/create_survei', CreateSurvei::class)->name('create_survei');
-Route::get('/run_survei', RunSurvei::class)->name('run_survei');
-Route::get('/recap_survei', RecapSurvei::class)->name('recap_survei');
+Route::get('/login', Auth::class)->name('login');
+Route::get('/', Landing::class)->name('home');
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin_dashboard', AdminDashboard::class)->name('admin_dashboard');
+    Route::get('/master_fakultas', MasterFakultas::class)->name('master_fakultas');
+    Route::get('/edit_fakultas/{id}', EditFakultas::class)->name('edit_fakultas');
+    Route::get('/master_prodi', MasterProdi::class)->name('master_prodi');
+    Route::get('/edit_prodi/{id}', EditProdi::class)->name('edit_prodi');
+    Route::get('/master_jurusan', MasterJurusan::class)->name('master_jurusan');
+    Route::get('/edit_jurusan/{id}', EditJurusan::class)->name('edit_jurusan');
+    Route::get('/master_target', MasterTarget::class)->name('master_target');
+    Route::get('/edit_target/{id}', EditTarget::class)->name('edit_target');
+    Route::get('/master_jenis', MasterJenis::class)->name('master_jenis');
+    Route::get('/edit_jenis/{id}', EditJenis::class)->name('edit_jenis');
+    Route::get('/master_survei', MasterSurvei::class)->name('master_survei');
+    Route::get('/detail_survei', DetailSurvei::class)->name('detail_survei');
+    Route::get('/create_survei', CreateSurvei::class)->name('create_survei');
+    Route::get('/run_survei', RunSurvei::class)->name('run_survei');
+    Route::get('/recap_survei', RecapSurvei::class)->name('recap_survei');
+    
+});
