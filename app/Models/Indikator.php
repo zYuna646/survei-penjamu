@@ -10,11 +10,11 @@ class Indikator extends Model
     use HasFactory;
     protected $fillable = [
         'name',
-        'survey_id'
+        'aspek_id'
     ];
 
-    public function survey()
+    public function aspek()
     {
-        return $this->belongsTo(Survey::class);
+        return $this->belongsTo(Aspek::class);
     }
 }

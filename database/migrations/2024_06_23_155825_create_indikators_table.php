@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('indikators', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('survey_id');
+            $table->unsignedBigInteger('aspek_id');
             $table->timestamps();
 
-            $table->foreign('survey_id')->references('id')->on('surveys')->onDelete('cascade');
+            $table->foreign('aspek_id')->references('id')->on('aspeks')->onDelete('cascade');
         });
     }
 
@@ -26,10 +26,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('indikators', function (Blueprint $table) {
-            $table->dropForeign(['survey_id']);
-        });
-
+     
         Schema::dropIfExists('indikators');
     }
 };

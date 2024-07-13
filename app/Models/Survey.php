@@ -33,10 +33,7 @@ class Survey extends Model
         return $this->hasMany(Aspek::class);
     }
 
-    public function indikator()
-    {
-        return $this->hasMany(Indikator::class);
-    }
+   
 
     protected static function boot()
     {
