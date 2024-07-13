@@ -22,7 +22,6 @@ class DetailSurvei extends Component
 
     public function render(RecapChart $chart)
     {
-
         $surveyId = 1;
         $survey = Survey::find($surveyId);
         $detail_rekapitulasi = [];
