@@ -15,28 +15,28 @@
     </style>
     <section class="max-w-screen-xl w-full mx-auto px-4 pt-24 grid grid-cols-12 gap-4 pb-12 ">
         <div
-            class="p-8 col-span-12 lg:col-span-4 h-fit bg-white flex flex-col lg:flex-row gap-y-2 gap-x-4 rounded-lg border border-slate-100 shadow-sm">
-            <div class="max-w-lg flex flex-col gap-y-2">
-                <h1 class="font-bold text-lg">{{ $survey['name'] }}</h1>
-                <p class="text-slate-500 text-sm">{{ $survey['description'] }}</p>
-                <div class="flex flex-col gap-y-2 font-semibold">
-                    <div class="inline-flex gap-x-2 items-center text-sm">
+            class="p-8 col-span-12 lg:col-span-4 h-fit bg-white flex flex-col lg:flex-row gap-y-2 gap-x-4 rounded-lg border border-slate-100 shadow-sm w-full">
+            <div class=" flex flex-col gap-y-2 w-full">
+                <h1 class="font-bold text-lg">{{ $survei['name'] }}</h1>
+                {{-- <p class="text-slate-500 text-sm">{{ $survei['description'] }}</p> --}}
+                <div class="flex flex-col gap-y-2 font-semibold w-full">
+                    <div class="inline-flex gap-x-2 items-center text-sm w-full">
                         <span>
                             <i class="fas fa-bullseye"></i>
                         </span>
-                        <p>Target : {{ $survey['target'] }}</p>
+                        <p class="w-full">Target : {{ $survei['target']->name }}</p>
                     </div>
                     <div class="inline-flex gap-x-2 items-center text-sm">
                         <span>
                             <i class="fas fa-server"></i>
                         </span>
-                        <p>Jenis Survei : {{ $survey['type'] }}</p>
+                        <p>Jenis Survei : {{ $survei['jenis']->name }}</p>
                     </div>
                     <div class="inline-flex gap-x-2 items-center text-sm text-color-success-500">
                         <span>
                             <i class="fas fa-check"></i>
                         </span>
-                        <p>Aspek Total : {{ $survey['aspek_total'] }}</p>
+                        <p>Aspek Total : {{ count($survei->aspek) }}</p>
                     </div>
                 </div>
                 <div class="inline-flex items-center gap-x-2 mt-4">

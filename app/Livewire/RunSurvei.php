@@ -1,6 +1,10 @@
 <?php
 
 namespace App\Livewire;
+use App\Models\Survey;
+use App\Models\Jurusan;
+use App\Models\Aspek;
+use App\Models\Indikator;
 
 use Livewire\Component;
 
@@ -9,39 +13,40 @@ class RunSurvei extends Component
     public $showNavbar = true;
     public $showFooter = true;
     public $master = 'Survei';
-    public $survey = [
-      'name' => 'Survei kepuasan tenaga pendidik',
-      'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras lacinia eros blandit lectus rhoncus, . ',
-      'target' => 'Universitas',
-      'type' => 'Reguler',
-      'aspek_total' => 3,
-      'aspects' => [
-          [
-              'name' => 'Aspek Pemersatu Bangsa',
-              'indicators' => [
-                  'Kemudahan dalam mendapatkan informasi dalam menunjang kegiatan sesuai dengan uraian jabatan serta tugas pokok dan fungsi. (Aspek Tangibles)',
-                  'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione, voluptatem id. Aut placeat cumque voluptas blanditiis, perferendis ad.'
-              ]
-          ],
-          [
-              'name' => 'Aspek Kewarganegaraan',
-              'indicators' => [
-                  'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur sapiente debitis impedit, laboriosam porro molestiae provident.',
-              ]
-          ]
-      ]
-  ];
 
-    public $nama;
-    public $nim;
-    public $prodi;
     public $responses = [];
+
+    public $dataJurusan;
+    public $dataSurvei;
+    public $dataAspek;
+
+    public function mount($id)
+    {
+        $this->dataSurvei = Survey::FindOrFail($id);
+        $this->dataJurusan = Jurusan::all();
+        $this->dataAspek = [];
+        
+        $aspekCollection = $this->dataSurvei->aspek;
+
+        foreach ($aspekCollection as $aspek) {
+            // Mengumpulkan indikator yang memiliki id aspek yang sama
+            $indikatorCollection = $aspek->indicator;
+            $indikatorArray = $indikatorCollection->pluck('name')->toArray();
     
+            $this->dataAspek[] = [
+                'id' => $aspek->id,
+                'name' => $aspek->name,
+                'indicators' => $indikatorArray
+            ];
+        }
+
+        $this->jumlahAspek = count($this->dataAspek);
+    }
     public function render()
     {
         return view('livewire.landing.run-survei')
         ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar, 'showFooter' => $this->showFooter])
-        ->title('UNG Survey - Survei '.$this->survey['name']);
+        ->title('UNG Survey - Survei '.$this->dataSurvei['name']);
     }
 
     public function sendSurveiRespon(){

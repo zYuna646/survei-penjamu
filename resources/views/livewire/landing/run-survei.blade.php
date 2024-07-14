@@ -3,26 +3,26 @@
         <div
             class="p-8 col-span-12 lg:col-span-4 h-fit bg-white flex flex-col lg:flex-row  gap-y-2 gap-x-4 rounded-lg border border-slate-100 shadow-sm">
             <div class="max-w-lg flex flex-col gap-y-2">
-                <h1 class="font-bold text-lg">{{ $survey['name'] }}</h1>
-                <p class="text-slate-500 text-sm">{{ $survey['description'] }}</p>
+                <h1 class="font-bold text-lg">{{ $dataSurvei['name'] }}</h1>
+                {{-- <p class="text-slate-500 text-sm">{{ $dataSurvei['description'] }}</p> --}}
                 <div class="flex flex-col gap-y-2 font-semibold">
                     <div class="inline-flex gap-x-2 items-center text-sm">
                         <span>
                             <i class="fas fa-bullseye"></i>
                         </span>
-                        <p>Target : {{ $survey['target'] }}</p>
+                        <p>Target : {{ $dataSurvei['target']->name }}</p>
                     </div>
                     <div class="inline-flex gap-x-2 items-center text-sm">
                         <span>
                             <i class="fas fa-server"></i>
                         </span>
-                        <p>Jenis Survei : {{ $survey['type'] }}</p>
+                        <p>Jenis Survei : {{ $dataSurvei['jenis']->name }}</p>
                     </div>
                     <div class="inline-flex gap-x-2 items-center text-sm text-color-success-500">
                         <span>
                             <i class="fas fa-check"></i>
                         </span>
-                        <p>Aspek Total : {{ $survey['aspek_total'] }}</p>
+                        <p>Aspek Total : {{ count($dataAspek) }}</p>
                     </div>
                 </div>
             </div>
@@ -36,11 +36,16 @@
                 </div>
                 <div class="grid grid-cols-12">
                     <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                        <label for="nama" class="text-sm ">Nama Lengkap :</label>
-                        <input type="text" name="nama" wire:model="nama" placeholder="Masukan Nama Lengkap"
-                            class="p-4 text-sm rounded-md bg-neutral-50 text-slate-800 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                        <label for="nama" class="text-sm ">Jurusan :</label>
+                        <select name="jurusan_id" wire:model=""
+                            class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                            <option value="">Pilih Jurusan</option>
+                            @foreach($dataJurusan as $jurusan)
+                            <option value="{{ $jurusan->id }}">{{ $jurusan->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                    <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                    {{-- <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                         <label for="nim" class="text-sm ">NIM :</label>
                         <input type="text" name="nim" wire:model="nim" placeholder="Masukan NIM"
                             class="p-4 text-sm rounded-md bg-neutral-50 text-slate-800 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
@@ -49,10 +54,10 @@
                         <label for="prodi" class="text-sm ">Prodi :</label>
                         <input type="text" name="prodi" wire:model="prodi" placeholder="Masukan Prodi"
                             class="p-4 text-sm rounded-md bg-neutral-50 text-slate-800 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                    </div>
+                    </div> --}}
                 </div>
             </div>
-            @foreach($survey['aspects'] as $index => $aspect)
+            @foreach($dataAspek as $index => $aspect)
             <div class="p-4 lg:p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
                 <div class="mb-4">
                     <p class="text-lg font-bold">{{ $aspect['name'] }}</p>
@@ -74,7 +79,7 @@
                             class="group hover:cursor-default hover:text-color-danger-500 transition-all duration-300 lg:col-span-3 col-span-12 inline-flex lg:rounded-s-lg items-center border justify-center p-2 gap-x-2 text-xs font-semibold">
                             <span class="p-1 bg-color-danger-500 rounded-full">
                                 <div
-                                    class="w-2 h-2 bg-white group-hover:bg-color-danger-500  group-hover:transition-colors group-hover:duration-300 rounded-full">
+                                    class="w-2 h-2 bg-white group-hover:bg-color-danger-500 group-hover:transition-colors group-hover:duration-300 rounded-full">
                                 </div>
                             </span>
                             Tidak Setuju
@@ -98,7 +103,7 @@
                             Setuju
                         </div>
                         <div
-                            class="group hover:cursor-default hover:text-color-info-500 transition-colors duration-300 lg:col-span-3 col-span-12 inline-flex lg:rounded-e-lg items-center border justify-center p-2  gap-x-2 text-xs font-semibold">
+                            class="group hover:cursor-default hover:text-color-info-500 transition-colors duration-300 lg:col-span-3 col-span-12 inline-flex lg:rounded-e-lg items-center border justify-center p-2 gap-x-2 text-xs font-semibold">
                             <span class="p-1 bg-color-info-500 rounded-full">
                                 <div
                                     class="w-2 h-2 bg-white group-hover:bg-color-info-500 group-hover:transition-colors group-hover:duration-300 rounded-full">
@@ -114,25 +119,30 @@
                     <div class="flex items-center justify-between p-2 lg:p-4 col-span-6 lg:col-span-4 text-sm">
                         <div class="rounded-full bg-color-danger-500 p-1 flex items-center justify-center">
                             <input type="radio" name="responses[{{ $index }}][{{ $indicatorIndex }}]" value="1"
-                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}" class="w-4 h-4 hover:cursor-pointer">
+                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}"
+                                class="w-4 h-4 hover:cursor-pointer">
                         </div>
                         <div class="rounded-full bg-color-warning-500 p-1 flex items-center justify-center">
                             <input type="radio" name="responses[{{ $index }}][{{ $indicatorIndex }}]" value="2"
-                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}" class="w-4 h-4 hover:cursor-pointer">
+                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}"
+                                class="w-4 h-4 hover:cursor-pointer">
                         </div>
                         <div class="rounded-full bg-color-success-500 p-1 flex items-center justify-center">
                             <input type="radio" name="responses[{{ $index }}][{{ $indicatorIndex }}]" value="3"
-                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}" class="w-4 h-4 hover:cursor-pointer">
+                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}"
+                                class="w-4 h-4 hover:cursor-pointer">
                         </div>
                         <div class="rounded-full bg-color-info-500 p-1 flex items-center justify-center">
                             <input type="radio" name="responses[{{ $index }}][{{ $indicatorIndex }}]" value="4"
-                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}" class="w-4 h-4 hover:cursor-pointer">
+                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}"
+                                class="w-4 h-4 hover:cursor-pointer">
                         </div>
                     </div>
                 </fieldset>
                 @endforeach
             </div>
             @endforeach
+
 
             <div class="p-6  bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
                 <div class="flex gap-x-4 items-center">

@@ -133,8 +133,6 @@ class CreateSurvei extends Component
                     }
                 }
             }
-            
-          
         });
 
         Schema::table($survei->id, function (Blueprint $table) use ($survei) {

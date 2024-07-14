@@ -53,7 +53,7 @@ class MasterSurvei extends Component
             'name' => $this->survei['nama'],
             'jenis_id' => $this->survei['jenis_id'],
             'target_id' => $this->survei['target_id'],
-            'isAktif' => false,
+            'isAktif' => true,
         ]);
 
         Schema::create($survey->id, function (Blueprint $table){

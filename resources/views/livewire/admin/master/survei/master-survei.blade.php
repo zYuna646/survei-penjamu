@@ -150,7 +150,7 @@
                                     </x-button>
                                     <!-- Edit button -->
                                     <x-button class="" color="info" size="sm"
-                                        onclick="window.location.href='{{ route('detail_survei') }}'">
+                                        onclick="window.location.href='{{ route('detail_survei', $survei['id']) }}'">
                                         Detail
                                     </x-button>
                                     <!-- Delete button (if needed) -->
