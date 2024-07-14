@@ -82,7 +82,7 @@
                                     class="w-2 h-2 bg-white group-hover:bg-color-danger-500 group-hover:transition-colors group-hover:duration-300 rounded-full">
                                 </div>
                             </span>
-                            Tidak Setuju
+                            Tidak Memuaskan
                         </div>
                         <div
                             class="group hover:cursor-default hover:text-color-warning-500 transition-colors duration-300 lg:col-span-3 col-span-12 inline-flex items-center border justify-center p-2 gap-x-2 text-xs font-semibold">
@@ -91,7 +91,7 @@
                                     class="w-2 h-2 bg-white group-hover:bg-color-warning-500 group-hover:transition-colors group-hover:duration-300 rounded-full">
                                 </div>
                             </span>
-                            Netral
+                            Cukup Memuaskan
                         </div>
                         <div
                             class="group hover:cursor-default hover:text-color-success-500 transition-colors duration-300 lg:col-span-3 col-span-12 inline-flex items-center border justify-center p-2 gap-x-2 text-xs font-semibold">
@@ -100,7 +100,7 @@
                                     class="w-2 h-2 bg-white group-hover:bg-color-success-500 group-hover:transition-colors group-hover:duration-300 rounded-full">
                                 </div>
                             </span>
-                            Setuju
+                            Memuaskan
                         </div>
                         <div
                             class="group hover:cursor-default hover:text-color-info-500 transition-colors duration-300 lg:col-span-3 col-span-12 inline-flex lg:rounded-e-lg items-center border justify-center p-2 gap-x-2 text-xs font-semibold">
@@ -109,7 +109,7 @@
                                     class="w-2 h-2 bg-white group-hover:bg-color-info-500 group-hover:transition-colors group-hover:duration-300 rounded-full">
                                 </div>
                             </span>
-                            Sangat Setuju
+                            Sangat Memuaskan
                         </div>
                     </div>
                 </div>
