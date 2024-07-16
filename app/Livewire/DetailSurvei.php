@@ -16,6 +16,9 @@ class DetailSurvei extends Component
     public $master = 'Survei';
     public $survei;
 
+    public $detail_rekapitulasi;
+    public $detail_rekapitulasi_aspek;
+
     public function mount($id)
     {
         $this->survei = Survey::FindOrFail($id);
@@ -56,11 +59,11 @@ class DetailSurvei extends Component
                         3 => $m,
                         4 => $sm,
                         'total' => $total,
-                        'nilai_butir' => $nilai_butir,
+                        'nilai_butir' => number_format($nilai_butir,2),
                         'ikm' => $ikm,
                         'mutu_layanan' => $mutu_layanan,
                         'kinerja_unit' => $kinerja_unit,
-                        'tingkat_kepuasan' => $tingkat_kepuasan,
+                        'tingkat_kepuasan' => number_format( $tingkat_kepuasan * 100, 2),
                         'predikat_kepuasan' => $predikat_kepuasan
                     ];
                 } else {
@@ -82,6 +85,8 @@ class DetailSurvei extends Component
 
             $detail_rekapitulasi_aspek[$aspek->id] = $this->calculateAverageRekapitulasi($avg_tm, $avg_cm, $avg_m, $avg_sm);
         }
+        $this->detail_rekapitulasi = $detail_rekapitulasi;
+        $this->detail_rekapitulasi_aspek = $detail_rekapitulasi_aspek;
     }
 
     private function getMutuLayanan($nilai_butir)
@@ -150,16 +155,16 @@ class DetailSurvei extends Component
         }
 
         return [
-            'avg_tm' => $tm,
-            'avg_cm' => $cm,
-            'avg_m' => $m,
-            'avg_sm' => $sm,
-            'avg_total' => $total,
-            'nilai_butir' => $nilai_butir,
+            1 => $tm,
+            2 => $cm,
+            3 => $m,
+            4 => $sm,
+            'total' => $total,
+            'nilai_butir' => number_format($nilai_butir,2),
             'ikm' => $ikm,
             'mutu_layanan' => $this->getMutuLayanan($nilai_butir),
             'kinerja_unit' => $this->getKinerjaUnit($ikm),
-            'tingkat_kepuasan' => $this->getTingkatKepuasan($tm, $cm, $m, $sm, $total),
+            'tingkat_kepuasan' => number_format( $this->getTingkatKepuasan($tm, $cm, $m, $sm, $total) * 100,2),
             'predikat_kepuasan' => $this->getPredikatKepuasan($this->getTingkatKepuasan($tm, $cm, $m, $sm, $total))
         ];
     }

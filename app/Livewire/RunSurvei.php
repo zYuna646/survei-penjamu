@@ -6,6 +6,8 @@ use App\Models\Jurusan;
 use App\Models\Aspek;
 use App\Models\Indikator;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Livewire\Component;
 
 class RunSurvei extends Component
@@ -20,6 +22,10 @@ class RunSurvei extends Component
     public $dataSurvei;
     public $dataAspek;
 
+    public $jurusan;
+    public $data;
+
+
     public function mount($code)
     {
         $this->dataSurvei = Survey::where('code', $code)->first();
@@ -27,20 +33,16 @@ class RunSurvei extends Component
         $this->dataAspek = [];
         
         $aspekCollection = $this->dataSurvei->aspek;
-
+        $data = [];
         foreach ($aspekCollection as $aspek) {
             // Mengumpulkan indikator yang memiliki id aspek yang sama
-            $indikatorCollection = $aspek->indicator;
-            $indikatorArray = $indikatorCollection->pluck('name')->toArray();
-    
-            $this->dataAspek[] = [
-                'id' => $aspek->id,
-                'name' => $aspek->name,
-                'indicators' => $indikatorArray
-            ];
+            $data[$aspek->id][0] = $aspek;
+            $data[$aspek->id][1] = $aspek->indicator;
+            $this->data =  $data;
+
         }
 
-        $this->jumlahAspek = count($this->dataAspek);
+        $this->jumlahAspek = count($this->data);
     }
     public function render()
     {
@@ -50,11 +52,13 @@ class RunSurvei extends Component
     }
 
     public function sendSurveiRespon(){
-        dd([
-          'nama' => $this->nama,
-          'nim' => $this->nim,
-          'prodi' => $this->prodi,
-          'responses' => $this->responses,
-        ]);
+        $table = [];
+        foreach ($this->responses as $index => $aspek) {
+            foreach ($aspek as $key => $value) {
+                $table[$key] = $value;
+            }
+        }
+        $table['jurusan_id'] = $this->jurusan;
+        DB::table($this->dataSurvei->id)->insert($table);
     }
 }

@@ -95,7 +95,7 @@
         <div class="w-full grid grid-cols-12 gap-4">
             @foreach ($surveis as $survei)
             <a
-                class="p-8 col-span-12 lg:col-span-4 bg-white flex flex-col gap-y-2 gap-x-4 rounded-lg border border-slate-100 hover:border-color-info-500 transition-colors shadow-sm cursor-pointer" href="{{ route('run_survei', $survei['id']) }}">
+                class="p-8 col-span-12 lg:col-span-4 bg-white flex flex-col gap-y-2 gap-x-4 rounded-lg border border-slate-100 hover:border-color-info-500 transition-colors shadow-sm cursor-pointer" href="{{ route('run_survei', $survei['code']) }}">
                 <div class="max-w-lg flex flex-col gap-y-2">
                     <p class="font-bold text-lg">{{ $survei['name'] }}</p>
                     <div class="flex flex-col gap-y-2 font-semibold">

@@ -129,7 +129,8 @@ class CreateSurvei extends Component
         Schema::create($survei->id, function (Blueprint $table) use ($survei) {
             $table->id(); // Add an auto-incrementing primary key
             $table->timestamps(); // Add timestamps columns
-        
+            $table->unsignedBigInteger('jurusan_id')->nullable();
+            $table->foreign('jurusan_id')->references('id')->on('jurusans')->onDelete('cascade');
             // Add new columns dynamically based on $survei->aspek and $aspek->indicator
             foreach ($survei->aspek as $aspek) {
                 foreach ($aspek->indicator as $indikator) {

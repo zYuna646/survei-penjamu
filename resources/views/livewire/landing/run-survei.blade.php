@@ -37,7 +37,7 @@
                 <div class="grid grid-cols-12">
                     <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                         <label for="nama" class="text-sm ">Jurusan :</label>
-                        <select name="jurusan_id" wire:model=""
+                        <select name="jurusan_id" wire:model="jurusan"
                             class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                             <option value="">Pilih Jurusan</option>
                             @foreach($dataJurusan as $jurusan)
@@ -56,12 +56,9 @@
                             class="p-4 text-sm rounded-md bg-neutral-50 text-slate-800 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                     </div> --}}
                 </div>
+                
             </div>
-            @foreach($dataAspek as $index => $aspect)
             <div class="p-4 lg:p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
-                <div class="mb-4">
-                    <p class="text-lg font-bold">{{ $aspect['name'] }}</p>
-                </div>
                 <div class="w-full p-4 rounded-lg border mb-6">
                     <div class="w-full inline-flex items-center gap-x-2 text-sm font-semibold mb-4">
                         <span
@@ -113,28 +110,35 @@
                         </div>
                     </div>
                 </div>
-                @foreach($aspect['indicators'] as $indicatorIndex => $indicator)
+            </div>
+            @foreach($data as $index => $item)
+            <div class="p-4 lg:p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                <div class="mb-4">
+                    <p class="text-lg font-bold">{{ $item[0]->name }}</p>
+                </div>
+                
+                @foreach($item[1] as $indicatorIndex => $indicator)
                 <fieldset class="grid grid-cols-12 divide-x-2 mb-4 border p-2 rounded-lg">
-                    <p class="text-xs lg:text-sm font-semibold col-span-6 lg:col-span-8 p-2 lg:p-4">{{ $indicator }}</p>
+                    <p class="text-xs lg:text-sm font-semibold col-span-6 lg:col-span-8 p-2 lg:p-4">{{ $indicator->name }}</p>
                     <div class="flex items-center justify-between p-2 lg:p-4 col-span-6 lg:col-span-4 text-sm">
                         <div class="rounded-full bg-color-danger-500 p-1 flex items-center justify-center">
-                            <input type="radio" name="responses[{{ $index }}][{{ $indicatorIndex }}]" value="1"
-                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}"
+                            <input type="radio" name="responses[{{ $item[0]->id }}][{{ $indicator->id }}]" value="1"
+                                wire:model="responses.{{ $item[0]->id  }}.{{ $indicator->id }}"
                                 class="w-4 h-4 hover:cursor-pointer">
                         </div>
                         <div class="rounded-full bg-color-warning-500 p-1 flex items-center justify-center">
-                            <input type="radio" name="responses[{{ $index }}][{{ $indicatorIndex }}]" value="2"
-                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}"
+                            <input type="radio" name="responses[{{ $item[0]->id }}][{{ $indicator->id }}]" value="2"
+                                wire:model="responses.{{ $item[0]->id }}.{{ $indicator->id }}"
                                 class="w-4 h-4 hover:cursor-pointer">
                         </div>
                         <div class="rounded-full bg-color-success-500 p-1 flex items-center justify-center">
-                            <input type="radio" name="responses[{{ $index }}][{{ $indicatorIndex }}]" value="3"
-                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}"
+                            <input type="radio" name="responses[{{ $item[0]->id }}][{{ $indicator->id }}]" value="3"
+                                wire:model="responses.{{ $item[0]->id }}.{{ $indicator->id}}"
                                 class="w-4 h-4 hover:cursor-pointer">
                         </div>
                         <div class="rounded-full bg-color-info-500 p-1 flex items-center justify-center">
-                            <input type="radio" name="responses[{{ $index }}][{{ $indicatorIndex }}]" value="4"
-                                wire:model="responses.{{ $index }}.{{ $indicatorIndex }}"
+                            <input type="radio" name="responses[{{ $item[0]->id }}][{{ $indicator->id }}]" value="4"
+                                wire:model="responses.{{ $item[0]->ids }}.{{$indicator->id }}"
                                 class="w-4 h-4 hover:cursor-pointer">
                         </div>
                     </div>
