@@ -1,6 +1,5 @@
 <main class="bg-[#f9fafc] min-h-screen">
     <section class="max-w-screen-xl w-full mx-auto px-4 pt-24" x-data="{ addModal : false }">
-
         <div
             class="mt-4 p-6 bg-white flex flex-col lg:flex-row lg:items-center gap-y-2 justify-between rounded-lg border border-slate-100 shadow-sm">
             <div>

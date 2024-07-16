@@ -61,6 +61,12 @@ $colorClasses = [
 'outlined_text' => 'text-color-danger-500',
 'outlined_hover' => 'hover:bg-color-danger-500 hover:text-white',
 ],
+'default' => [
+'bg' => 'bg-white border',
+'border' => 'border-neutral-500',
+'text' => 'text-neutral-800',
+'hover' => 'hover:bg-neutral-100',
+],
 // Add other color schemes as needed
 ];
 

@@ -31,12 +31,14 @@ use App\Livewire\DetailSurvei;
 use App\Livewire\CreateSurvei;
 use App\Livewire\RunSurvei;
 use App\Livewire\RecapSurvei;
+use App\Livewire\ListSurvei;
 
 
 
 Route::get('/login', Auth::class)->name('login');
 Route::get('/', Landing::class)->name('home');
-Route::get('/run_survei/{code}', RunSurvei::class)->name('run_survei');
+Route::get('/list_survei', ListSurvei::class)->name('list_survei');
+Route::get('/run_survei/{id}', RunSurvei::class)->name('run_survei');
 
 
 Route::middleware(['auth'])->group(function () {
