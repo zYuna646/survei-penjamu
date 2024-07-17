@@ -40,14 +40,15 @@
                     </div>
                 </div>
                 <div class="inline-flex items-center gap-x-2 mt-4">
-                    <x-button color="danger" size="sm" onclick="window.location.href='{{ route('master_survei') }}'">
+                    <x-button color="danger" size="sm"
+                        onclick="window.location.href='{{ route('master_survei') }}'">
                         Kembali
                     </x-button>
                 </div>
                 <hr class="w-full mt-4">
                 <div class="mt-2 flex flex-col gap-y-2">
                     <div @click="activeMenu = 'grafik'"
-                        :class="{'bg-color-info-500 text-white border-color-info-500': activeMenu === 'grafik'}"
+                        :class="{ 'bg-color-info-500 text-white border-color-info-500': activeMenu === 'grafik' }"
                         class="p-3 px-4 border  rounded-lg inline-flex gap-x-2 items-center hover:cursor-pointer transition-colors hover:bg-color-info-400 hover:text-white hover:border-color-info-400">
                         <span class="text-lg">
                             <i class="fas fa-chart-line"></i>
@@ -57,7 +58,7 @@
                         </span>
                     </div>
                     <div @click="activeMenu = 'tabel'"
-                        :class="{'bg-color-info-500 text-white border-color-info-500': activeMenu === 'tabel'}"
+                        :class="{ 'bg-color-info-500 text-white border-color-info-500': activeMenu === 'tabel' }"
                         class="p-3 px-4 border  rounded-lg inline-flex gap-x-2 items-center hover:cursor-pointer transition-colors hover:bg-color-info-400 hover:text-white hover:border-color-info-400">
                         <span class="text-lg">
                             <i class="fas fa-server"></i>
@@ -82,7 +83,7 @@
                 </div>
             </div>
             <div x-show="activeMenu === 'tabel'" x-cloak>
-                <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                {{-- <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
                     <div class="mb-4">
                         <p class="text-lg font-bold">Informasi Grafik</p>
                     </div>
@@ -111,56 +112,81 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-                <div class="p-6 mt-2 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
-                    <div class="mb-4">
-                        <p class="text-lg font-bold">Detail Rekapitulasi</p>
+                </div> --}}
+                @foreach ($survei->aspek as $aspek)
+                    <div class="p-6 mt-2 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                        <div class="mb-4">
+                            <p class="text-lg font-bold">{{ $aspek->name }}</p>
+                        </div>
+                        <hr>
+
+                        <div class="text-xs mt-4 overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Pertanyaan</th>
+                                        <th>Tidak Memuaskan</th>
+                                        <th>Cukup Memuaskan</th>
+                                        <th>Memuaskan</th>
+                                        <th>Sangat Memuaskan</th>
+                                        <th>Total Responden</th>
+                                        <th>Nilai Butir</th>
+                                        <th>Mutu Layanan</th>
+                                        <th>Kinerja Unit Pelayanan</th>
+                                        <th>Tingkat Kepuasan</th>
+                                        <th>Predikat Tingkat Kepuasan</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($aspek->indicator as $index => $item)
+                                        <tr>
+                                            <td>{{$index+1}}</td>
+                                            <td>{{$item->name}}</td>
+                                            <td>{{$detail_rekapitulasi[$aspek->id][$item['id']][1]}}</td>
+                                            <td>{{$detail_rekapitulasi[$aspek->id][$item['id']][2]}}</td>
+                                            <td>{{$detail_rekapitulasi[$aspek->id][$item['id']][3]}}</td>
+                                            <td>{{$detail_rekapitulasi[$aspek->id][$item['id']][4]}}</td>
+                                            <td>{{$detail_rekapitulasi[$aspek->id][$item['id']]['total']}}</td>
+                                            <td>{{$detail_rekapitulasi[$aspek->id][$item['id']]['nilai_butir']}}</td>
+                                            <td>{{$detail_rekapitulasi[$aspek->id][$item['id']]['mutu_layanan']}}</td>
+                                            <td>{{$detail_rekapitulasi[$aspek->id][$item['id']]['kinerja_unit']}}</td>
+                                            <td>{{$detail_rekapitulasi[$aspek->id][$item['id']]['tingkat_kepuasan']  }}%</td>
+                                            <td>{{$detail_rekapitulasi[$aspek->id][$item['id']]['predikat_kepuasan']}}</td>
+                                        </tr>
+                                    @endforeach
+                                    <tr>
+                                        <td></td>
+                                        <td class="font-bold">Total Rerata Penilaian Aspek</td>
+                                        <td>{{$detail_rekapitulasi_aspek[$aspek->id][1]}}</td>
+                                        <td>{{$detail_rekapitulasi_aspek[$aspek->id][2]}}</td>
+                                        <td>{{$detail_rekapitulasi_aspek[$aspek->id][3]}}</td>
+                                        <td>{{$detail_rekapitulasi_aspek[$aspek->id][4]}}</td>
+                                        <td>{{$detail_rekapitulasi_aspek[$aspek->id]['total']}}</td>
+                                        <td>{{$detail_rekapitulasi_aspek[$aspek->id]['nilai_butir']}}</td>
+                                        <td>{{$detail_rekapitulasi_aspek[$aspek->id]['mutu_layanan']}}</td>
+                                        <td>{{$detail_rekapitulasi_aspek[$aspek->id]['kinerja_unit']}}</td>
+                                        <td>{{$detail_rekapitulasi_aspek[$aspek->id]['tingkat_kepuasan']  }}%</td>
+                                        <td>{{$detail_rekapitulasi_aspek[$aspek->id]['predikat_kepuasan']}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <hr>
-                    <div class="text-xs mt-4 overflow-x-auto">
-                        <table class="w-full">
-                            <thead>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Pertanyaan</th>
-                                    <th>Tidak Puas</th>
-                                    <th>Kurang Puas</th>
-                                    <th>Puas</th>
-                                    <th>Sangat Puas</th>
-                                    <th>Total Responden</th>
-                                    <th>Nilai Butir</th>
-                                    <th>Mutu Layanan</th>
-                                    <th>Kinerja Unit Pelayanan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Contoh</td>
-                                    <td>1</td>
-                                    <td>123</td>
-                                    <td>12</td>
-                                    <td>1256</td>
-                                    <td>234</td>
-                                    <td>29423</td>
-                                    <td>B</td>
-                                    <td>Baik</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                @endforeach
+
             </div>
         </div>
     </section>
     @push('scripts')
-    <script>
-        $(document).ready(function() {
-            // Inisialisasi DataTables
-            var table = $('.myTable').DataTable();
-        });
-    </script>
-    <script src="{{ $chart->cdn() }}"></script>
-    {{ $chart->script() }}
+        <script>
+            $(document).ready(function() {
+                // Inisialisasi DataTables
+                var table = $('.myTable').DataTable();
+            });
+        </script>
+        <script src="{{ $chart->cdn() }}"></script>
+        {{ $chart->script() }}
     @endpush
 </main>
