@@ -19,10 +19,11 @@ class RunSurvei extends Component
     public $dataJurusan;
     public $dataSurvei;
     public $dataAspek;
+    public $jurusan_id;
 
-    public function mount($id)
+    public function mount($code)
     {
-        $this->dataSurvei = Survey::FindOrFail($id);
+        $this->dataSurvei = Survey::where('code', $code)->first();
         $this->dataJurusan = Jurusan::all();
         $this->dataAspek = [];
         
@@ -51,11 +52,8 @@ class RunSurvei extends Component
 
     public function sendSurveiRespon(){
         dd([
-          'nama' => $this->nama,
-          'nim' => $this->nim,
-          'prodi' => $this->prodi,
+          'jurusan_id' => $this->jurusan_id,
           'responses' => $this->responses,
         ]);
     }
-
 }

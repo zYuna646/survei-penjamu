@@ -36,8 +36,8 @@
                 </div>
                 <div class="grid grid-cols-12">
                     <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                        <label for="nama" class="text-sm ">Jurusan :</label>
-                        <select name="jurusan_id" wire:model=""
+                        <label for="jurusan_id" class="text-sm ">Jurusan :</label>
+                        <select name="jurusan_id" wire:model="jurusan_id"
                             class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                             <option value="">Pilih Jurusan</option>
                             @foreach($dataJurusan as $jurusan)

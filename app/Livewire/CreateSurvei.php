@@ -124,21 +124,13 @@ class CreateSurvei extends Component
         // dd($survei->aspek[0]->indicator);
 
         // Update the table associated with the survey ID
-        Schema::table($survei->id, function (Blueprint $table) use ($survei) {
-            // Drop all existing columns
-            foreach ($survei->aspek as $aspek) {
-                foreach ($aspek->indicator as $indikator) {
-                    if (Schema::hasColumn($survei->id, $indikator->id)) {
-                        $table->dropColumn($indikator->id);
-                    }
-                }
-            }
-        });
+        Schema::drop($survei->id);  
 
-        Schema::table($survei->id, function (Blueprint $table) use ($survei) {
-           
-            
-            // Add new columns
+        Schema::create($survei->id, function (Blueprint $table) use ($survei) {
+            $table->id(); // Add an auto-incrementing primary key
+            $table->timestamps(); // Add timestamps columns
+        
+            // Add new columns dynamically based on $survei->aspek and $aspek->indicator
             foreach ($survei->aspek as $aspek) {
                 foreach ($aspek->indicator as $indikator) {
                     $table->enum($indikator->id, [1, 2, 3, 4])->nullable();
