@@ -45,10 +45,24 @@
                                 @enderror
                             </div>
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                                <label for="fakultas" class="text-sm ">fakultas :</label>
+                                <select type="fakultas" name="fakultas" wire:model="userJurusan.fakultas_id"
+                                    wire:change="getJurusanByFakultas"
+                                    class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                    <option value="">Pilih Fakultas</option>
+                                    @foreach($dataFakultas as $fakultas)
+                                    <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('userJurusan.fakultas_id') <span class="text-red-500 text-xs">{{ $message
+                                    }}</span>
+                                @enderror
+                            </div>
+                            <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                                 <label for="jurusan" class="text-sm ">Jurusan :</label>
                                 <select type="jurusan" name="jurusan" wire:model="userJurusan.jurusan_id"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                    <option value="">Pilih Fakultas</option>
+                                    <option value="">Pilih Jurusan</option>
                                     @foreach($dataJurusan as $jurusan)
                                     <option value="{{ $jurusan->id }}">{{ $jurusan->name }}</option>
                                     @endforeach
@@ -93,31 +107,33 @@
     <section class="max-w-screen-xl w-full mx-auto px-4 mt-4 pb-12">
         <div class="p-4 bg-white rounded-lg border-slate-100 shadow-sm ">
             <div class="p-4 overflow-x-auto text-sm">
-                {{-- <table id="myTable" class="cell-border stripe">
+                <table id="myTable" class="cell-border stripe">
                     <thead>
                         <tr>
                             <th>No.</th>
                             <th>Kode</th>
                             <th>Nama</th>
+                            <th>Jurusan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($dataFakultas as $fakultas)
+                        @foreach($dataUserJurusan as $userJurusan)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $fakultas['code'] }}</td>
-                            <td>{{ $fakultas['name'] }}</td>
+                            <td>{{ $userJurusan['email'] }}</td>
+                            <td>{{ $userJurusan['name'] }}</td>
+                            <td>{{ $userJurusan->jurusan->name }}</td>
                             <td>
                                 <div class="inline-flex gap-x-2">
                                     <!-- Edit button -->
                                     <x-button class="" color="info" size="sm"
-                                        onclick="window.location.href='{{ route('edit_fakultas' , $fakultas['id']) }}'">
+                                        onclick="window.location.href='{{ route('edit_user_jurusan' , $userJurusan['id']) }}'">
                                         Edit
                                     </x-button>
                                     <!-- Delete button (if needed) -->
                                     <x-button class="" color="danger" size="sm"
-                                        onclick="confirmDelete({{ $fakultas['id'] }})">
+                                        onclick="confirmDelete({{ $userJurusan['id'] }})">
                                         Hapus
                                     </x-button>
                                 </div>
@@ -125,7 +141,7 @@
                         </tr>
                         @endforeach
                     </tbody>
-                </table> --}}
+                </table>
             </div>
         </div>
 
@@ -139,8 +155,8 @@
     </script>
     <script>
         function confirmDelete(id) {
-            if(confirm(`Hapus fakultas? ${id}`)) {
-                @this.call('deleteFakultas', id);
+            if(confirm(`Hapus User? ${id}`)) {
+                @this.call('deleteUser', id);
             }
         }
     </script>

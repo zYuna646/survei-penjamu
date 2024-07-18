@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 use App\Models\Fakultas;
+use App\Models\Jurusan;
 use App\Models\User;
 use Livewire\Component;
 
@@ -18,11 +19,14 @@ class UserFakultas extends Component
         'fakultas_id' => '',
     ];
 
+    public $dataUserFakultas = [];
+
     public $dataFakultas;
 
     public function mount()
     {
         $this->dataFakultas = Fakultas::all();   
+        $this->dataUserFakultas = User::where('role_id', '2')->get();   
     }
     public function render()
     {
@@ -34,6 +38,7 @@ class UserFakultas extends Component
     public function addUserFakultas()
     {
         $fakultas = Fakultas::where('code', '0')->first();
+        $jurusan = Jurusan::where('code', '0')->first();
         // Validate the input
         $this->validate([
             'userFakultas.nama' => 'required|string|max:255',
@@ -46,10 +51,19 @@ class UserFakultas extends Component
             'name' => $this->userFakultas['nama'],
             'email' => $this->userFakultas['email'],
             'password' => bcrypt($this->userFakultas['password']),
-            'role_id' => 3,
+            'role_id' => 2,
             'fakultas_id' => $fakultas->id,
+            'jurusan_id' => $jurusan->id,
         ]);
 
         return redirect()->to('user_fakultas');
     }
+
+    public function deleteUser($id)
+    {
+        User::findOrFail($id)->delete();
+        return redirect()->to('user_fakultas');
+    }
+
+    
 }

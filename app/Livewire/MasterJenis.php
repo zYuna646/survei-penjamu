@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Livewire;
-
 use Livewire\Component;
 use App\Models\Jenis;
 
@@ -44,9 +43,9 @@ class MasterJenis extends Component
         return redirect()->to('master_jenis');
     }
 
-    public function deleteTarget($id)
+    public function deleteJenis($id)
     {
-        Target::findOrFail($id)->delete();
-       return redirect()->to('master_jenis');
+        Jenis::findOrFail($id)->delete();
+        return redirect()->to('master_jenis');
     }
 }

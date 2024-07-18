@@ -90,30 +90,32 @@
   <section class="max-w-screen-xl w-full mx-auto px-4 mt-4 pb-12">
     <div class="p-4 bg-white rounded-lg border-slate-100 shadow-sm ">
       <div class="p-4 overflow-x-auto text-sm">
-        {{-- <table id="myTable" class="cell-border stripe">
+        <table id="myTable" class="cell-border stripe">
           <thead>
             <tr>
               <th>No.</th>
-              <th>Kode</th>
+              <th>Email</th>
               <th>Nama</th>
+              <th>Fakultas</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
-            @foreach($dataFakultas as $fakultas)
+            @foreach($dataUserFakultas as $userFakultas)
             <tr>
               <td>{{ $loop->iteration }}</td>
-              <td>{{ $fakultas['code'] }}</td>
-              <td>{{ $fakultas['name'] }}</td>
+              <td>{{ $userFakultas['email'] }}</td>
+              <td>{{ $userFakultas['name'] }}</td>
+              <td>{{ $userFakultas->fakultas->name }}</td>
               <td>
                 <div class="inline-flex gap-x-2">
                   <!-- Edit button -->
                   <x-button class="" color="info" size="sm"
-                    onclick="window.location.href='{{ route('edit_fakultas' , $fakultas['id']) }}'">
+                    onclick="window.location.href='{{ route('edit_user_fakultas', $userFakultas['id']) }}'">
                     Edit
                   </x-button>
                   <!-- Delete button (if needed) -->
-                  <x-button class="" color="danger" size="sm" onclick="confirmDelete({{ $fakultas['id'] }})">
+                  <x-button class="" color="danger" size="sm" onclick="confirmDelete({{ $userFakultas['id'] }})">
                     Hapus
                   </x-button>
                 </div>
@@ -121,7 +123,7 @@
             </tr>
             @endforeach
           </tbody>
-        </table> --}}
+        </table>
       </div>
     </div>
 
@@ -135,8 +137,8 @@
   </script>
   <script>
     function confirmDelete(id) {
-          if(confirm(`Hapus fakultas? ${id}`)) {
-              @this.call('deleteFakultas', id);
+          if(confirm(`Hapus user? ${id}`)) {
+              @this.call('deleteUser', id);
           }
       }
   </script>
