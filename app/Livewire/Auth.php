@@ -20,17 +20,8 @@ class Auth extends Component
        if (Login::attempt(['email' => $this->credential, 'password' => $this->password])) {
         session()->regenerate();
         $role = Login::user()->role->slug;
-
-        switch ($role) {
-            case 'universitas':
-                return redirect()->to('admin_dashboard');
-                break;
-            
-            default:
-                # code...
-
-                break;
-        }
+        return redirect()->to('dashboard');
+        
        }else{
        }
     }

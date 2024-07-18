@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Livewire;
-
+use Illuminate\Support\Facades\Auth as Login;
 use Livewire\Component;
 
 class Navbar extends Component
@@ -13,10 +13,23 @@ class Navbar extends Component
         // Ambil data menu dari file JSON atau sumber lainnya
         $menuJson = file_get_contents(resource_path('js/menu.json'));
         $menuData = json_decode($menuJson, true);
-        // dd($menuData);
-
+        
         // Tentukan peran pengguna, misalnya 'admin' atau 'user'
-        $userRole = 'admin'; // Ganti dengan peran yang sesuai
+        $user = Login::user();
+        $userRole = 'guest';
+
+        if ($user && $user->role) {
+            $role = $user->role->slug;
+
+            switch ($role) {
+                case 'universitas':
+                    $userRole = 'admin';
+                    break;
+                default :
+                    $userRole = 'guest';
+                    break;
+            }
+        }
 
         // Pastikan peran pengguna adalah kunci yang valid dalam data menu
         if (array_key_exists($userRole, $menuData)) {
@@ -29,6 +42,12 @@ class Navbar extends Component
 
     public function render()
     {
-        return view('livewire.Navbar');
+        return view('livewire.navbar');
+    }
+    
+    public function handleLogout()
+    {
+        Login::logout();
+        return redirect()->route('home');
     }
 }

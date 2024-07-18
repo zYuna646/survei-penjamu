@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Livewire\Landing;
 use App\Livewire\Auth;
-use App\Livewire\AdminDashboard;
+use App\Livewire\Dashboard;
 use App\Livewire\MasterFakultas;
 use App\Livewire\EditFakultas;
 use App\Livewire\MasterProdi;
@@ -32,6 +32,10 @@ use App\Livewire\CreateSurvei;
 use App\Livewire\RunSurvei;
 use App\Livewire\RecapSurvei;
 use App\Livewire\ListSurvei;
+use App\Livewire\CompleteSurvei;
+use App\Livewire\UserFakultas;
+use App\Livewire\UserJurusan;
+use App\Livewire\ManipulationSurvei;
 
 
 
@@ -39,10 +43,11 @@ Route::get('/login', Auth::class)->name('login');
 Route::get('/', Landing::class)->name('home');
 Route::get('/list_survei', ListSurvei::class)->name('list_survei');
 Route::get('/run_survei/{code}', RunSurvei::class)->name('run_survei');
+Route::get('/complete_survei/{code}', CompleteSurvei::class)->name('complete_survei');
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/admin_dashboard', AdminDashboard::class)->name('admin_dashboard');
+    Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/master_fakultas', MasterFakultas::class)->name('master_fakultas');
     Route::get('/edit_fakultas/{id}', EditFakultas::class)->name('edit_fakultas');
     Route::get('/master_prodi', MasterProdi::class)->name('master_prodi');
@@ -57,5 +62,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/detail_survei/{id}', DetailSurvei::class)->name('detail_survei');
     Route::get('/create_survei/{id}', CreateSurvei::class)->name('create_survei');
     Route::get('/recap_survei', RecapSurvei::class)->name('recap_survei');
-    
+   
+
+    Route::get('/user_jurusan', UserJurusan::class)->name('user_jurusan');
+    Route::get('/user_fakultas', UserFakultas::class)->name('user_fakultas');
+    Route::get('/manipulation_survei/{id}', ManipulationSurvei::class)->name('manipulation_survei');
 });

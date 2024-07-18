@@ -1,6 +1,6 @@
 <main class="bg-[#f9fafc] min-h-screen">
     <section class="max-w-screen-xl mx-auto px-8 py-24 grid grid-cols-12 gap-4 ">
-        @foreach($cards as $card)
+        @foreach($dataAdmin as $card)
         <div class="p-8 bg-white rounded-md shadow-sm border border-neutral-100 flex items-center gap-x-4 col-span-3">
             <div class="text-4xl">
                 <span class="text-color-primary-500">

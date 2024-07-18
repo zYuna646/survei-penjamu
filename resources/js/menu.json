@@ -2,34 +2,34 @@
   "admin": [
     {
       "name": "Dashboard",
-      "link": "admin_dashboard"
+      "link": "dashboard"
     },
     {
       "name": "Master",
       "link": [
         {
           "name": "Fakultas",
-          "link":  "master_fakultas" 
+          "link": "master_fakultas"
         },
         {
           "name": "Jurusan",
-          "link":  "master_jurusan" 
+          "link": "master_jurusan"
         },
         {
           "name": "Prodi",
-          "link":  "master_prodi" 
+          "link": "master_prodi"
         },
         {
           "name": "Target",
-          "link":  "master_target" 
+          "link": "master_target"
         },
         {
           "name": "Jenis",
-          "link":  "master_jenis" 
+          "link": "master_jenis"
         },
         {
           "name": "Pengguna",
-          "link":  "login" 
+          "link": "login"
         }
       ]
     },
@@ -38,12 +38,32 @@
       "link": [
         {
           "name": "Survei",
-          "link":  "master_survei" 
+          "link": "master_survei"
+        }
+      ]
+    },
+    {
+      "name": "Pengguna",
+      "link": [
+        {
+          "name": "Fakultas",
+          "link": "user_fakultas"
+        },
+        {
+          "name": "Jurusan",
+          "link": "user_jurusan"
         }
       ]
     }
   ],
-  "user": [
-    
+  "guest": [
+    {
+      "name": "Home",
+      "link": "home"
+    },
+    {
+      "name": "List Survei",
+      "link": "list_survei"
+    }
   ]
 }

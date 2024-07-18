@@ -61,5 +61,7 @@ class RunSurvei extends Component
         }
         $table['jurusan_id'] = $this->jurusan;
         DB::table($this->dataSurvei->id)->insert($table);
+
+        return redirect()->route('complete_survei', ['code' => $this->dataSurvei->code]);
     }
 }
