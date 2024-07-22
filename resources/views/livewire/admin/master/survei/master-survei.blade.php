@@ -44,7 +44,7 @@
                                 @error('survei.nama') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                                <label for="kode" class="text-sm ">Kode {{ $master }} :</label>
+                                <label for="kode" class="text-sm ">Jenis {{ $master }} :</label>
                                 <select type="text" name="Kode" wire:model="survei.jenis_id"
                                     placeholder="Masukan Kode {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
@@ -112,7 +112,6 @@
                                         class="text-xs font-bold text-color-success-500 px-3 py-1 bg-color-success-100 rounded-lg">
                                         Aktif
                                     </span>
-
                                     <button class="inline-flex gap-x-1 text-color-info-500 text-xs font-semibold"
                                         onclick="confirmStatus({{ $survei['id'] }})">
                                         <span>

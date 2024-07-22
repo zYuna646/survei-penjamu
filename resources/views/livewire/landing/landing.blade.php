@@ -37,7 +37,7 @@
                 <p class="text-lg lg:text-2xl text-white font-bold lg:mt-4">Universitas Negeri Gorontalo</p>
                 <p class="text-white text-xs lg:text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro
                     dolore consequuntur iste hic voluptate sequi saepe a laboriosam magni. Corporis?</p>
-                <x-button class="w-fit mt-4">
+                <x-button class="w-fit mt-4" onclick="window.location.href='{{ route('list_survei') }}'">
                     Lihat Survei
                 </x-button>
             </div>

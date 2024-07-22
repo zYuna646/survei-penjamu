@@ -25,6 +25,12 @@ class Navbar extends Component
                 case 'universitas':
                     $userRole = 'admin';
                     break;
+                case 'fakultas':
+                    $userRole = 'fakultas';
+                    break;
+                case 'jurusan':
+                    $userRole = 'jurusan';
+                    break;
                 default :
                     $userRole = 'guest';
                     break;

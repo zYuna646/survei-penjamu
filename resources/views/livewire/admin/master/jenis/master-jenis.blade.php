@@ -72,7 +72,7 @@
                     <tbody>
                         @foreach($dataJenis as $jenis)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
+                            <td>    </td>
                             <td>{{ $jenis['name'] }}</td>
                             <td>
                                 <div class="inline-flex gap-x-2">

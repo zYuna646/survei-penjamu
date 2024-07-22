@@ -9,91 +9,88 @@
             border-collapse: collapse;
         }
 
+        table tbody tr td.form-td {
+            max-width: 60px;
+        }
+
+        table tbody tr td.indikator-td {
+            width: 120px;
+        }
+
         table thead {
             background: lightgray;
         }
     </style>
     <section class="max-w-screen-xl w-full mx-auto px-4 pt-24 grid grid-cols-12 gap-4 pb-12 ">
         <div
-            class="p-6 col-span-12 lg:col-span-4 h-fit bg-white flex flex-col gap-y-2 rounded-lg border border-slate-100 shadow-sm w-full">
-            <div class="mb-2">
-                <p class="text-lg font-bold">Manipulasi Data Survei</p>
+            class="p-8 col-span-12 lg:col-span-4 h-fit bg-white flex flex-col lg:flex-row  gap-y-2 gap-x-4 rounded-lg border border-slate-100 shadow-sm">
+            <div class="max-w-lg flex flex-col gap-y-2">
+                <h1 class="font-bold text-base">{{ $dataSurvei['name'] }}</h1>
+                {{-- <p class="text-slate-500 text-sm">{{ $dataSurvei['description'] }}</p> --}}
+                <div class="flex flex-col gap-y-2 font-semibold">
+                    <div class="inline-flex gap-x-2 items-center text-xs">
+                        <span>
+                            <i class="fas fa-bullseye"></i>
+                        </span>
+                        <p>Target : {{ $dataSurvei['target']->name }}</p>
+                    </div>
+                    <div class="inline-flex gap-x-2 items-center text-xs">
+                        <span>
+                            <i class="fas fa-server"></i>
+                        </span>
+                        <p>Jenis Survei : {{ $dataSurvei['jenis']->name }}</p>
+                    </div>
+                    <div class="inline-flex gap-x-2 items-center text-xs text-color-success-500">
+                        <span>
+                            <i class="fas fa-check"></i>
+                        </span>
+                        <p>Aspek Total : {{ count($data) }}</p>
+                    </div>
+                </div>
             </div>
-            <form wire:submit.prevent="saveManipulation" class="grid grid-cols-12 gap-4">
-                <div class="flex flex-col gap-y-2 col-span-6">
-                    <input type="number" wire:model="tidakMemuaskan" placeholder="TM"
-                        class="p-3 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                    @error('tidakMemuaskan') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                </div>
-                <div class="flex flex-col gap-y-2 col-span-6">
-                    <input type="number" wire:model="cukupMemuaskan" placeholder="CM"
-                        class="p-3 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                    @error('cukupMemuaskan') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                </div>
-                <div class="flex flex-col gap-y-2 col-span-6">
-                    <input type="number" wire:model="memuaskan" placeholder="M"
-                        class="p-3 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                    @error('memuaskan') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                </div>
-                <div class="flex flex-col gap-y-2 col-span-6">
-                    <input type="number" wire:model="sangatMemuaskan" placeholder="SM"
-                        class="p-3 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                    @error('sangatMemuaskan') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                </div>
-                <hr class="col-span-12">
-                <div class="flex flex-col gap-y-2 col-span-6">
-                    <label for="" class="text-sm">Jumlah :</label>
-                    <input type="number" id="jumlah" wire:model="jumlah" placeholder="Jumlah"
-                        class="p-3 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                    @error('jumlah') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                </div>
-                <div class="flex flex-col gap-y-2 col-span-6">
-                    <label for="sisa" class="text-sm">Sisa :</label>
-                    <input type="number" wire:model="sisa" disabled id="sisa"
-                        class="p-3 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                </div>
-                <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12" color="info" type="submit" >
-                    <span wire:loading.remove>
-                        <i class="fas fa-check"></i>
-                    </span>
-                    <span wire:loading class="animate-spin">
-                        <i class="fas fa-circle-notch "></i>
-                    </span>
-                    Simpan
-                </x-button>
-            </form>
         </div>
         <div class="col-span-12 lg:col-span-8 w-full flex flex-col gap-y-4 h-fit">
-            <div>
+            <div class="flex flex-col gap-y-4">
+                @foreach($data as $index => $item)
                 <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
-                    <div class="mb-2">
-                        <p class="text-lg font-bold">Informasi Grafik</p>
+                    <div class="mb-4">
+                        <p class="text-lg font-bold">{{ $item[0]->name }}</p>
                     </div>
-                    <div class="text-xs mt-4 overflow-x-auto">
-                        <table class="w-full">
-                            <thead>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Instrumen</th>
-                                    <th>Tidak Puas</th>
-                                    <th>Kurang Puas</th>
-                                    <th>Puas</th>
-                                    <th>Sangat Puas</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Contoh</td>
-                                    <td>1</td>
-                                    <td>123</td>
-                                    <td>12</td>
-                                    <td>1256</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    @foreach($item[1] as $indicatorIndex => $indicator)
+                    <div class="flex flex-col gap-y-4 mb-4">
+                        <div class="flex flex-col gap-y-2 border p-4 rounded-md">
+                            <div class="flex flex-col">
+                                <p class="text-sm">Indikator {{ $loop->iteration }}.</p>
+                                <p class="font-bold italic text-sm">{{ $indicator->name }}</p>
+                            </div>
+                            <div class="grid grid-cols-10 gap-4">
+                                <div class="lg:col-span-2 col-span-5">
+                                    <input type="number" wire:model="tidakMemuaskan" placeholder="TM"
+                                        class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                </div>
+                                <div class="lg:col-span-2 col-span-5">
+                                    <input type="number" wire:model="tidakMemuaskan" placeholder="M"
+                                        class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                </div>
+                                <div class="lg:col-span-2 col-span-5">
+                                    <input type="number" wire:model="tidakMemuaskan" placeholder="CM"
+                                        class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                </div>
+                                <div class="lg:col-span-2 col-span-5">
+                                    <input type="number" wire:model="tidakMemuaskan" placeholder="SM"
+                                        class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                </div>
+                                <div class="lg:col-span-2 col-span-5">
+                                    <input type="number" wire:model="tidakMemuaskan" placeholder="Sisa"
+                                        class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
+                    @endforeach
                 </div>
+                @endforeach
             </div>
         </div>
     </section>

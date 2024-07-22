@@ -106,7 +106,7 @@
         <div x-show="open" @click.outside="open = false" x-transition
           class="absolute py-2 -left-24 bg-white rounded-md border text-neutral-700 border-neutral-200 shadow-md mt-2 w-36 z-10">
           <div class="w-full flex flex-col gap-y-1 text-sm font-semibold">
-            <p class="py-2.5 px-4 w-full hover:bg-neutral-100">{{ Auth::user()->role->name }}</p>
+            <p class="py-2.5 px-4 w-full">{{ Auth::user()->role->name }}</p>
             <p class="py-2.5 px-4 w-full hover:bg-neutral-100 hover:cursor-pointer text-red-500" wire:click="handleLogout">
               Logout
             </p>

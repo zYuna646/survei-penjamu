@@ -15,21 +15,21 @@
         <div class="max-w-md w-full flex flex-col gap-y-2">
             <p class="text-sm text-slate-500">Selamat Datang Kembali👋</p>
             <h1 class="text-2xl font-bold">Masuk Ke Akun Kamu</h1>
-            <form action="" wire:submit="handleLogin">
+            <form action="" wire:submit.prevent="handleLogin" x-data="{ showPassword: false }">
                 @csrf
                 <div class="flex flex-col gap-y-2 mt-2">
-                    <label for="credential" class="text-sm ">Kredensial :</label>
-                    <input type="credential" name="credential" wire:model="credential"
+                    <label for="credential" class="text-sm">Kredensial :</label>
+                    <input type="text" name="credential" wire:model="credential"
                         class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-primary-500">
                 </div>
                 <div class="flex flex-col gap-y-2 mt-2">
-                    <label for="password" class="text-sm ">Password :</label>
-                    <input type="password" name="password" wire:model="password"
+                    <label for="password" class="text-sm">Password :</label>
+                    <input :type="showPassword ? 'text' : 'password'" name="password" wire:model="password"
                         class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-primary-500">
                 </div>
                 <div class="flex mt-6 px-2">
-                    <input name="show_pass" id="show_pass" class="mr-2 leading-tight" type="checkbox">
-                    <label for="show_pass" class="text-sm ">Tampil Password</label>
+                    <input type="checkbox" id="show_pass" x-model="showPassword" class="mr-2 leading-tight">
+                    <label for="show_pass" class="text-sm">Tampil Password</label>
                 </div>
                 <div class="mt-4">
                     <x-button color="primary" class="w-full" size="lg" type="submit">

@@ -7,10 +7,10 @@
                 <p class="text-slate-500 text-sm">List data {{ $master }} yang berhasil terinput dalam Database</p>
             </div>
             <div class="flex gap-x-2">
-                <form class="inline-flex gap-x-2 w-full">
-                    <input type="text" name="jenis" placeholder="Masukan Nama {{ $master }}"
+                <form class="inline-flex gap-x-2 w-full" wire:submit.prevent="applySearch">
+                    <input type="text" wire:model.debounce.300ms="search" placeholder="Masukan Nama {{ $master }}"
                         class="min-w-xl w-full p-2 text-xs rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                    <x-button class="" color="info" size="sm">
+                    <x-button class="" color="info" size="sm" type="submit">
                         <span>
                             <i class="fas fa-search"></i>
                         </span>
@@ -46,10 +46,10 @@
                                 </div>
                                 <!-- Modal body -->
                                 <div class="p-4 md:p-5 space-y-4">
-                                    <form wire:submit.prevent="addJenis" class="grid grid-cols-12 p-2">
+                                    <form wire:submit.prevent="applyFilter" class="grid grid-cols-12 p-2">
                                         <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                                             <label for="jenis" class="text-sm">Jenis {{ $master }}:</label>
-                                            <select name="jenis"
+                                            <select wire:model="filterJenis" name="jenis"
                                                 class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                                 <option value="">Pilih Jenis</option>
                                                 @foreach($jenis as $jenis)
@@ -62,7 +62,7 @@
                                         </div>
                                         <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                                             <label for="target" class="text-sm">Target {{ $master }}:</label>
-                                            <select name="target"
+                                            <select wire:model="filterTarget" name="target"
                                                 class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                                 <option value="">Pilih Target</option>
                                                 @foreach($target as $target)
@@ -94,24 +94,24 @@
 
         <div class="w-full grid grid-cols-12 gap-4">
             @foreach ($surveis as $survei)
-            <a
-                class="p-8 col-span-12 lg:col-span-4 bg-white flex flex-col gap-y-2 gap-x-4 rounded-lg border border-slate-100 hover:border-color-info-500 transition-colors shadow-sm cursor-pointer" href="{{ route('run_survei', $survei['code']) }}">
+            <a class="p-8 col-span-12 lg:col-span-4 bg-white flex flex-col gap-y-2 gap-x-4 rounded-lg border border-slate-100 hover:border-color-info-500 transition-colors shadow-sm cursor-pointer"
+                href="{{ route('run_survei', $survei['code']) }}">
                 <div class="max-w-lg flex flex-col gap-y-2">
-                    <p class="font-bold text-lg">{{ $survei['name'] }}</p>
+                    <p class="font-bold text-base">{{ $survei['name'] }}</p>
                     <div class="flex flex-col gap-y-2 font-semibold">
-                        <div class="inline-flex gap-x-2 items-center text-sm">
+                        <div class="inline-flex gap-x-2 items-center text-xs">
                             <span>
                                 <i class="fas fa-bullseye"></i>
                             </span>
                             <p>Target : {{ $survei['target']->name }}</p>
                         </div>
-                        <div class="inline-flex gap-x-2 items-center text-sm">
+                        <div class="inline-flex gap-x-2 items-center text-xs">
                             <span>
                                 <i class="fas fa-server"></i>
                             </span>
                             <p>Jenis : {{ $survei['jenis']->name }}</p>
                         </div>
-                        <div class="inline-flex gap-x-2 items-center text-sm text-color-success-500">
+                        <div class="inline-flex gap-x-2 items-center text-xs text-color-success-500">
                             <span>
                                 <i class="fas fa-check"></i>
                             </span>
@@ -121,6 +121,10 @@
                 </div>
             </a>
             @endforeach
+        </div>
+
+        <div class="mt-4">
+            {{ $surveis->links() }}
         </div>
     </section>
 </main>

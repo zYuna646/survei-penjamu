@@ -21,7 +21,6 @@ class Auth extends Component
         session()->regenerate();
         $role = Login::user()->role->slug;
         return redirect()->to('dashboard');
-        
        }else{
        }
     }

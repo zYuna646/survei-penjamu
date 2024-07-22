@@ -45,8 +45,6 @@ Route::get('/login', Auth::class)->name('login');
 Route::get('/', Landing::class)->name('home');
 Route::get('/list_survei', ListSurvei::class)->name('list_survei');
 Route::get('/run_survei/{code}', RunSurvei::class)->name('run_survei');
-Route::get('/complete_survei/{code}', CompleteSurvei::class)->name('complete_survei');
-
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');

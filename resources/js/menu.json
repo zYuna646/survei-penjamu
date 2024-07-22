@@ -5,6 +5,10 @@
       "link": "dashboard"
     },
     {
+      "name": "Survei",
+      "link": "master_survei"
+    },
+    {
       "name": "Master",
       "link": [
         {
@@ -26,19 +30,6 @@
         {
           "name": "Jenis",
           "link": "master_jenis"
-        },
-        {
-          "name": "Pengguna",
-          "link": "login"
-        }
-      ]
-    },
-    {
-      "name": "Survei",
-      "link": [
-        {
-          "name": "Survei",
-          "link": "master_survei"
         }
       ]
     },
@@ -51,6 +42,35 @@
         },
         {
           "name": "Jurusan",
+          "link": "user_jurusan"
+        }
+      ]
+    }
+  ],
+  "jurusan": [
+    {
+      "name": "Dashboard",
+      "link": "dashboard"
+    },
+    {
+      "name": "Survei",
+      "link": "master_survei"
+    }
+  ],
+  "fakultas": [
+    {
+      "name": "Dashboard",
+      "link": "dashboard"
+    },
+    {
+      "name": "Survei",
+      "link": "master_survei"
+    },
+    {
+      "name": "Pengguna",
+      "link": [
+        {
+          "name": "Prodi",
           "link": "user_jurusan"
         }
       ]

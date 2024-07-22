@@ -12,34 +12,19 @@ class ManipulationSurvei extends Component
     public $showFooter = true;
     public $master = 'Survei';
 
-    public $survei;
-    public $respon;
-    public $jumlah;
-    public $tidakMemuaskan;
-    public $cukupMemuaskan;
-    public $memuaskan;
-    public $sangatMemuaskan;
-    public $sisa;
+    public $dataSurvei;
+    public $data;
 
     public function mount($id)
     {
-        $this->survei = Survey::findOrFail($id);
-        $table = $this->survei->id;
-        $this->respon = DB::table($table)->get()->toArray();
-    }
-
-    public function saveManipulation(){
-        $this->calculateSisa();
-        
-        if($this->sisa != 0){
-            dd($this->sisa);
+        $this->dataSurvei = Survey::where('id', $id)->first();
+        $aspekCollection = $this->dataSurvei->aspek;
+        $data = [];
+        foreach ($aspekCollection as $aspek) {
+            $data[$aspek->id][0] = $aspek;
+            $data[$aspek->id][1] = $aspek->indicator;
         }
-    }
-
-    public function calculateSisa()
-    {
-        $total = $this->tidakMemuaskan + $this->cukupMemuaskan + $this->memuaskan + $this->sangatMemuaskan;
-        $this->sisa = $this->jumlah - $total;
+        $this->data = $data;
     }
 
 
@@ -47,6 +32,6 @@ class ManipulationSurvei extends Component
     {
         return view('livewire.admin.master.survei.manipulation-survei')
             ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar, 'showFooter' => $this->showFooter])
-            ->title('UNG Survey - Survei ' . $this->survei['name']);
+            ->title('UNG Survey - Manipulasi Survei'. $this->dataSurvei['name']);
     }
 }
