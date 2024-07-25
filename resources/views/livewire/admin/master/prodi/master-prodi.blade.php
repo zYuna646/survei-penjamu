@@ -1,4 +1,27 @@
-<main class="bg-[#f9fafc] min-h-screen">
+<main class="bg-[#f9fafc] min-h-screen"
+    x-data="{ showToast: {{ session()->has('toastMessage') ? 'true' : 'false' }}, toastMessage: '{{ session('toastMessage') }}', toastType: '{{ session('toastType') }}' }"
+    x-init="
+    if (showToast) {
+        setTimeout(() => showToast = false, 5000);
+    }
+">
+    <!-- Toast -->
+    <div x-show="showToast" x-transition
+        :class="toastType === 'success' ? 'text-color-success-500' : 'text-color-danger-500'"
+        class="fixed top-24 right-5 z-50 flex items-center w-full max-w-xs p-4 rounded-lg shadow bg-white" role="alert">
+        <div :class="toastType === 'success' ? 'text-color-success-500 bg-color-success-100' : 'text-color-danger-500 bg-color-danger-100'"
+            class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg">
+            <span>
+                <i :class="toastType === 'success' ? 'fas fa-check' : 'fas fa-exclamation'"></i>
+            </span>
+        </div>
+        <div class="ml-3 text-sm font-normal" x-text="toastMessage"></div>
+        <button type="button" @click="showToast = false"
+            class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8"
+            aria-label="Close">
+            <span><i class="fas fa-times"></i></span>
+        </button>
+    </div>
     <section class="max-w-screen-xl w-full mx-auto px-4 pt-24" x-data="{ addModal : false }">
         <div
             class="p-6 bg-white flex flex-col lg:flex-row lg:items-center gap-y-2 justify-between rounded-lg border border-slate-100 shadow-sm">
@@ -55,7 +78,8 @@
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                     <option value="">Pilih Jurusan</option>
                                     @foreach($dataJurusan as $jurusan)
-                                    <option value="{{ $jurusan->id }}">{{ $jurusan->name }} - {{ $jurusan->fakultas->name }}</option>
+                                    <option value="{{ $jurusan->id }}">{{ $jurusan->name }} - {{
+                                        $jurusan->fakultas->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('prodi.jurusan_id') <span class="text-red-500 text-xs">{{ $message }}</span>
@@ -107,7 +131,8 @@
                                         Edit
                                     </x-button>
                                     <!-- Delete button (if needed) -->
-                                    <x-button class="" color="danger" size="sm"  onclick="confirmDelete({{ $prodi['id'] }})">
+                                    <x-button class="" color="danger" size="sm"
+                                        onclick="confirmDelete({{ $prodi['id'] }})">
                                         Hapus
                                     </x-button>
                                 </div>

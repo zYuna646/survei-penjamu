@@ -46,7 +46,8 @@
                         Kembali
                     </x-button>
                     <template x-if="clickCount >= 2" x-transition>
-                        <x-button color="info" size="sm" onclick="window.location.href='{{ route('manipulation_survei', $survei['id']) }}'">
+                        <x-button color="info" size="sm"
+                            onclick="window.location.href='{{ route('manipulation_survei', $survei['id']) }}'">
                             Manipulasi Data
                         </x-button>
                     </template>
@@ -77,6 +78,24 @@
             </div>
         </div>
         <div class="col-span-12 lg:col-span-8 w-full flex flex-col gap-y-4 h-fit">
+            <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm ">
+                <div class="mb-4">
+                    <p class="text-lg font-bold">Filter Data</p>
+                </div>
+                <form action="" class="flex gap-x-2 gap-4 w-full">
+                    <select type="text" name="" wire:model="" placeholder="Semua Jurusan"
+                        class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                        <option value="">Semua Jurusan</option>
+                    </select>
+                    @error('') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    <x-button class="inline-flex gap-x-2  items-center" size="sm" color="info">
+                        <span>
+                            <i class="fas fa-filter"></i>
+                        </span>
+                        Filter
+                    </x-button>
+                </form>
+            </div>
             <div x-show="activeMenu === 'grafik'" x-cloak>
                 <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
                     <div class="mb-4">
@@ -124,9 +143,7 @@
                     <div class="mb-4">
                         <p class="text-lg font-bold">{{ $aspek->name }}</p>
                     </div>
-                    <hr>
-
-                    <div class="text-xs mt-4 overflow-x-auto">
+                    <div class="text-xs mt-2 overflow-x-auto">
                         <table class="w-full">
                             <thead>
                                 <tr>

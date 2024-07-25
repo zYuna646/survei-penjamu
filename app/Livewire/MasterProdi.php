@@ -6,6 +6,8 @@ use Livewire\Component;
 use App\Models\Prodi;
 use App\Models\Jurusan;
 use App\Models\Fakultas;
+use Illuminate\Support\Facades\DB;
+
 
 class MasterProdi extends Component
 {
@@ -47,19 +49,50 @@ class MasterProdi extends Component
             'prodi.kode' => 'required|string|max:10|unique:prodis,code',
             'prodi.jurusan_id' => 'required|exists:jurusans,id',
         ]);
+        
+        try {
+            DB::beginTransaction();
+    
+            Prodi::create([
+                'name' => $this->prodi['nama'],
+                'code' => $this->prodi['kode'],
+                'jurusan_id' => $this->prodi['jurusan_id'],
+            ]);
 
-        Prodi::create([
-            'name' => $this->prodi['nama'],
-            'code' => $this->prodi['kode'],
-            'jurusan_id' => $this->prodi['jurusan_id'],
-        ]);
+            DB::commit();
+
+            session()->flash('toastMessage', 'Data berhasil ditambahkan');
+            session()->flash('toastType', 'success');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
+       
 
         return redirect()->to('master_prodi');
     }
     
     public function deleteProdi($id)    
     {
-        Prodi::findOrFail($id)->delete();
+        try {
+            DB::beginTransaction();
+
+            Prodi::findOrFail($id)->delete();
+
+            DB::commit();
+
+            session()->flash('toastMessage', 'Data berhasil dihapus');
+            session()->flash('toastType', 'success');
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
         return redirect()->to('master_prodi');
     }
 }

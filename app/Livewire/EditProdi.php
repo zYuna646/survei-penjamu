@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Prodi;
 use App\Models\Jurusan;
+use Illuminate\Support\Facades\DB;
 
 class EditProdi extends Component
 {
@@ -33,14 +34,30 @@ class EditProdi extends Component
 
     public function updateProdi()
     {
+        $prodi = Prodi::findOrFail($this->prodi['id']);
+
         $this->validate([
             'prodi.name' => 'required|string|max:255',
             'prodi.code' => 'required|string|max:10|unique:prodis,code,' . $this->prodi['id'],
             'prodi.jurusan_id' => 'required|exists:jurusans,id',
         ]);
 
-        $prodi = Prodi::findOrFail($this->prodi['id']);
-        $prodi->update($this->prodi);
+        try {
+            DB::beginTransaction();
+    
+            $prodi->update($this->prodi);
+
+            DB::commit();
+
+            session()->flash('toastMessage', 'Data berhasil diedit');
+            session()->flash('toastType', 'success');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
 
         return redirect()->to('master_prodi');
     }

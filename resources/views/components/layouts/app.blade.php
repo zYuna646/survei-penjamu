@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{-- fontawesome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -12,12 +13,12 @@
         rel="stylesheet">
 
     {{-- datatables.net --}}
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
+    <link href="{{ asset('/DataTables/datatables.css') }}" rel="stylesheet">
 
     {{-- jquery --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>{{ $title ?? 'Page Title' }}</title>
     @stack('styles')
 </head>
@@ -32,8 +33,8 @@
     @endif
 
     @stack('scripts')
-    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
-  
+    <script src="{{ asset('/DataTables/datatables.js') }}"></script>
+
 </body>
 
 </html>

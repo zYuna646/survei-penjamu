@@ -3,6 +3,7 @@
 namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Jenis;
+use Illuminate\Support\Facades\DB;
 
 class MasterJenis extends Component
 {
@@ -36,16 +37,47 @@ class MasterJenis extends Component
             'jenis.nama' => 'required|string|max:255',
         ]);
 
-        Jenis::create([
-            'name' => $this->jenis['nama'],
-        ]);    
-    
+        try{
+            DB::beginTransaction();
+
+            Jenis::create([
+                'name' => $this->jenis['nama'],
+            ]); 
+
+            DB::commit();
+
+            session()->flash('toastMessage', 'Data berhasil ditambahkan');
+            session()->flash('toastType', 'success');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
+
         return redirect()->to('master_jenis');
     }
 
     public function deleteJenis($id)
     {
-        Jenis::findOrFail($id)->delete();
+        try {
+            DB::beginTransaction();
+
+            Jenis::findOrFail($id)->delete();
+
+            DB::commit();
+
+            session()->flash('toastMessage', 'Data berhasil dihapus');
+            session()->flash('toastType', 'success');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
+       
         return redirect()->to('master_jenis');
     }
 }

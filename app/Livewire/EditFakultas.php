@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Fakultas;
+use Illuminate\Support\Facades\DB;
+
 
 class EditFakultas extends Component
 {
@@ -17,7 +19,6 @@ class EditFakultas extends Component
     {
         // Fetch fakultas data by ID from the model
         $fakultas = Fakultas::findOrFail($id);
-
         // Assign all data to the fakultas property
         $this->fakultas = $fakultas->toArray();
     }
@@ -30,13 +31,32 @@ class EditFakultas extends Component
     }
 
     public function updateFakultas(){
+        
+        $fakultas = Fakultas::findOrFail($this->fakultas['id']);
+
         $this->validate([
             'fakultas.name' => 'required|string|max:255',
             'fakultas.code' => 'required|string|max:10|unique:fakultas,code,' . $this->fakultas['id'],
         ]);
 
-        $fakultas = Fakultas::findOrFail($this->fakultas['id']);
-        $fakultas->update($this->fakultas);
+        try
+        {
+            DB::beginTransaction();
+
+            $fakultas->update($this->fakultas);
+
+            DB::commit();
+
+            session()->flash('toastMessage', 'Data berhasil diedit');
+            session()->flash('toastType', 'success');
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
+       
 
         return redirect()->to('master_fakultas');
     }

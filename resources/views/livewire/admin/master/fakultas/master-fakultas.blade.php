@@ -1,4 +1,27 @@
-<main class="bg-[#f9fafc] min-h-screen">
+<main class="bg-[#f9fafc] min-h-screen"
+    x-data="{ showToast: {{ session()->has('toastMessage') ? 'true' : 'false' }}, toastMessage: '{{ session('toastMessage') }}', toastType: '{{ session('toastType') }}' }"
+    x-init="
+    if (showToast) {
+        setTimeout(() => showToast = false, 5000);
+    }
+">
+    <!-- Toast -->
+    <div x-show="showToast" x-transition
+        :class="toastType === 'success' ? 'text-color-success-500' : 'text-color-danger-500'"
+        class="fixed top-24 right-5 z-50 flex items-center w-full max-w-xs p-4 rounded-lg shadow bg-white" role="alert">
+        <div :class="toastType === 'success' ? 'text-color-success-500 bg-color-success-100' : 'text-color-danger-500 bg-color-danger-100'"
+            class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg">
+            <span>
+                <i :class="toastType === 'success' ? 'fas fa-check' : 'fas fa-exclamation'"></i>
+            </span>
+        </div>
+        <div class="ml-3 text-sm font-normal" x-text="toastMessage"></div>
+        <button type="button" @click="showToast = false"
+            class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8"
+            aria-label="Close">
+            <span><i class="fas fa-times"></i></span>
+        </button>
+    </div>
     <section class="max-w-screen-xl w-full mx-auto px-4 pt-24" x-data="{ addModal : false }">
 
         <div
@@ -41,14 +64,16 @@
                                 <input type="text" name="fakultas" wire:model="fakultas.nama"
                                     placeholder="Masukan Nama {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                @error('fakultas.nama') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                @error('fakultas.nama') <span class="text-red-500 text-xs">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                                 <label for="kode" class="text-sm ">Kode {{ $master }} :</label>
                                 <input type="text" name="Kode" wire:model="fakultas.kode"
                                     placeholder="Masukan Kode {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                    @error('fakultas.kode') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                @error('fakultas.kode') <span class="text-red-500 text-xs">{{ $message }}</span>
+                                @enderror
                             </div>
                             <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12" color="info"
                                 type="submit">

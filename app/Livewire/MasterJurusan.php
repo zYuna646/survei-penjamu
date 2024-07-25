@@ -5,6 +5,8 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Jurusan;
 use App\Models\Fakultas;
+use Illuminate\Support\Facades\DB;
+
 
 class MasterJurusan extends Component
 {
@@ -37,25 +39,55 @@ class MasterJurusan extends Component
 
     public function addJurusan()
     {
-        // Validate the input
         $this->validate([
             'jurusan.nama' => 'required|string|max:255',
             'jurusan.kode' => 'required|string|max:10|unique:jurusans,code',
             'jurusan.fakultas_id' => 'required|exists:fakultas,id',
         ]);
+        
+        try
+        {
+            DB::beginTransaction();
+    
+            Jurusan::create([
+                'name' => $this->jurusan['nama'],
+                'code' => $this->jurusan['kode'],
+                'fakultas_id' => $this->jurusan['fakultas_id'],
+            ]);   
 
-        Jurusan::create([
-            'name' => $this->jurusan['nama'],
-            'code' => $this->jurusan['kode'],
-            'fakultas_id' => $this->jurusan['fakultas_id'],
-        ]);    
+            DB::commit();
+
+            session()->flash('toastMessage', 'Data berhasil ditambahkan');
+            session()->flash('toastType', 'success');
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
     
         return redirect()->to('master_jurusan');
     }
 
     public function deleteJurusan($id)
     {
-        Jurusan::findOrFail($id)->delete();
+        try
+        {
+            DB::beginTransaction();
+
+            Jurusan::findOrFail($id)->delete();
+
+            DB::commit();
+
+            session()->flash('toastMessage', 'Data berhasil dihapus');
+            session()->flash('toastType', 'success');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
         return redirect()->to('master_jurusan');
     }
 

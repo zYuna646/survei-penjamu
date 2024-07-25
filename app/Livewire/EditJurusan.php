@@ -5,6 +5,8 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Jurusan;
 use App\Models\Fakultas;
+use Illuminate\Support\Facades\DB;
+
 
 class EditJurusan extends Component
 {
@@ -33,15 +35,32 @@ class EditJurusan extends Component
 
     public function updateJurusan()
     {
+        $jurusan = Jurusan::findOrFail($this->jurusan['id']);
+
         $this->validate([
             'jurusan.name' => 'required|string|max:255',
             'jurusan.code' => 'required|string|max:10|unique:jurusans,code,' . $this->jurusan['id'],
             'jurusan.fakultas_id' => 'required|exists:fakultas,id',
         ]);
 
-        $jurusan = Jurusan::findOrFail($this->jurusan['id']);
-        $jurusan->update($this->jurusan);
+        try
+        {
+            DB::beginTransaction();
 
+            $jurusan->update($this->jurusan);
+
+            DB::commit();
+
+            session()->flash('toastMessage', 'Data berhasil diedit');
+            session()->flash('toastType', 'success');
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
+       
         return redirect()->to('master_jurusan');
     }
 

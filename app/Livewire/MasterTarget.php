@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Target;
+use Illuminate\Support\Facades\DB;
 
 class MasterTarget extends Component
 {
@@ -32,21 +33,53 @@ class MasterTarget extends Component
 
     public function addTarget()
     {
-        // Validate the input
-        $this->validate([
+         // Validate the input
+         $this->validate([
             'target.nama' => 'required|string|max:255',
         ]);
 
-        Target::create([
-            'name' => $this->target['nama'],
-        ]);    
+
+        try {
+            DB::beginTransaction();
+
+            Target::create([
+                'name' => $this->target['nama'],
+            ]);    
+
+            DB::commit();
+
+            session()->flash('toastMessage', 'Data berhasil ditambahkan');
+            session()->flash('toastType', 'success');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
     
         return redirect()->to('master_target');
     }
 
     public function deleteTarget($id)
     {
-        Target::findOrFail($id)->delete();
+        try {
+            DB::beginTransaction();
+
+            Target::findOrFail($id)->delete();
+
+            DB::commit();
+
+            session()->flash('toastMessage', 'Data berhasil dihapus');
+            session()->flash('toastType', 'success');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
+
        return redirect()->to('master_target');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Target;
+use Illuminate\Support\Facades\DB;
 
 class EditTarget extends Component
 {
@@ -35,7 +36,23 @@ class EditTarget extends Component
         ]);
 
         $target = Target::findOrFail($this->target['id']);
-        $target->update($this->target);
+
+        try {
+            DB::beginTransaction();
+
+            $target->update($this->target);
+
+            DB::commit();
+
+            session()->flash('toastMessage', 'Data berhasil diedit');
+            session()->flash('toastType', 'success');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
 
         return redirect()->to('master_target');
     }

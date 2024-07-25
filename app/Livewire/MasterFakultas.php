@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Fakultas;
+use Illuminate\Support\Facades\DB;
 
 class MasterFakultas extends Component
 {
@@ -17,6 +18,8 @@ class MasterFakultas extends Component
     ];
 
     public $dataFakultas;
+    public $toastMessage = '';
+    public $toastType = '';
 
     public function mount()
     {
@@ -33,24 +36,54 @@ class MasterFakultas extends Component
 
     public function addFakultas()
     {
-        // Validate the input
         $this->validate([
             'fakultas.nama' => 'required|string|max:255',
             'fakultas.kode' => 'required|string|max:10|unique:fakultas,code',
         ]);
+        
+        try {
+            DB::beginTransaction();
 
-        Fakultas::create([
-            'name' => $this->fakultas['nama'],
-            'code' => $this->fakultas['kode'],
-        ]);    
-    
+            Fakultas::create([
+                'name' => $this->fakultas['nama'],
+                'code' => $this->fakultas['kode'],
+            ]);
+
+            DB::commit();
+
+            session()->flash('toastMessage', 'Data berhasil ditambahkan');
+            session()->flash('toastType', 'success');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
+
         return redirect()->to('master_fakultas');
     }
 
     public function deleteFakultas($id)
     {
-        Fakultas::findOrFail($id)->delete();
-       return redirect()->to('master_fakultas');
+        try {
+            DB::beginTransaction();
+
+            Fakultas::findOrFail($id)->delete();
+
+            DB::commit();
+
+            session()->flash('toastMessage', 'Data berhasil dihapus');
+            session()->flash('toastType', 'success');
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
+
+        return redirect()->to('master_fakultas');
     }
 
 }
