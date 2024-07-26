@@ -19,14 +19,14 @@
             <form wire:submit.prevent="updateFakultas" class="grid grid-cols-12">
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="fakultas" class="text-sm ">Nama {{ $master }} :</label>
-                    <input type="text" name="fakultas" wire:model="fakultas.name"
+                    <input type="text" id="fakultas" name="fakultas" wire:model="fakultas.name"
                         placeholder="Masukan Nama {{ $master }}"
                         class="p-4 text-sm rounded-md bg-neutral-50 text-slate-800 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                     @error('fakultas.name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="kode" class="text-sm ">Kode {{ $master }} :</label>
-                    <input type="text" name="Kode" wire:model="fakultas.code" placeholder="Masukan Kode {{ $master }}"
+                    <input type="text" id="kode" name="Kode" wire:model="fakultas.code" placeholder="Masukan Kode {{ $master }}"
                         class="p-4 text-sm rounded-md bg-neutral-50 text-slate-800 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                         @error('fakultas.code') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>

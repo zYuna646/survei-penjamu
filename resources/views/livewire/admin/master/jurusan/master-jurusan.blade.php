@@ -60,20 +60,20 @@
                     <div class="p-4 md:p-5 space-y-4">
                         <form wire:submit.prevent="addJurusan" class="grid grid-cols-12 p-2">
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                                <label for="fakultas" class="text-sm ">Nama {{ $master }} :</label>
-                                <input type="text" name="fakultas" wire:model="jurusan.nama"
+                                <label for="jurusan" class="text-sm ">Nama {{ $master }} :</label>
+                                <input type="text" id="jurusan" name="jurusan" wire:model="jurusan.nama"
                                     placeholder="Masukan Nama {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                             </div>
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                                 <label for="kode" class="text-sm ">Kode {{ $master }} :</label>
-                                <input type="text" name="Kode" wire:model="jurusan.kode"
+                                <input type="text" id="kode" name="Kode" wire:model="jurusan.kode"
                                     placeholder="Masukan Kode {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                             </div>
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                                <label for="fakultas" class="text-sm ">Fakultas :</label>
-                                <select name="fakultas_id" wire:model="jurusan.fakultas_id"
+                                <label for="fakultas_id" class="text-sm ">Fakultas :</label>
+                                <select name="fakultas_id" id="fakultas_id" wire:model="jurusan.fakultas_id"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                     <option value="">Pilih Fakultas</option>
                                     @foreach($dataFakultas as $fakultas)

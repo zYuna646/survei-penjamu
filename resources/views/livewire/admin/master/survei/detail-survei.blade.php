@@ -74,6 +74,16 @@
                             Tabel Rekapitulasi
                         </span>
                     </div>
+                    <div @click="activeMenu = 'tabel'"
+                        :class="{ 'bg-color-info-500 text-white border-color-info-500': activeMenu === 'tabel' }"
+                        class="p-3 px-4 border  rounded-lg inline-flex gap-x-2 items-center hover:cursor-pointer transition-colors hover:bg-color-info-400 hover:text-white hover:border-color-info-400">
+                        <span class="text-lg">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </span>
+                        <span class="font-semibold text-sm">
+                            Temuan
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -83,9 +93,17 @@
                     <p class="text-lg font-bold">Filter Data</p>
                 </div>
                 <form action="" class="flex gap-x-2 gap-4 w-full">
+                    <select type="text" name="" wire:model="" placeholder="Semua Fakultas"
+                        class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                        <option value="">Semua Fakultas</option>
+                    </select>
                     <select type="text" name="" wire:model="" placeholder="Semua Jurusan"
                         class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                         <option value="">Semua Jurusan</option>
+                    </select>
+                    <select type="text" name="" wire:model="" placeholder="Semua Prodi"
+                        class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                        <option value="">Semua Prodi</option>
                     </select>
                     @error('') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     <x-button class="inline-flex gap-x-2  items-center" size="sm" color="info">

@@ -23,13 +23,13 @@
                 </div>
                 <div class="flex flex-col gap-y-2 col-span-4 mb-4 ">
                     <label for="name" class="text-sm">Nama {{ $master }}</label>
-                    <input type="text" name="name" wire:model="survei.name" placeholder="Masukan Nama {{ $master }}"
+                    <input type="text" id="name" name="name" wire:model="survei.name" placeholder="Masukan Nama {{ $master }}"
                         class="p-4 text-sm rounded-md bg-neutral-50 text-slate-800 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                     @error('survei.name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
                 <div class="flex flex-col gap-y-2 col-span-4 mb-4 ">
                     <label for="jenis" class="text-sm">Jenis {{ $master }}</label>
-                    <select type="text" name="jenis" wire:model="survei.jenis_id"
+                    <select type="text" id="jenis" name="jenis" wire:model="survei.jenis_id"
                         placeholder="Masukan Nama {{ $master }}"
                         class="p-4 text-sm rounded-md bg-neutral-50 text-slate-800 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                         <option value="">Pilih Jenis</option>
@@ -42,7 +42,7 @@
                 </div>
                 <div class="flex flex-col gap-y-2 col-span-4 mb-4 ">
                     <label for="target" class="text-sm">Target {{ $master }}</label>
-                    <select type="text" name="target" wire:model="survei.target_id"
+                    <select type="text" id="target" name="target" wire:model="survei.target_id"
                         placeholder="Masukan Nama {{ $master }}"
                         class="p-4 text-sm rounded-md bg-neutral-50 text-slate-800 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                         <option value="">Pilih Target</option>

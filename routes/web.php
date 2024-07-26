@@ -34,6 +34,8 @@ use App\Livewire\RecapSurvei;
 use App\Livewire\ListSurvei;
 use App\Livewire\CompleteSurvei;
 use App\Livewire\UserFakultas;
+use App\Livewire\UserProdi;
+use App\Livewire\EditUserProdi;
 use App\Livewire\UserJurusan;
 use App\Livewire\EditUserJurusan;
 use App\Livewire\EditUserFakultas;
@@ -64,8 +66,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/recap_survei', RecapSurvei::class)->name('recap_survei');
    
 
-    Route::get('/user_jurusan', UserJurusan::class)->name('user_jurusan');
-    Route::get('/edit_user_jurusan/{id}', EditUserJurusan::class)->name('edit_user_jurusan');
+    Route::get('/user_prodi', UserProdi::class)->name('user_prodi');
+    Route::get('/edit_user_prodi/{id}', EditUserProdi::class)->name('edit_user_prodi');
     Route::get('/user_fakultas', UserFakultas::class)->name('user_fakultas');
     Route::get('/edit_user_fakultas/{id}', EditUserFakultas::class)->name('edit_user_fakultas');
     Route::get('/manipulation_survei/{id}', ManipulationSurvei::class)->name('manipulation_survei');

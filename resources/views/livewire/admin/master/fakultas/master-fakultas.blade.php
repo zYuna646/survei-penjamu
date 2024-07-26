@@ -61,7 +61,7 @@
                         <form wire:submit.prevent="addFakultas" class="grid grid-cols-12 p-2">
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                                 <label for="fakultas" class="text-sm ">Nama {{ $master }} :</label>
-                                <input type="text" name="fakultas" wire:model="fakultas.nama"
+                                <input type="text" id="fakultas" name="fakultas" wire:model="fakultas.nama"
                                     placeholder="Masukan Nama {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 @error('fakultas.nama') <span class="text-red-500 text-xs">{{ $message }}</span>
@@ -69,7 +69,7 @@
                             </div>
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                                 <label for="kode" class="text-sm ">Kode {{ $master }} :</label>
-                                <input type="text" name="Kode" wire:model="fakultas.kode"
+                                <input type="text" id="kode" name="Kode" wire:model="fakultas.kode"
                                     placeholder="Masukan Kode {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 @error('fakultas.kode') <span class="text-red-500 text-xs">{{ $message }}</span>

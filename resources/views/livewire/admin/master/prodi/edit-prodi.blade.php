@@ -19,19 +19,19 @@
             <form wire:submit.prevent="updateProdi" class="grid grid-cols-12">
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="nama" class="text-sm">Nama {{ $master }} :</label>
-                    <input type="text" name="nama" wire:model="prodi.name" placeholder="Masukan Nama {{ $master }}"
+                    <input type="text" id="nama" name="nama" wire:model="prodi.name" placeholder="Masukan Nama {{ $master }}"
                         class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                     @error('prodi.nama') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="kode" class="text-sm">Kode {{ $master }} :</label>
-                    <input type="text" name="kode" wire:model="prodi.code" placeholder="Masukan Kode {{ $master }}"
+                    <input type="text" id="kode" name="kode" wire:model="prodi.code" placeholder="Masukan Kode {{ $master }}"
                         class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                     @error('prodi.kode') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="jurusan_id" class="text-sm">Jurusan :</label>
-                    <select name="jurusan_id" wire:model="prodi.jurusan_id"
+                    <select name="jurusan_id" id="jurusan_id" wire:model="prodi.jurusan_id"
                         class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                         <option value="">Pilih Jurusan</option>
                         @foreach($dataJurusan as $jurusan)

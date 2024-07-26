@@ -38,14 +38,14 @@
                         <form wire:submit.prevent="addSurvei" class="grid grid-cols-12 p-2">
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                                 <label for="survei" class="text-sm ">Nama {{ $master }} :</label>
-                                <input type="text" name="survei" wire:model="survei.nama"
+                                <input type="text" id="survei" name="survei" wire:model="survei.nama"
                                     placeholder="Masukan Nama {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 @error('survei.nama') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                                 <label for="kode" class="text-sm ">Jenis {{ $master }} :</label>
-                                <select type="text" name="Kode" wire:model="survei.jenis_id"
+                                <select type="text" id="kode" name="Kode" wire:model="survei.jenis_id"
                                     placeholder="Masukan Kode {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                     <option value="">Pilih Jenis</option>
@@ -58,7 +58,7 @@
                             </div>
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                                 <label for="target" class="text-sm ">Target :</label>
-                                <select name="target_id" wire:model="survei.target_id"
+                                <select name="target_id" id="target" wire:model="survei.target_id"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                     <option value="">Pilih Target</option>
                                     @foreach($dataTarget as $target)

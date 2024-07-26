@@ -19,14 +19,14 @@
             <form wire:submit.prevent="updateUserFakultas" class="grid grid-cols-12">
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="nama" class="text-sm">Nama {{ $master }} :</label>
-                    <input type="text" name="nama" wire:model="userFakultas.nama"
+                    <input type="text" id="nama" name="nama" wire:model="userFakultas.name"
                         placeholder="Masukan Nama {{ $master }}"
                         class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                    @error('userFakultas.nama') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    @error('userFakultas.name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="fakultas" class="text-sm">Fakultas :</label>
-                    <select type="fakultas" name="fakultas" wire:model="userFakultas.fakultas_id"
+                    <select id="fakultas" name="fakultas" wire:model="userFakultas.fakultas_id"
                         class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                         <option value="">Pilih Fakultas</option>
                         @foreach($dataFakultas as $fakultas)
@@ -38,21 +38,21 @@
                 </div>
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="email" class="text-sm">Email :</label>
-                    <input type="text" name="email" wire:model="userFakultas.email"
+                    <input type="email" id="email" name="email" wire:model="userFakultas.email"
                         placeholder="Masukan Email {{ $master }}"
                         class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                     @error('userFakultas.email') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="password" class="text-sm">Password Baru :</label>
-                    <input type="password" name="password" wire:model="userFakultas.password"
+                    <input type="password" id="password" name="password" wire:model="userFakultas.password"
                         placeholder="Masukan Password {{ $master }}"
                         class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                     @error('userFakultas.password') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="password_confirmation" class="text-sm">Ketik Ulang Password Baru :</label>
-                    <input type="password" name="password_confirmation" wire:model="userFakultas.password_confirmation"
+                    <input type="password" id="password_confirmation" name="password_confirmation" wire:model="userFakultas.password_confirmation"
                         placeholder="Masukan Password {{ $master }}"
                         class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                     @error('userFakultas.password_confirmation') <span class="text-red-500 text-xs">{{ $message

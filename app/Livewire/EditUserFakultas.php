@@ -5,6 +5,8 @@ use App\Models\User;
 use App\Models\Fakultas;
 use App\Models\Jurusan;
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
+
 
 class EditUserFakultas extends Component
 {
@@ -17,7 +19,7 @@ class EditUserFakultas extends Component
     public $dataFakultas;
 
     protected $rules = [
-        'userFakultas.nama' => 'required|string|max:255',
+        'userFakultas.name' => 'required|string|max:255',
         'userFakultas.fakultas_id' => 'required|exists:fakultas,id',
         'userFakultas.jurusan_id' => 'required|exists:jurusans,id',
         'userFakultas.email' => 'required|email|max:255',
@@ -42,14 +44,28 @@ class EditUserFakultas extends Component
 
         $user = User::findOrFail($this->userFakultas['id']);
         // dd($this->userFakultas);
-        $user->update([
-            'name' => $this->userFakultas['nama'],
-            'fakultas_id' => $this->userFakultas['fakultas_id'],
-            'email' => $this->userFakultas['email'],
-            'password' => isset($this->userFakultas['password']) ? bcrypt($this->userFakultas['password']) : $user->password,
-        ]);
 
-        session()->flash('message', 'Data User Jurusan berhasil diupdate.');
+        try{
+            DB::beginTransaction();
+
+            $user->update([
+                'name' => $this->userFakultas['name'],
+                'fakultas_id' => $this->userFakultas['fakultas_id'],
+                'email' => $this->userFakultas['email'],
+                'password' => isset($this->userFakultas['password']) ? bcrypt($this->userFakultas['password']) : $user->password,
+            ]);
+
+            DB::commit();
+
+            session()->flash('toastMessage', 'Data berhasil diedit');
+            session()->flash('toastType', 'success');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
+
         return redirect()->route('user_fakultas');
     }
 }

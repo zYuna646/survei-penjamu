@@ -41,8 +41,8 @@
           "link": "user_fakultas"
         },
         {
-          "name": "Jurusan",
-          "link": "user_jurusan"
+          "name": "Prodi",
+          "link": "user_prodi"
         }
       ]
     }

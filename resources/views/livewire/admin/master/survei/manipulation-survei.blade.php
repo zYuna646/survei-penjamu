@@ -22,35 +22,80 @@
         }
     </style>
     <section class="max-w-screen-xl w-full mx-auto px-4 pt-24 grid grid-cols-12 gap-4 pb-12 ">
-        <div
-            class="p-8 col-span-12 lg:col-span-4 h-fit bg-white flex flex-col lg:flex-row  gap-y-2 gap-x-4 rounded-lg border border-slate-100 shadow-sm">
-            <div class="max-w-lg flex flex-col gap-y-2">
-                <h1 class="font-bold text-base">{{ $dataSurvei['name'] }}</h1>
-                {{-- <p class="text-slate-500 text-sm">{{ $dataSurvei['description'] }}</p> --}}
-                <div class="flex flex-col gap-y-2 font-semibold">
-                    <div class="inline-flex gap-x-2 items-center text-xs">
-                        <span>
-                            <i class="fas fa-bullseye"></i>
-                        </span>
-                        <p>Target : {{ $dataSurvei['target']->name }}</p>
+        <div class="col-span-12 lg:col-span-4 w-full flex flex-col gap-y-4 h-fit">
+            <div
+                class="p-8 bg-white flex flex-col lg:flex-row  gap-y-2 gap-x-4 rounded-lg border border-slate-100 shadow-sm">
+                <div class="max-w-lg flex flex-col gap-y-2">
+                    <h1 class="font-bold text-base">{{ $dataSurvei['name'] }}</h1>
+                    {{-- <p class="text-slate-500 text-sm">{{ $dataSurvei['description'] }}</p> --}}
+                    <div class="flex flex-col gap-y-2 font-semibold">
+                        <div class="inline-flex gap-x-2 items-center text-xs">
+                            <span>
+                                <i class="fas fa-bullseye"></i>
+                            </span>
+                            <p>Target : {{ $dataSurvei['target']->name }}</p>
+                        </div>
+                        <div class="inline-flex gap-x-2 items-center text-xs">
+                            <span>
+                                <i class="fas fa-server"></i>
+                            </span>
+                            <p>Jenis Survei : {{ $dataSurvei['jenis']->name }}</p>
+                        </div>
+                        <div class="inline-flex gap-x-2 items-center text-xs text-color-success-500">
+                            <span>
+                                <i class="fas fa-check"></i>
+                            </span>
+                            <p>Aspek Total : {{ count($data) }}</p>
+                        </div>
                     </div>
-                    <div class="inline-flex gap-x-2 items-center text-xs">
+                </div>
+            </div>
+            <div
+                class="p-8 bg-white flex flex-col lg:flex-row  gap-y-2 gap-x-4 rounded-lg border border-slate-100 shadow-sm">
+                <div class="flex flex-col gap-y-4 w-full">
+                    <h1 class="font-bold text-base">Filter Survei</h1>
+                    <form action="" class="w-full flex flex-col gap-y-2">
+                        <div>
+                            <select type="text" name="" wire:model="" placeholder="Semua Jurusan"
+                                class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                <option value="">Semua Fakultas</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select type="text" name="" wire:model="" placeholder="Semua Jurusan"
+                                class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                <option value="">Semua Jurusan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select type="text" name="" wire:model="" placeholder="Semua Jurusan"
+                                class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                <option value="">Semua Prodi</option>
+                            </select>
+                        </div>
+                    </form>
+                    <x-button class="inline-flex gap-x-2 items-center w-fit" size="md" color="info">
                         <span>
-                            <i class="fas fa-server"></i>
+                            <i class="fas fa-filter"></i>
                         </span>
-                        <p>Jenis Survei : {{ $dataSurvei['jenis']->name }}</p>
-                    </div>
-                    <div class="inline-flex gap-x-2 items-center text-xs text-color-success-500">
-                        <span>
-                            <i class="fas fa-check"></i>
-                        </span>
-                        <p>Aspek Total : {{ count($data) }}</p>
-                    </div>
+                        Filter
+                    </x-button>
                 </div>
             </div>
         </div>
         <div class="col-span-12 lg:col-span-8 w-full flex flex-col gap-y-4 h-fit">
             <div class="flex flex-col gap-y-4">
+                <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm ">
+                    <div class="mb-4">
+                        <p class="text-lg font-bold">Jumlah</p>
+                    </div>
+                    <form action="" class="flex gap-x-2 gap-4 w-full">
+                        <input type="text" name="" wire:model="" placeholder="Jumlah Sebenarnya" disabled
+                            class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200" />
+                        <input type="text" name="" wire:model="" placeholder="Jumlah"
+                            class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200" />
+                    </form>
+                </div>
                 @foreach($data as $index => $item)
                 <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
                     <div class="mb-4">

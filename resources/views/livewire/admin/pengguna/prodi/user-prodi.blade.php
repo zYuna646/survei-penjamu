@@ -1,4 +1,27 @@
-<main class="bg-[#f9fafc] min-h-screen">
+<main class="bg-[#f9fafc] min-h-screen"
+    x-data="{ showToast: {{ session()->has('toastMessage') ? 'true' : 'false' }}, toastMessage: '{{ session('toastMessage') }}', toastType: '{{ session('toastType') }}' }"
+    x-init="
+    if (showToast) {
+        setTimeout(() => showToast = false, 5000);
+    }
+">
+    <!-- Toast -->
+    <div x-show="showToast" x-transition
+        :class="toastType === 'success' ? 'text-color-success-500' : 'text-color-danger-500'"
+        class="fixed top-24 right-5 z-50 flex items-center w-full max-w-xs p-4 rounded-lg shadow bg-white" role="alert">
+        <div :class="toastType === 'success' ? 'text-color-success-500 bg-color-success-100' : 'text-color-danger-500 bg-color-danger-100'"
+            class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg">
+            <span>
+                <i :class="toastType === 'success' ? 'fas fa-check' : 'fas fa-exclamation'"></i>
+            </span>
+        </div>
+        <div class="ml-3 text-sm font-normal" x-text="toastMessage"></div>
+        <button type="button" @click="showToast = false"
+            class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8"
+            aria-label="Close">
+            <span><i class="fas fa-times"></i></span>
+        </button>
+    </div>
     <section class="max-w-screen-xl w-full mx-auto px-4 pt-24" x-data="{ addModal : false }">
 
         <div
@@ -35,18 +58,18 @@
                     </div>
                     <!-- Modal body -->
                     <div class="p-4 md:p-5 space-y-4">
-                        <form wire:submit.prevent="addUserJurusan" class="grid grid-cols-12 p-2">
-                            <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                        <form wire:submit.prevent="addUserProdi" class="grid grid-cols-12 p-2 gap-4">
+                            <div class="flex flex-col gap-y-2 col-span-12 ">
                                 <label for="nama" class="text-sm ">Nama {{ $master }} :</label>
-                                <input type="text" name="nama" wire:model="userJurusan.nama"
+                                <input type="text" id="nama" name="nama" wire:model="userProdi.nama"
                                     placeholder="Masukan Nama {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                @error('userJurusan.nama') <span class="text-red-500 text-xs">{{ $message }}</span>
+                                @error('userProdi.nama') <span class="text-red-500 text-xs">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                            <div class="flex flex-col gap-y-2 md:col-span-4 col-span-12 ">
                                 <label for="fakultas" class="text-sm ">fakultas :</label>
-                                <select type="fakultas" name="fakultas" wire:model="userJurusan.fakultas_id"
+                                <select id="fakultas" name="fakultas" wire:model="userProdi.fakultas_id"
                                     wire:change="getJurusanByFakultas"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                     <option value="">Pilih Fakultas</option>
@@ -54,37 +77,51 @@
                                     <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
                                     @endforeach
                                 </select>
-                                @error('userJurusan.fakultas_id') <span class="text-red-500 text-xs">{{ $message
+                                @error('userProdi.fakultas_id') <span class="text-red-500 text-xs">{{ $message
                                     }}</span>
                                 @enderror
                             </div>
-                            <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                            <div class="flex flex-col gap-y-2 md:col-span-4 col-span-12 ">
                                 <label for="jurusan" class="text-sm ">Jurusan :</label>
-                                <select type="jurusan" name="jurusan" wire:model="userJurusan.jurusan_id"
+                                <select id="jurusan" name="jurusan" wire:model="userProdi.jurusan_id"
+                                    wire:change="getProdiByJurusan"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                     <option value="">Pilih Jurusan</option>
                                     @foreach($dataJurusan as $jurusan)
                                     <option value="{{ $jurusan->id }}">{{ $jurusan->name }}</option>
                                     @endforeach
                                 </select>
-                                @error('userJurusan.jurusan_id') <span class="text-red-500 text-xs">{{ $message
+                                @error('userProdi.jurusan_id') <span class="text-red-500 text-xs">{{ $message
                                     }}</span>
                                 @enderror
                             </div>
-                            <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                                <label for="email" class="text-sm ">Email :</label>
-                                <input type="text" name="email" wire:model="userJurusan.email"
-                                    placeholder="Masukan Email {{ $master }}"
+                            <div class="flex flex-col gap-y-2 md:col-span-4 col-span-12 ">
+                                <label for="prodi" class="text-sm ">Prodi :</label>
+                                <select id="prodi" name="prodi" wire:model="userProdi.prodi_id"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                @error('userJurusan.email') <span class="text-red-500 text-xs">{{ $message }}</span>
+                                    <option value="">Pilih Prodi</option>
+                                    @foreach($dataProdi as $prodi)
+                                    <option value="{{ $prodi->id }}">{{ $prodi->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('userProdi.prodi_id') <span class="text-red-500 text-xs">{{ $message
+                                    }}</span>
                                 @enderror
                             </div>
-                            <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                            <div class="flex flex-col gap-y-2 col-span-12 ">
+                                <label for="email" class="text-sm ">Email :</label>
+                                <input type="email" id="email" name="email" wire:model="userProdi.email"
+                                    placeholder="Masukan Email {{ $master }}"
+                                    class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                @error('userProdi.email') <span class="text-red-500 text-xs">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="flex flex-col gap-y-2 col-span-12 ">
                                 <label for="password" class="text-sm ">Password :</label>
-                                <input type="password" name="password" wire:model="userJurusan.password"
+                                <input type="password" id="password" name="password" wire:model="userProdi.password"
                                     placeholder="Masukan Password {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                @error('userJurusan.password') <span class="text-red-500 text-xs">{{ $message }}</span>
+                                @error('userProdi.password') <span class="text-red-500 text-xs">{{ $message }}</span>
                                 @enderror
                             </div>
 
@@ -111,29 +148,29 @@
                     <thead>
                         <tr>
                             <th>No.</th>
-                            <th>Kode</th>
+                            <th>Email</th>
                             <th>Nama</th>
                             <th>Jurusan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($dataUserJurusan as $userJurusan)
+                        @foreach($dataUserProdi as $userProdi)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $userJurusan['email'] }}</td>
-                            <td>{{ $userJurusan['name'] }}</td>
-                            <td>{{ $userJurusan->jurusan->name }}</td>
+                            <td>{{ $userProdi['email'] }}</td>
+                            <td>{{ $userProdi['name'] }}</td>
+                            <td>{{ $userProdi->jurusan->name }}</td>
                             <td>
                                 <div class="inline-flex gap-x-2">
                                     <!-- Edit button -->
                                     <x-button class="" color="info" size="sm"
-                                        onclick="window.location.href='{{ route('edit_user_jurusan' , $userJurusan['id']) }}'">
+                                        onclick="window.location.href='{{ route('edit_user_prodi' , $userProdi['id']) }}'">
                                         Edit
                                     </x-button>
                                     <!-- Delete button (if needed) -->
                                     <x-button class="" color="danger" size="sm"
-                                        onclick="confirmDelete({{ $userJurusan['id'] }})">
+                                        onclick="confirmDelete({{ $userProdi['id'] }})">
                                         Hapus
                                     </x-button>
                                 </div>

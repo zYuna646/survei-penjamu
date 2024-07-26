@@ -19,7 +19,7 @@
       <form wire:submit.prevent="updateJenis" class="grid grid-cols-12">
         <div class="flex flex-col gap-y-2 col-span-12 mb-4">
           <label for="jenis" class="text-sm ">Nama {{ $master }} :</label>
-          <input type="text" name="jenis" wire:model="jenis.name" placeholder="Masukan Nama {{ $master }}"
+          <input type="text" id="jenis" name="jenis" wire:model="jenis.name" placeholder="Masukan Nama {{ $master }}"
             class="p-4 text-sm rounded-md bg-neutral-50 text-slate-800 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
           @error('jenis.name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
         </div>

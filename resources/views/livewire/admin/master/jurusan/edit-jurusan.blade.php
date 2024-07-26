@@ -18,20 +18,20 @@
             <form wire:submit.prevent="updateJurusan" class="grid grid-cols-12">
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="name" class="text-sm">Nama {{ $master }} :</label>
-                    <input type="text" name="name" wire:model="jurusan.name"
+                    <input type="text" id="name" name="name" wire:model="jurusan.name"
                         placeholder="Masukan Nama {{ $master }}"
                         class="p-4 text-sm rounded-md bg-neutral-50 text-slate-800 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                         @error('jurusan.name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="code" class="text-sm">Kode {{ $master }} :</label>
-                    <input type="text" name="code" wire:model="jurusan.code" placeholder="Masukan Kode {{ $master }}"
+                    <input type="text" id="code" name="code" wire:model="jurusan.code" placeholder="Masukan Kode {{ $master }}"
                         class="p-4 text-sm rounded-md bg-neutral-50 text-slate-800 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                         @error('jurusan.code') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="fakultas_id" class="text-sm">Fakultas :</label>
-                    <select name="fakultas_id" wire:model="jurusan.fakultas_id"
+                    <select name="fakultas_id" id="fakultas_id" wire:model="jurusan.fakultas_id"
                         class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                         <option value="">Pilih Fakultas</option>
                         @foreach($dataFakultas as $fakultas)
