@@ -212,7 +212,7 @@
                         </div>
                     </div>
                 </div>
-                <div x-show="resetModal" x-transition
+                <div x-show="resetModal" style="display: none" x-on:keydown.excape.window="resetModal = false"
                     class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 h-full max-h-full bg-black/20">
                     <div class="relative p-4 w-full max-w-md max-h-full" @click.outside="resetModal = false">
                         <!-- Modal content -->
@@ -244,7 +244,7 @@
                         </div>
                     </div>
                 </div>
-                <div x-show="sendModal" x-transition
+                <div x-show="sendModal" style="display: none" x-on:keydown.excape.window="sendModal = false"
                     class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 h-full max-h-full bg-black/20">
                     <div class="relative p-4 w-full max-w-md max-h-full" @click.outside="sendModal = false">
                         <!-- Modal content -->

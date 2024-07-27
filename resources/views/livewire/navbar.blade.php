@@ -1,5 +1,5 @@
 <header class="border-b-2 border-color-primary-500 w-full fixed bg-white z-50" x-data="{ open: false }">
-  <div x-transition x-show="open" class="absolute isolate w-[80%] h-screen top-0 shadow-md bg-white z-10 p-4">
+  <div x-transition x-show="open" style="display: none;" class="absolute isolate w-[80%] h-screen top-0 shadow-md bg-white z-10 p-4">
     <div class="p-2 w-full inline-flex items-center justify-between">
       <div class="w-10">
         <img src="/logo/ung.png" alt="" class="w-full">
@@ -70,7 +70,7 @@
               <i :class="open ? 'rotate-180' : ''" class="fas fa-chevron-down transition-transform text-xs w-4 h-4"></i>
             </span>
           </div>
-          <div x-show="open" @click.outside="open = false" x-transition
+          <div x-show="open" style="display: none" @click.outside="open = false" x-transition
             class="absolute py-2 bg-white rounded-md border text-neutral-700 border-neutral-200 shadow-md mt-2 w-56 z-10">
             <div class="w-full flex flex-col gap-y-1 text-sm font-semibold">
               @foreach($menuItem['link'] as $submenuItem)
@@ -103,7 +103,7 @@
       <div class="w-12 h-12 rounded-full relative" x-data="{ open: false }">
         <img src="{{ Auth::user()->avatar_url ?? '/avatar/placeholder.jpg' }}" alt="" class="w-full rounded-full hover:cursor-pointer"
           @click="open = !open">
-        <div x-show="open" @click.outside="open = false" x-transition
+        <div x-show="open" style="display: none" @click.outside="open = false" x-transition
           class="absolute py-2 -left-24 bg-white rounded-md border text-neutral-700 border-neutral-200 shadow-md mt-2 w-36 z-10">
           <div class="w-full flex flex-col gap-y-1 text-sm font-semibold">
             <p class="py-2.5 px-4 w-full">{{ Auth::user()->role->name }}</p>

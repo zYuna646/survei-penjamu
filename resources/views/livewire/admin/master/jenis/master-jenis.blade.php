@@ -6,7 +6,7 @@
     }
 ">
     <!-- Toast -->
-    <div x-show="showToast" x-transition
+    <div x-show="showToast" style="display: none" x-on:keydown.escape.window="addModal = false"
         :class="toastType === 'success' ? 'text-color-success-500' : 'text-color-danger-500'"
         class="fixed top-24 right-5 z-50 flex items-center w-full max-w-xs p-4 rounded-lg shadow bg-white" role="alert">
         <div :class="toastType === 'success' ? 'text-color-success-500 bg-color-success-100' : 'text-color-danger-500 bg-color-danger-100'"
