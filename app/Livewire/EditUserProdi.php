@@ -27,7 +27,8 @@ class EditUserProdi extends Component
         'userProdi.jurusan_id' => 'required|exists:jurusans,id',
         'userProdi.prodi_id' => 'required|exists:prodis,id',
         'userProdi.email' => 'required|email|max:255',
-        'userProdi.password' => 'nullable|min:8|confirmed',
+        'userProdi.newpass' => 'nullable|min:8',
+        'userProdi.password_confirmation' => 'same:userProdi.newpass',
     ];
 
     public function mount($id)
@@ -76,7 +77,7 @@ class EditUserProdi extends Component
                 'jurusan_id' => $this->userProdi['jurusan_id'],
                 'prodi_id' => $this->userProdi['prodi_id'],
                 'email' => $this->userProdi['email'],
-                'password' => isset($this->userProdi['password']) ? bcrypt($this->userProdi['password']) : $user->password,
+                'password' => isset($this->userProdi['newpass']) ? bcrypt($this->userProdi['newpass']) : $user->password,
             ]);
 
             DB::commit();

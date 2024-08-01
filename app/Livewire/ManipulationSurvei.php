@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Survey;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ManipulationSurvei extends Component
@@ -14,9 +15,13 @@ class ManipulationSurvei extends Component
 
     public $dataSurvei;
     public $data;
+    public $userRole;
 
     public function mount($id)
     {
+        $user = Auth::user();
+        $this->userRole = $user->role->slug;
+
         $this->dataSurvei = Survey::where('id', $id)->first();
         $aspekCollection = $this->dataSurvei->aspek;
         $data = [];

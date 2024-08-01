@@ -47,7 +47,7 @@
       ]
     }
   ],
-  "jurusan": [
+  "prodi": [
     {
       "name": "Dashboard",
       "link": "dashboard"
@@ -71,7 +71,7 @@
       "link": [
         {
           "name": "Prodi",
-          "link": "user_jurusan"
+          "link": "user_prodi"
         }
       ]
     }

@@ -36,7 +36,7 @@ class MasterSurvei extends Component
 
     public function render()
     {
-        return view('livewire.admin.master.survei.master-survei', ['dataSurvei' => $this->dataSurvei, 'dataTarget' => $this->dataTarget])
+        return view('livewire.admin.master.survei.master-survei')
         ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar , 'showFooter' => $this->showFooter])
         ->title('UNG Survey - Master Survei');
     }

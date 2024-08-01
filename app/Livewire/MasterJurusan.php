@@ -32,7 +32,7 @@ class MasterJurusan extends Component
 
     public function render()
     {
-        return view('livewire.admin.master.jurusan.master-jurusan', ['dataJurusan' => $this->dataJurusan, 'dataFakultas' => $this->dataFakultas])
+        return view('livewire.admin.master.jurusan.master-jurusan')
         ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar , 'showFooter' => $this->showFooter])
         ->title('UNG Survey - Master Jurusan');
     }

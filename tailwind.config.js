@@ -7,7 +7,7 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-
+      
     },
 
     extend: {

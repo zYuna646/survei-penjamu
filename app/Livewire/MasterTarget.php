@@ -26,7 +26,7 @@ class MasterTarget extends Component
 
     public function render()
     {
-        return view('livewire.admin.master.target.master-target', ['dataTarget' => $this->dataTarget])
+        return view('livewire.admin.master.target.master-target')
         ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar , 'showFooter' => $this->showFooter])
         ->title('UNG Survey - Master Target');
     }

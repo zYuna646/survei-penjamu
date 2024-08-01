@@ -1,4 +1,4 @@
-<main class="bg-[#f9fafc] min-h-screen" x-data="{ activeMenu: 'grafik' }">
+<main class="bg-[#f9fafc] min-h-screen" x-data="{ activeMenu: 'grafik', userRole: '{{ $userRole }}' }">
     <style>
         table,
         th,
@@ -55,24 +55,24 @@
                 <div class="flex flex-col gap-y-4 w-full">
                     <h1 class="font-bold text-base">Filter Survei</h1>
                     <form action="" class="w-full flex flex-col gap-y-2">
-                        <div>
+                        <template x-if="userRole === 'universitas'">
                             <select type="text" name="" wire:model="" placeholder="Semua Jurusan"
                                 class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 <option value="">Semua Fakultas</option>
                             </select>
-                        </div>
-                        <div>
+                        </template>
+                        <template x-if="userRole === 'universitas' || userRole === 'fakultas'">
                             <select type="text" name="" wire:model="" placeholder="Semua Jurusan"
                                 class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 <option value="">Semua Jurusan</option>
                             </select>
-                        </div>
-                        <div>
+                        </template>
+                        <template x-if="userRole === 'universitas' || userRole === 'fakultas' || userRole === 'prodi'">
                             <select type="text" name="" wire:model="" placeholder="Semua Jurusan"
                                 class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 <option value="">Semua Prodi</option>
                             </select>
-                        </div>
+                        </template>
                     </form>
                     <x-button class="inline-flex gap-x-2 items-center w-fit" size="md" color="info">
                         <span>

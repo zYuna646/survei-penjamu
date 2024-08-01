@@ -17,11 +17,27 @@ class Auth extends Component
         ->title('UNG Survey - Auth');
     }
     public function handleLogin(){
-       if (Login::attempt(['email' => $this->credential, 'password' => $this->password])) {
-        session()->regenerate();
-        $role = Login::user()->role->slug;
-        return redirect()->to('dashboard');
-       }else{
-       }
+        // $this->validate([
+        //     'credential' => 'required|email',
+        //     'password' => 'required',
+        // ]);
+        
+        try {
+            if (Login::attempt(['email' => $this->credential, 'password' => $this->password])) {
+                session()->regenerate();
+                $role = Login::user()->role->slug;
+                session()->flash('toastMessage', 'Autentikasi berhasil');
+                session()->flash('toastType', 'success');
+                return redirect()->to('dashboard');
+            } else {
+                session()->flash('toastMessage', 'Email atau Password tidak valid');
+                session()->flash('toastType', 'error');
+                return redirect()->to('login');
+            }
+        } catch (\Exception $e) {
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
+
     }
 }

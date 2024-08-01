@@ -1,4 +1,4 @@
-<main class="bg-[#f9fafc] min-h-screen" x-data="{ activeMenu: 'grafik' }">
+<main class="bg-[#f9fafc] min-h-screen" x-data="{ activeMenu: 'grafik', userRole: '{{ $userRole }}' }">
     <style>
         table,
         th,
@@ -13,14 +13,14 @@
             background: lightgray;
         }
     </style>
-    <section class="max-w-screen-xl w-full mx-auto px-4 pt-24 grid grid-cols-12 gap-4 pb-12 ">
-        <div x-data="{ clickCount: 0 }"
+    <section class=" max-w-screen-xl w-full mx-auto px-4 pt-24 grid grid-cols-12 gap-4 pb-12 ">
+        <div x-data=" { clickCount: 0 }"
             class="p-8 col-span-12 lg:col-span-4 h-fit bg-white flex flex-col lg:flex-row gap-y-2 gap-x-4 rounded-lg border border-slate-100 shadow-sm w-full">
             <div class=" flex flex-col gap-y-2 w-full">
-                <h1 class="font-bold text-lg">{{ $survei['name'] }}</h1>
+                <h1 class="font-bold text-base">{{ $survei['name'] }}</h1>
                 {{-- <p class="text-slate-500 text-sm">{{ $survei['description'] }}</p> --}}
                 <div class="flex flex-col gap-y-2 font-semibold w-full">
-                    <div class="inline-flex gap-x-2 items-center text-sm w-full">
+                    <div class="inline-flex gap-x-2 items-center text-xs w-full">
                         <span>
                             <i class="fas fa-bullseye"></i>
                         </span>
@@ -28,13 +28,13 @@
                                 class="cursor-default">.</span>
                         </p>
                     </div>
-                    <div class="inline-flex gap-x-2 items-center text-sm">
+                    <div class="inline-flex gap-x-2 items-center text-xs">
                         <span>
                             <i class="fas fa-server"></i>
                         </span>
                         <p>Jenis Survei : {{ $survei['jenis']->name }}</p>
                     </div>
-                    <div class="inline-flex gap-x-2 items-center text-sm text-color-success-500">
+                    <div class="inline-flex gap-x-2 items-center text-xs text-color-success-500">
                         <span>
                             <i class="fas fa-check"></i>
                         </span>
@@ -93,25 +93,27 @@
                     <p class="text-lg font-bold">Filter Data</p>
                 </div>
                 <form action="" class="flex gap-x-2 gap-4 w-full">
-                    <select type="text" name="" wire:model="" placeholder="Semua Fakultas"
-                        class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                        <option value="">Semua Fakultas</option>
-                    </select>
-                    <select type="text" name="" wire:model="" placeholder="Semua Jurusan"
-                        class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                        <option value="">Semua Jurusan</option>
-                    </select>
-                    <select type="text" name="" wire:model="" placeholder="Semua Prodi"
-                        class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                        <option value="">Semua Prodi</option>
-                    </select>
-                    @error('') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                    <x-button class="inline-flex gap-x-2  items-center" size="sm" color="info">
-                        <span>
-                            <i class="fas fa-filter"></i>
-                        </span>
-                        Filter
-                    </x-button>
+                    <template x-if="userRole === 'universitas'">
+                        <select wire:model="selectedFakultas"
+                            class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                            <option value="">Semua Fakultas</option>
+
+                        </select>
+                    </template>
+                    <template x-if="userRole === 'universitas' || userRole === 'fakultas'">
+                        <select wire:model="selectedJurusan"
+                            class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                            <option value="">Semua Jurusan</option>
+
+                        </select>
+                    </template>
+                    <template x-if="userRole === 'universitas' || userRole === 'fakultas' || userRole === 'prodi'">
+                        <select wire:model="selectedProdi"
+                            class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                            <option value="">Semua Prodi</option>
+                        </select>
+                    </template>
+                    
                 </form>
             </div>
             <div x-show="activeMenu === 'grafik'" x-cloak>

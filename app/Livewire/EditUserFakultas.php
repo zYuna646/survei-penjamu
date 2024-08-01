@@ -23,7 +23,8 @@ class EditUserFakultas extends Component
         'userFakultas.fakultas_id' => 'required|exists:fakultas,id',
         'userFakultas.jurusan_id' => 'required|exists:jurusans,id',
         'userFakultas.email' => 'required|email|max:255',
-        'userFakultas.password' => 'nullable|min:8|confirmed',
+        'userFakultas.newpass' => 'nullable|min:8',
+        'userFakultas.password_confirmation' => 'same:userFakultas.newpass',
     ];
 
     public function mount($id)
@@ -45,6 +46,7 @@ class EditUserFakultas extends Component
         $user = User::findOrFail($this->userFakultas['id']);
         // dd($this->userFakultas);
 
+        // dd($this->userFakultas['newpass']);
         try{
             DB::beginTransaction();
 
@@ -52,7 +54,7 @@ class EditUserFakultas extends Component
                 'name' => $this->userFakultas['name'],
                 'fakultas_id' => $this->userFakultas['fakultas_id'],
                 'email' => $this->userFakultas['email'],
-                'password' => isset($this->userFakultas['password']) ? bcrypt($this->userFakultas['password']) : $user->password,
+                'password' => isset($this->userFakultas['newpass']) ? bcrypt($this->userFakultas['newpass']) : $user->password,
             ]);
 
             DB::commit();

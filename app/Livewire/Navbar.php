@@ -28,8 +28,8 @@ class Navbar extends Component
                 case 'fakultas':
                     $userRole = 'fakultas';
                     break;
-                case 'jurusan':
-                    $userRole = 'jurusan';
+                case 'prodi':
+                    $userRole = 'prodi';
                     break;
                 default :
                     $userRole = 'guest';

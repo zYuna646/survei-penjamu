@@ -52,8 +52,8 @@ class Dashboard extends Component
                 return view('livewire.fakultas.fakultas-dashboard')
                     ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar, 'showFooter' => $this->showFooter])
                     ->title('UNG Survey - Fakultas Dashboard');
-            case 'jurusan':
-                return view('livewire.jurusan.jurusan-dashboard')
+            case 'prodi':
+                return view('livewire.prodi.prodi-dashboard')
                     ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar, 'showFooter' => $this->showFooter])
                     ->title('UNG Survey - Jurusan Dashboard');
             default:

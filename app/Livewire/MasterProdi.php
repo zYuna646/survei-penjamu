@@ -34,10 +34,7 @@ class MasterProdi extends Component
 
     public function render()
     {
-        return view('livewire.admin.master.prodi.master-prodi', [
-            'dataProdi' => $this->dataProdi, 
-            'dataJurusan' => $this->dataJurusan, 
-        ])
+        return view('livewire.admin.master.prodi.master-prodi')
         ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar, 'showFooter' => $this->showFooter])
         ->title('UNG Survey - Master Prodi');
     }

@@ -25,7 +25,7 @@ class MasterJenis extends Component
 
     public function render()
     {
-        return view('livewire.admin.master.jenis.master-jenis', ['dataJenis' => $this->dataJenis])
+        return view('livewire.admin.master.jenis.master-jenis')
         ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar , 'showFooter' => $this->showFooter])
         ->title('UNG Survey - Master Jenis');
     }

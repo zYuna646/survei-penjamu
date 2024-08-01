@@ -40,6 +40,7 @@ use App\Livewire\UserJurusan;
 use App\Livewire\EditUserJurusan;
 use App\Livewire\EditUserFakultas;
 use App\Livewire\ManipulationSurvei;
+use App\Livewire\UserProfile;
 
 
 
@@ -50,6 +51,8 @@ Route::get('/run_survei/{code}', RunSurvei::class)->name('run_survei');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
+    Route::get('/user_profile', UserProfile::class)->name('user_profile');
+
     Route::get('/master_fakultas', MasterFakultas::class)->name('master_fakultas');
     Route::get('/edit_fakultas/{id}', EditFakultas::class)->name('edit_fakultas');
     Route::get('/master_prodi', MasterProdi::class)->name('master_prodi');

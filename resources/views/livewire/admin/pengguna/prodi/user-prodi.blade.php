@@ -6,8 +6,7 @@
     }
 ">
     <!-- Toast -->
-    <div x-show="showToast" style="display: none" x-on:keydown.escape.window="addModal = false"
-        :class="toastType === 'success' ? 'text-color-success-500' : 'text-color-danger-500'"
+    <div x-show="showToast" :class="toastType === 'success' ? 'text-color-success-500' : 'text-color-danger-500'"
         class="fixed top-24 right-5 z-50 flex items-center w-full max-w-xs p-4 rounded-lg shadow bg-white" role="alert">
         <div :class="toastType === 'success' ? 'text-color-success-500 bg-color-success-100' : 'text-color-danger-500 bg-color-danger-100'"
             class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg">
@@ -37,7 +36,7 @@
             </div>
         </div>
         {{-- add modal --}}
-        <div x-show="addModal" x-transition
+        <div x-show="addModal" style="display: none" x-on:keydown.escape.window="addModal = false"
             class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 h-full max-h-full bg-black/20">
             <div class="relative p-4 w-full max-w-2xl max-h-full" @click.outside="addModal = false">
                 <!-- Modal content -->

@@ -45,10 +45,10 @@
                 </div>
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="password" class="text-sm">Password Baru :</label>
-                    <input type="password" id="password" name="password" wire:model="userFakultas.password"
+                    <input type="password" id="password" name="password" wire:model="userFakultas.newpass"
                         placeholder="Masukan Password {{ $master }}"
                         class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                    @error('userFakultas.password') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    @error('userFakultas.newpass') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="password_confirmation" class="text-sm">Ketik Ulang Password Baru :</label>

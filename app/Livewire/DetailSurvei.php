@@ -6,6 +6,7 @@ use App\Models\Survey;
 use App\Models\Aspek;
 use App\Models\Indikator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use App\Charts\RecapChart;
 
@@ -15,12 +16,16 @@ class DetailSurvei extends Component
     public $showFooter = true;
     public $master = 'Survei';
     public $survei;
+    public $userRole;
 
     public $detail_rekapitulasi;
     public $detail_rekapitulasi_aspek;
 
     public function mount($id)
     {
+        $user = Auth::user();
+        $this->userRole = $user->role->slug;
+
         $this->survei = Survey::FindOrFail($id);
         $detail_rekapitulasi = [];
         $detail_rekapitulasi_aspek = [];
