@@ -56,16 +56,37 @@ class RunSurvei extends Component
 
     public function sendSurveiRespon()
     {
-        $table = [];
-        foreach ($this->responses as $index => $aspek) {
-            foreach ($aspek as $key => $value) {
-                $table[$key] = $value;
-            }
-        }
-        $table['jurusan_id'] = $this->jurusan;
-        DB::table($this->dataSurvei->id)->insert($table);
+        $this->validate([
+            'jurusan' => 'required',
+        ]);
         
-        $this->isComplete = true;
+
+        try {            
+            DB::beginTransaction();
+
+            $table = [];
+            foreach ($this->responses as $index => $aspek) {
+                foreach ($aspek as $key => $value) {
+                    $table[$key] = $value;
+                }
+            }
+            $table['jurusan_id'] = $this->jurusan;
+            DB::table($this->dataSurvei->id)->insert($table);
+            
+            $this->isComplete = true;
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            \Log::error('Survey Error: ' . $e->getMessage());
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+
+            return redirect()->back();
+        }
     }
 
 }

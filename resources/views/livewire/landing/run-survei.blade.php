@@ -1,4 +1,27 @@
-<main class="bg-[#f9fafc] min-h-screen">
+<main class="bg-[#f9fafc] min-h-screen"
+    x-data="{ showToast: {{ session()->has('toastMessage') ? 'true' : 'false' }}, toastMessage: '{{ session('toastMessage') }}', toastType: '{{ session('toastType') }}' }"
+    x-init="
+    if (showToast) {
+        setTimeout(() => showToast = false, 5000);
+    }
+">
+    <!-- Toast -->
+    <div x-show="showToast" x-transition 
+        :class="toastType === 'success' ? 'text-color-success-500' : 'text-color-danger-500'"
+        class="fixed top-24 right-5 z-50 flex items-center w-full max-w-xs p-4 rounded-lg shadow bg-white" role="alert">
+        <div :class="toastType === 'success' ? 'text-color-success-500 bg-color-success-100' : 'text-color-danger-500 bg-color-danger-100'"
+            class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg">
+            <span>
+                <i :class="toastType === 'success' ? 'fas fa-check' : 'fas fa-exclamation'"></i>
+            </span>
+        </div>
+        <div class="ml-3 text-sm font-normal" x-text="toastMessage"></div>
+        <button type="button" @click="showToast = false"
+            class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8"
+            aria-label="Close">
+            <span><i class="fas fa-times"></i></span>
+        </button>
+    </div>
     <section class="max-w-screen-xl w-full mx-auto px-4 pt-24 grid grid-cols-12 gap-4 pb-12">
         <div
             class="p-8 col-span-12 lg:col-span-4 h-fit bg-white flex flex-col lg:flex-row  gap-y-2 gap-x-4 rounded-lg border border-slate-100 shadow-sm">
@@ -33,18 +56,18 @@
         }" class="col-span-12 lg:col-span-8">
 
             <!-- Tampilkan jika data kosong -->
-            <x-status_pages x-show="isDataEmpty" title="Survei Masih Kosong!!!"
+            <x-status_pages x-show="isDataEmpty" title="Survei Masih Kosong!!!" style="display: none"
                 imgSrc="/hero/3d-business-woman-sitting-sad.png" imgSize="w-44"
                 responseText="Aspek dan indikator dalam survei ini masih belum tersedia" showButton="true"
                 buttonLink="{{ route('list_survei') }}" />
 
             <!-- Tampilkan jika survei tidak aktif -->
-            <x-status_pages x-show="!isAktif && !isDataEmpty" title="Survei Belum Aktif!!!"
+            <x-status_pages x-show="!isAktif && !isDataEmpty" title="Survei Belum Aktif!!!" style="display: none"
                 imgSrc="/hero/3d-business-woman-sitting-sad.png" imgSize="w-44"
                 responseText="Saat ini survei belum aktif, tunggu hingga survei diaktifkan" showButton="true"
                 buttonLink="{{ route('list_survei') }}" />
 
-            <form wire:submit.prevent="sendSurveiRespon" x-show="$wire.showForm"
+            <form wire:submit.prevent="sendSurveiRespon" x-show="$wire.showForm" style="display: none"
                 class="w-full flex flex-col gap-y-4 h-fit" x-data="{ sendModal: false, resetModal: false }">
                 <div class="p-6  bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
                     <div class="mb-4">
@@ -60,6 +83,8 @@
                                 <option value="{{ $jurusan->id }}">{{ $jurusan->name }}</option>
                                 @endforeach
                             </select>
+                            @error('jurusan') <span class="text-red-500 text-xs">{{ $message }}</span>
+                            @enderror
                         </div>
                         {{-- <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                             <label for="nim" class="text-sm ">NIM :</label>

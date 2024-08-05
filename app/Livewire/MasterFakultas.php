@@ -55,7 +55,7 @@ class MasterFakultas extends Component
             session()->flash('toastType', 'success');
 
         } catch (\Exception $e) {
-            DB::rollBack();
+            DB::rollBack(); 
 
             session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
             session()->flash('toastType', 'error');

@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
 use App\Models\Target;
 use App\Models\Jenis;
 use App\Models\Survey;
@@ -49,36 +50,82 @@ class MasterSurvei extends Component
             'survei.target_id' => 'required|exists:targets,id',
         ]);
 
-        $survey = Survey::create([
-            'name' => $this->survei['nama'],
-            'jenis_id' => $this->survei['jenis_id'],
-            'target_id' => $this->survei['target_id'],
-            'isAktif' => true,
-        ]);
+        try {
+            DB::beginTransaction();
 
-        Schema::create($survey->id, function (Blueprint $table){
-            $table->id();
-            $table->unsignedBigInteger('jurusan_id')->nullable();
-            $table->foreign('jurusan_id')->references('id')->on('jurusans')->onDelete('cascade');
-            $table->timestamps();
-        }); 
+            $survey = Survey::create([
+                'name' => $this->survei['nama'],
+                'jenis_id' => $this->survei['jenis_id'],
+                'target_id' => $this->survei['target_id'],
+                'isAktif' => true,
+            ]);
+
+            Schema::create($survey->id, function (Blueprint $table){
+                $table->id();
+                $table->unsignedBigInteger('jurusan_id')->nullable();
+                $table->foreign('jurusan_id')->references('id')->on('jurusans')->onDelete('cascade');
+                $table->timestamps();
+            }); 
+
+            DB::commit();
+
+            session()->flash('toastMessage', 'Data berhasil ditambahkan');
+            session()->flash('toastType', 'success');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
 
         return redirect()->to('master_survei');
     }
 
     public function changeSurveiStatus($id)
     {
-        $survey = Survey::find($id);
-        if ($survey) {
-            $survey->isAktif = !$survey->isAktif;
-            $survey->save();
+        try {
+            DB::beginTransaction();
+
+            $survey = Survey::find($id);
+            if ($survey) {
+                $survey->isAktif = !$survey->isAktif;
+                $survey->save();
+            }
+
+            DB::commit();
+
+            session()->flash('toastMessage', 'Data berhasil diubah');
+            session()->flash('toastType', 'success');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
         }
 
         return redirect()->to('master_survei');
     }
     public function deleteSurvei($id)    
     {
-        Survey::findOrFail($id)->delete();
+        try {
+            DB::beginTransaction();
+
+            Survey::findOrFail($id)->delete();
+
+            DB::commit();
+
+            session()->flash('toastMessage', 'Data berhasil dihapus');
+            session()->flash('toastType', 'success');
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
+        
         return redirect()->to('master_survei'); 
     }
 }
