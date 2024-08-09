@@ -113,7 +113,7 @@
                             <option value="">Semua Prodi</option>
                         </select>
                     </template>
-                    
+
                 </form>
             </div>
             <div x-show="activeMenu === 'grafik'" x-cloak>
@@ -128,7 +128,7 @@
                 </div>
             </div>
             <div x-show="activeMenu === 'tabel'" x-cloak>
-                {{-- <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
                     <div class="mb-4">
                         <p class="text-lg font-bold">Informasi Grafik</p>
                     </div>
@@ -157,7 +157,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div> --}}
+                </div>
                 @foreach ($survei->aspek as $aspek)
                 <div class="p-6 mt-2 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
                     <div class="mb-4">
@@ -218,7 +218,6 @@
                     </div>
                 </div>
                 @endforeach
-
             </div>
         </div>
     </section>

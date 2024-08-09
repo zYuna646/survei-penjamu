@@ -60,14 +60,14 @@ class MasterSurvei extends Component
                 'isAktif' => true,
             ]);
 
+            DB::commit();
+
             Schema::create($survey->id, function (Blueprint $table){
                 $table->id();
                 $table->unsignedBigInteger('jurusan_id')->nullable();
                 $table->foreign('jurusan_id')->references('id')->on('jurusans')->onDelete('cascade');
                 $table->timestamps();
             }); 
-
-            DB::commit();
 
             session()->flash('toastMessage', 'Data berhasil ditambahkan');
             session()->flash('toastType', 'success');
@@ -113,8 +113,10 @@ class MasterSurvei extends Component
             DB::beginTransaction();
 
             Survey::findOrFail($id)->delete();
-
+            
             DB::commit();
+
+            Schema::dropIfExists($id);
 
             session()->flash('toastMessage', 'Data berhasil dihapus');
             session()->flash('toastType', 'success');
