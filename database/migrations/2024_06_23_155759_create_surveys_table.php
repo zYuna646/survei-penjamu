@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code');
+            $table->boolean('isUpdate')->default(false);
             $table->boolean('isAktif')->default(true);
             $table->unsignedBigInteger('jenis_id')->nullable();
             $table->unsignedBigInteger('target_id');

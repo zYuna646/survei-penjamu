@@ -22,7 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'fakultas_id',
-        'jurusan_id',
+        'prodi_id',
         'role_id'
     ];
 
@@ -31,9 +31,9 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function jurusan()
+    public function prodi()
     {
-        return $this->belongsTo(Jurusan::class);
+        return $this->belongsTo(Prodi::class);
     }
 
     public function fakultas()

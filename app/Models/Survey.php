@@ -15,7 +15,8 @@ class Survey extends Model
         'code',
         'jenis_id',
         'target_id',
-        'isAktif'
+        'isAktif',
+        'isUpdate'
     ];
 
     public function target()

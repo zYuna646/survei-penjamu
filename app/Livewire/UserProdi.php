@@ -76,7 +76,7 @@ class UserProdi extends Component
                 'password' => bcrypt($this->userProdi['password']),
                 'role_id' => 4,
                 'fakultas_id' => $fakultas->id,
-                'jurusan_id' => $jurusan->id,
+                'prodi_id' => $jurusan->id,
             ]);
 
             DB::commit();

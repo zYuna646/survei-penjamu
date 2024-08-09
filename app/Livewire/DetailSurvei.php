@@ -38,6 +38,10 @@ class DetailSurvei extends Component
 
             foreach ($aspek->indicator as $indicator) {
                 $table = $this->survei->id; // Assuming the table is named like this
+                $fakultas = 0;
+                $jurusan = 0;
+                $prodi = 0;
+                
                 $tm = DB::table($table)->where($indicator->id, 1)->count();
                 $cm = DB::table($table)->where($indicator->id, 2)->count();
                 $m = DB::table($table)->where($indicator->id, 3)->count();
