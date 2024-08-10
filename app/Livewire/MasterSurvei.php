@@ -62,8 +62,8 @@ class MasterSurvei extends Component
 
             Schema::create($survey->id, function (Blueprint $table){
                 $table->id();
-                $table->unsignedBigInteger('jurusan_id')->nullable();
-                $table->foreign('jurusan_id')->references('id')->on('jurusans')->onDelete('cascade');
+                $table->unsignedBigInteger('prodi_id')->nullable();
+                $table->foreign('prodi_id')->references('id')->on('prodis')->onDelete('cascade');
                 $table->timestamps();
             }); 
 
