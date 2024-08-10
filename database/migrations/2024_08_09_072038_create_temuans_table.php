@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('temuans', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('jurusan_id')->nullable();
+            $table->unsignedBigInteger('prodi_id')->nullable();
             $table->unsignedBigInteger('fakultas_id')->nullable();
 
             $table->foreignId('indikator_id')->constrained('indikators');
-            $table->foreign('jurusan_id')->references('id')->on('jurusans')->onDelete('cascade');
+            $table->foreign('prodi_id')->references('id')->on('prodis')->onDelete('cascade');
             $table->foreign('fakultas_id')->references('id')->on('fakultas')->onDelete('cascade');
 
 

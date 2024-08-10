@@ -26,9 +26,9 @@ class Temuan extends Model
         return $this->belongsTo(Fakultas::class);
     }
 
-    public function jurusan()
+    public function prodi()
     {
-        return $this->belongsTo(Jurusan::class);
+        return $this->belongsTo(Prodi::class);
     }
     
 }
