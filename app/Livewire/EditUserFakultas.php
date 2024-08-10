@@ -18,15 +18,6 @@ class EditUserFakultas extends Component
 
     public $dataFakultas;
 
-    protected $rules = [
-        'userFakultas.name' => 'required|string|max:255',
-        'userFakultas.fakultas_id' => 'required|exists:fakultas,id',
-        'userFakultas.jurusan_id' => 'required|exists:jurusans,id',
-        'userFakultas.email' => 'required|email|max:255',
-        'userFakultas.newpass' => 'nullable|min:8',
-        'userFakultas.password_confirmation' => 'same:userFakultas.newpass',
-    ];
-
     public function mount($id)
     {
        $this->userFakultas = User::FindOrFail($id)->toArray();
@@ -41,7 +32,13 @@ class EditUserFakultas extends Component
 
     public function updateUserFakultas()
     {
-        $this->validate();
+        $this->validate([
+            'userFakultas.name' => 'required|string|max:255',
+            'userFakultas.fakultas_id' => 'required|exists:fakultas,id',
+            'userFakultas.email' => 'required|email|max:255',
+            'userFakultas.newpass' => 'nullable|min:8',
+            'userFakultas.password_confirmation' => 'same:userFakultas.newpass',
+        ]);
 
         $user = User::findOrFail($this->userFakultas['id']);
         // dd($this->userFakultas);

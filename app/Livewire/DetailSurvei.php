@@ -17,18 +17,18 @@ class DetailSurvei extends Component
     public $showFooter = true;
     public $master = 'Survei';
     public $survei;
-    public $userRole;
+    public $user;
     public $temuan = [];
 
     public $detail_rekapitulasi;
     public $detail_rekapitulasi_aspek;
     public $selected_indikator;
     public $data_temuan = [];
+    
 
     public function mount($id)
     {
-        $user = Auth::user();
-        $this->userRole = $user->role->slug;
+        $this->user = Auth::user();
 
         $this->survei = Survey::FindOrFail($id);
         $detail_rekapitulasi = [];
@@ -46,10 +46,27 @@ class DetailSurvei extends Component
                 $jurusan = 0;
                 $prodi = 0;
                 
-                $tm = DB::table($table)->where($indicator->id, 1)->count();
-                $cm = DB::table($table)->where($indicator->id, 2)->count();
-                $m = DB::table($table)->where($indicator->id, 3)->count();
-                $sm = DB::table($table)->where($indicator->id, 4)->count();
+                $jurusan_id = 1; // contoh ID jurusan
+
+                $tm = DB::table($table)
+                        ->where($indicator->id, 1)
+                        ->where('jurusan_id', $jurusan_id)
+                        ->count();
+
+                $cm = DB::table($table)
+                        ->where($indicator->id, 2)
+                        ->where('jurusan_id', $jurusan_id)
+                        ->count();
+
+                $m = DB::table($table)
+                        ->where($indicator->id, 3)
+                        ->where('jurusan_id', $jurusan_id)
+                        ->count();
+
+                $sm = DB::table($table)
+                        ->where($indicator->id, 4)
+                        ->where('jurusan_id', $jurusan_id)
+                        ->count();
 
                 $avg_tm[] = $tm;
                 $avg_cm[] = $cm;
@@ -154,18 +171,76 @@ class DetailSurvei extends Component
     public function getTemuan($indikator_id)
     {
         $this->selected_indikator = Indikator::find($indikator_id);
-        $this->data_temuan = Temuan::where('indikator_id', $indikator_id)->get();
-    }
 
+        // Inisialisasi query dasar
+        $query = Temuan::where('indikator_id', $indikator_id);
+
+        switch ($this->user->role->slug) {
+            case 'universitas':
+                // Tampilkan semua data temuan
+                $query->where('fakultas_id', null)->where('prodi_id', null)
+                break;
+            case 'fakultas':
+                // Ambil ID fakultas pengguna
+                $fakultas_id = $this->user->fakultas->id;
+                
+                // Ambil ID prodi yang terkait dengan fakultas
+                 $prodi_ids = DB::table('prodis')
+                ->join('jurusans', 'prodis.jurusan_id', '=', 'jurusans.id')
+                ->where('jurusans.fakultas_id', $fakultas_id)
+                ->pluck('prodis.id');
+                
+                // Filter data temuan berdasarkan fakultas dan prodi dalam fakultas
+                $query->where(function ($q) use ($fakultas_id, $prodi_ids) {
+                    $q->where('fakultas_id', $fakultas_id)
+                    ->orWhereIn('prodi_id', $prodi_ids);
+                });
+                break;
+            case 'prodi':
+                // Filter data temuan berdasarkan prodi pengguna
+                $prodi_id = $this->user->prodi->id;
+                $query->where('prodi_id', $prodi_id);
+                break;
+            default:
+                // Tangani peran yang tidak terduga jika perlu
+                break;
+        }
+
+        // Ambil data temuan yang sudah difilter
+        $this->data_temuan = $query->get();
+    }
     public function addTemuan()
     {
+        
         $this->validate([
             'temuan.temuan' => 'required'
         ]);
 
+        $fakultas_id = null;
+        $prodi_id = null;
+
+        switch ($this->user->role->slug) {
+            case 'universitas':
+                // Both fakultas_id and prodi_id should be null
+                break;
+            case 'fakultas':
+                // Set fakultas_id as needed, prodi_id should be null
+                $fakultas_id = $this->user->fakultas->id; // Make sure $this->fakultas_id is set
+                break;
+            case 'prodi':
+                // Set prodi_id as needed, fakultas_id should be null
+                $prodi_id = $this->user->prodi->id; // Make sure $this->prodi_id is set
+                break;
+            default:
+                // Handle unexpected user roles if needed
+                break;
+        }
+
         Temuan::create([
             'temuan' => $this->temuan['temuan'],
             'indikator_id' => $this->selected_indikator->id,
+            'fakultas_id' => $fakultas_id,
+            'prodi_id' => $prodi_id,
         ]);
 
         return redirect()->route('detail_survei', ['id' => $this->survei->id]);

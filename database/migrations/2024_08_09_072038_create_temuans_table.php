@@ -19,7 +19,6 @@ return new class extends Migration
             $table->foreign('prodi_id')->references('id')->on('prodis')->onDelete('cascade');
             $table->foreign('fakultas_id')->references('id')->on('fakultas')->onDelete('cascade');
 
-
             $table->text('temuan');
             $table->timestamps();
         });

@@ -1,5 +1,5 @@
 <main class="bg-[#f9fafc] min-h-screen"
-    x-data="{ activeMenu: 'grafik', userRole: '{{ $userRole }}', temuanModal: false }">
+    x-data="{ activeMenu: 'grafik', userRole: '{{ $user->role->slug }}', temuanModal: false }">
     <style>
         table,
         th,
@@ -265,7 +265,7 @@
                             <!-- Modal header -->
                             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
                                 <h3 class="text-lg font-bold text-gray-900 ">
-                                    Tambah Data {{ $master }}
+                                    Data Temuan
                                 </h3>
                                 <button type="button" @click="temuanModal = false"
                                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
@@ -278,43 +278,53 @@
                             </div>
                             <!-- Modal body -->
                             <div class="p-4 md:p-5 space-y-4">
-                                <div>
+                                <div class="px-2">
                                     <ol class="relative border-s border-gray-200 dark:border-gray-700">
+                                        @if ($data_temuan && count($data_temuan) > 0)
                                         @foreach ($data_temuan as $item)
-                                        <li class="mb-5 ms-4">
+                                        @php
+                                        $name = null;
+                                        $label = null;
+                                        switch (true) {
+                                        case !is_null($item->prodi_id) && $item->prodi:
+                                        $name = $item->prodi->name;
+                                        $label = 'Prodi';
+                                        break;
+                                        case !is_null($item->fakultas_id) && $item->fakultas:
+                                        $name = $item->fakultas->name;
+                                        $label = 'Fakultas';
+                                        break;
+                                        default:
+                                        $name = '';
+                                        $label = 'Universitas';
+                                        break;
+                                        }
+                                        @endphp
+                                        <li class="mb-4 ms-4">
                                             <div
                                                 class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700">
                                             </div>
-                                            <time
-                                                class="mb-1 text-xs font-normal leading-none text-gray-400 dark:text-gray-500">February
-                                                2022</time>
                                             <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
+                                                {{ $label }} {{ $name }}
                                             </h3>
-                                            <p class="mb-4 text-sm font-normal text-gray-500 dark:text-gray-400">Get
-                                                access to over 20+ pages including a dashboard layout, charts, kanban
-                                                board, calendar, and pre-order E-commerce & Marketing pages.</p>
+                                            <time
+                                                class="mb-1 text-xs font-normal leading-none text-gray-400 dark:text-gray-500">
+                                                {{ $item->created_at }}
+                                            </time>
+                                            <p class="mb-4 text-sm font-normal text-gray-500 dark:text-gray-400">
+                                                {{ $item->temuan }}.
+                                            </p>
                                         </li>
                                         @endforeach
-
-
-                                        <li class="mb-5 ms-4">
-                                            <div
-                                                class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700">
-                                            </div>
-                                            <time
-                                                class="mb-1 text-xs font-normal leading-none text-gray-400 dark:text-gray-500">February
-                                                2022</time>
-                                            <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Jurusan</h3>
-                                            <p class="mb-4 text-sm font-normal text-gray-500 dark:text-gray-400">Get
-                                                access to over 20+ pages including a dashboard layout, charts, kanban
-                                                board, calendar, and pre-order E-commerce & Marketing pages.</p>
-                                        </li>
+                                        @else
+                                        <p>No data available.</p>
+                                        @endif
                                     </ol>
                                 </div>
 
                                 <form wire:submit.prevent="addTemuan" class="grid grid-cols-12 p-2">
-                                    <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                                        <label for="temuan" class="text-xs ">Temuan :</label>
+                                    <div class="flex flex-col gap-y-2 col-span-12 mb-2">
+                                        <label for="temuan" class="text-xs ">Kirim Temuan :</label>
                                         <textarea type="text" id="temuan" name="temuan" wire:model="temuan.temuan"
                                             placeholder="Masukan temuan"
                                             class="p-2 text-xs rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200"></textarea>

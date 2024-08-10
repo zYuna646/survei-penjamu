@@ -149,7 +149,6 @@
                             <th>No.</th>
                             <th>Email</th>
                             <th>Nama</th>
-                            <th>Jurusan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -159,7 +158,9 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $userProdi['email'] }}</td>
                             <td>{{ $userProdi['name'] }}</td>
-                            <td>{{ $userProdi->jurusan->name }}</td>
+                            @php
+                                dd($userProdi)
+                            @endphp
                             <td>
                                 <div class="inline-flex gap-x-2">
                                     <!-- Edit button -->
