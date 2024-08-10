@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Survey;
-use App\Models\Jurusan;
+use App\Models\Prodi;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -17,17 +17,17 @@ class RunSurvei extends Component
 
     public $responses = [];
 
-    public $dataJurusan;
+    public $dataProdi;
     public $dataSurvei;
-    public $jurusan_id;
+    public $prodi_id;
 
-    public $jurusan;
+    public $prodi;
     public $data;
 
     public function mount($code)
     {
         $this->dataSurvei = Survey::where('code', $code)->first();
-        $this->dataJurusan = Jurusan::all();
+        $this->dataProdi = Prodi::all();
         
         
         $aspekCollection = $this->dataSurvei->aspek;
@@ -57,7 +57,7 @@ class RunSurvei extends Component
     public function sendSurveiRespon()
     {
         $this->validate([
-            'jurusan' => 'required',
+            'prodi' => 'required',
         ]);
         
 
@@ -70,7 +70,7 @@ class RunSurvei extends Component
                     $table[$key] = $value;
                 }
             }
-            $table['jurusan_id'] = $this->jurusan;
+            $table['prodi_id'] = $this->prodi;
             DB::table($this->dataSurvei->id)->insert($table);
             
             $this->isComplete = true;

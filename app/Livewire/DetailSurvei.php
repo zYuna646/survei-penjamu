@@ -24,6 +24,7 @@ class DetailSurvei extends Component
     public $detail_rekapitulasi_aspek;
     public $selected_indikator;
     public $data_temuan = [];
+    public $curent_user_value = [];
     
 
     public function mount($id)
@@ -46,26 +47,23 @@ class DetailSurvei extends Component
                 $jurusan = 0;
                 $prodi = 0;
                 
-                $jurusan_id = 1; // contoh ID jurusan
+                // $jurusan_id = 1; // contoh ID jurusan
 
                 $tm = DB::table($table)
                         ->where($indicator->id, 1)
-                        ->where('jurusan_id', $jurusan_id)
+                      
                         ->count();
 
                 $cm = DB::table($table)
                         ->where($indicator->id, 2)
-                        ->where('jurusan_id', $jurusan_id)
                         ->count();
 
                 $m = DB::table($table)
                         ->where($indicator->id, 3)
-                        ->where('jurusan_id', $jurusan_id)
                         ->count();
 
                 $sm = DB::table($table)
                         ->where($indicator->id, 4)
-                        ->where('jurusan_id', $jurusan_id)
                         ->count();
 
                 $avg_tm[] = $tm;
@@ -178,7 +176,8 @@ class DetailSurvei extends Component
         switch ($this->user->role->slug) {
             case 'universitas':
                 // Tampilkan semua data temuan
-                $query->where('fakultas_id', null)->where('prodi_id', null)
+                $this->temuan['temuan']= $query->where('fakultas_id', null)->where('prodi_id', null)->first()->temuan ?? '';
+                $query = Temuan::where('indikator_id', $indikator_id);
                 break;
             case 'fakultas':
                 // Ambil ID fakultas pengguna
@@ -195,6 +194,9 @@ class DetailSurvei extends Component
                     $q->where('fakultas_id', $fakultas_id)
                     ->orWhereIn('prodi_id', $prodi_ids);
                 });
+
+                $this->temuan['temuan']= $query->where('fakultas_id', $fakultas_id)->first()->temuan ?? '';
+
                 break;
             case 'prodi':
                 // Filter data temuan berdasarkan prodi pengguna
@@ -206,10 +208,11 @@ class DetailSurvei extends Component
                 break;
         }
 
+        
         // Ambil data temuan yang sudah difilter
         $this->data_temuan = $query->get();
     }
-    public function addTemuan()
+    public function saveTemuan()
     {
         
         $this->validate([
@@ -236,12 +239,25 @@ class DetailSurvei extends Component
                 break;
         }
 
-        Temuan::create([
-            'temuan' => $this->temuan['temuan'],
-            'indikator_id' => $this->selected_indikator->id,
-            'fakultas_id' => $fakultas_id,
-            'prodi_id' => $prodi_id,
-        ]);
+        $existingTemuan = Temuan::where('indikator_id', $this->selected_indikator->id)
+        ->where('fakultas_id', $fakultas_id)
+        ->where('prodi_id', $prodi_id)
+        ->first();
+
+        if ($existingTemuan) {
+            // Jika sudah ada, lakukan update
+            $existingTemuan->update([
+                'temuan' => $this->temuan['temuan'],
+            ]);
+        } else {
+            // Jika belum ada, lakukan insert
+            Temuan::create([
+                'temuan' => $this->temuan['temuan'],
+                'indikator_id' => $this->selected_indikator->id,
+                'fakultas_id' => $fakultas_id,
+                'prodi_id' => $prodi_id,
+            ]);
+        }
 
         return redirect()->route('detail_survei', ['id' => $this->survei->id]);
     }

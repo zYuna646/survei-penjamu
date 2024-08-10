@@ -278,9 +278,11 @@
                             </div>
                             <!-- Modal body -->
                             <div class="p-4 md:p-5 space-y-4">
+
                                 <div class="px-2">
                                     <ol class="relative border-s border-gray-200 dark:border-gray-700">
-                                        @if ($data_temuan && count($data_temuan) > 0)
+                                        @if ($data_temuan && count($data_temuan) > 0 )
+
                                         @foreach ($data_temuan as $item)
                                         @php
                                         $name = null;
@@ -299,6 +301,7 @@
                                         $label = 'Universitas';
                                         break;
                                         }
+
                                         @endphp
                                         <li class="mb-4 ms-4">
                                             <div
@@ -322,12 +325,14 @@
                                     </ol>
                                 </div>
 
-                                <form wire:submit.prevent="addTemuan" class="grid grid-cols-12 p-2">
+                                <form wire:submit.prevent="saveTemuan" class="grid grid-cols-12 p-2">
                                     <div class="flex flex-col gap-y-2 col-span-12 mb-2">
                                         <label for="temuan" class="text-xs ">Kirim Temuan :</label>
-                                        <textarea type="text" id="temuan" name="temuan" wire:model="temuan.temuan"
+                                        <textarea id="temuan" name="temuan" wire:model="temuan.temuan"
                                             placeholder="Masukan temuan"
-                                            class="p-2 text-xs rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200"></textarea>
+                                            class="p-2 text-xs rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                            
+                                        </textarea>
                                         @error('temuan.temuan') <span class="text-red-500 text-xs">{{ $message }}</span>
                                         @enderror
                                     </div>
