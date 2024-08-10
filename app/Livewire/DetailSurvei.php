@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Survey;
 use App\Models\Aspek;
 use App\Models\Indikator;
+use App\Models\Temuan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -17,9 +18,12 @@ class DetailSurvei extends Component
     public $master = 'Survei';
     public $survei;
     public $userRole;
+    public $temuan = [];
 
     public $detail_rekapitulasi;
     public $detail_rekapitulasi_aspek;
+    public $selected_indikator;
+    public $data_temuan = [];
 
     public function mount($id)
     {
@@ -145,6 +149,26 @@ class DetailSurvei extends Component
         } else {
             return 'Tidak Puas';
         }
+    }
+
+    public function getTemuan($indikator_id)
+    {
+        $this->selected_indikator = Indikator::find($indikator_id);
+        $this->data_temuan = Temuan::where('indikator_id', $indikator_id)->get();
+    }
+
+    public function addTemuan()
+    {
+        $this->validate([
+            'temuan.temuan' => 'required'
+        ]);
+
+        Temuan::create([
+            'temuan' => $this->temuan['temuan'],
+            'indikator_id' => $this->selected_indikator->id,
+        ]);
+
+        return redirect()->route('detail_survei', ['id' => $this->survei->id]);
     }
 
     private function calculateAverageRekapitulasi($avg_tm, $avg_cm, $avg_m, $avg_sm)

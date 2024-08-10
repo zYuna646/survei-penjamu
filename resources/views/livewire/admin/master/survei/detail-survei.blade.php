@@ -1,4 +1,5 @@
-<main class="bg-[#f9fafc] min-h-screen" x-data="{ activeMenu: 'grafik', userRole: '{{ $userRole }}' }">
+<main class="bg-[#f9fafc] min-h-screen"
+    x-data="{ activeMenu: 'grafik', userRole: '{{ $userRole }}', temuanModal: false }">
     <style>
         table,
         th,
@@ -74,8 +75,8 @@
                             Tabel Rekapitulasi
                         </span>
                     </div>
-                    <div @click="activeMenu = 'tabel'"
-                        :class="{ 'bg-color-info-500 text-white border-color-info-500': activeMenu === 'tabel' }"
+                    <div @click="activeMenu = 'temuan'"
+                        :class="{ 'bg-color-info-500 text-white border-color-info-500': activeMenu === 'temuan' }"
                         class="p-3 px-4 border  rounded-lg inline-flex gap-x-2 items-center hover:cursor-pointer transition-colors hover:bg-color-info-400 hover:text-white hover:border-color-info-400">
                         <span class="text-lg">
                             <i class="fas fa-exclamation-triangle"></i>
@@ -113,7 +114,6 @@
                             <option value="">Semua Prodi</option>
                         </select>
                     </template>
-
                 </form>
             </div>
             <div x-show="activeMenu === 'grafik'" x-cloak>
@@ -128,36 +128,6 @@
                 </div>
             </div>
             <div x-show="activeMenu === 'tabel'" x-cloak>
-                <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
-                    <div class="mb-4">
-                        <p class="text-lg font-bold">Informasi Grafik</p>
-                    </div>
-                    <hr>
-                    <div class="text-xs mt-4 overflow-x-auto">
-                        <table class="w-full">
-                            <thead>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Instrumen</th>
-                                    <th>Tidak Puas</th>
-                                    <th>Kurang Puas</th>
-                                    <th>Puas</th>
-                                    <th>Sangat Puas</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Contoh</td>
-                                    <td>1</td>
-                                    <td>123</td>
-                                    <td>12</td>
-                                    <td>1256</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
                 @foreach ($survei->aspek as $aspek)
                 <div class="p-6 mt-2 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
                     <div class="mb-4">
@@ -218,6 +188,154 @@
                     </div>
                 </div>
                 @endforeach
+            </div>
+            <div x-show="activeMenu === 'temuan'" x-cloak>
+                @foreach ($survei->aspek as $aspek)
+                <div class="p-6 mt-2 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                    <div class="mb-4">
+                        <p class="text-lg font-bold">{{ $aspek->name }}</p>
+                    </div>
+                    <div class="text-xs mt-2 overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Pertanyaan</th>
+                                    <th>TM</th>
+                                    <th>CM</th>
+                                    <th>M</th>
+                                    <th>SM</th>
+                                    <th>Total Rsp</th>
+                                    <th>Nilai Butir</th>
+                                    <th>Mutu Layanan</th>
+                                    <th>Kinerja Unit Pelayanan</th>
+                                    <th>Tingkat Kepuasan</th>
+                                    <th>Predikat</th>
+                                    <th>Temuan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($aspek->indicator as $index => $item)
+                                <tr class="">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{$item->name}}</td>
+                                    <td>{{$detail_rekapitulasi[$aspek->id][$item['id']][1]}}</td>
+                                    <td>{{$detail_rekapitulasi[$aspek->id][$item['id']][2]}}</td>
+                                    <td>{{$detail_rekapitulasi[$aspek->id][$item['id']][3]}}</td>
+                                    <td>{{$detail_rekapitulasi[$aspek->id][$item['id']][4]}}</td>
+                                    <td>{{$detail_rekapitulasi[$aspek->id][$item['id']]['total']}}</td>
+                                    <td>{{$detail_rekapitulasi[$aspek->id][$item['id']]['nilai_butir']}}</td>
+                                    <td>{{$detail_rekapitulasi[$aspek->id][$item['id']]['mutu_layanan']}}</td>
+                                    <td>{{$detail_rekapitulasi[$aspek->id][$item['id']]['kinerja_unit']}}</td>
+                                    <td>{{$detail_rekapitulasi[$aspek->id][$item['id']]['tingkat_kepuasan'] }}%</td>
+                                    <td>{{$detail_rekapitulasi[$aspek->id][$item['id']]['predikat_kepuasan']}}</td>
+                                    <td>
+                                        <div @click="temuanModal = !temuanModal" wire:click="getTemuan({{ $item->id }})"
+                                            class="underline text-color-info-500 hover:cursor-pointer hover:text-color-info-400">
+                                            Periksa</div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                                <tr>
+                                    <td></td>
+                                    <td class="font-bold">Total Rerata Penilaian Aspek</td>
+                                    <td>{{$detail_rekapitulasi_aspek[$aspek->id][1]}}</td>
+                                    <td>{{$detail_rekapitulasi_aspek[$aspek->id][2]}}</td>
+                                    <td>{{$detail_rekapitulasi_aspek[$aspek->id][3]}}</td>
+                                    <td>{{$detail_rekapitulasi_aspek[$aspek->id][4]}}</td>
+                                    <td>{{$detail_rekapitulasi_aspek[$aspek->id]['total']}}</td>
+                                    <td>{{$detail_rekapitulasi_aspek[$aspek->id]['nilai_butir']}}</td>
+                                    <td>{{$detail_rekapitulasi_aspek[$aspek->id]['mutu_layanan']}}</td>
+                                    <td>{{$detail_rekapitulasi_aspek[$aspek->id]['kinerja_unit']}}</td>
+                                    <td>{{$detail_rekapitulasi_aspek[$aspek->id]['tingkat_kepuasan'] }}%</td>
+                                    <td>{{$detail_rekapitulasi_aspek[$aspek->id]['predikat_kepuasan']}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                @endforeach
+                {{-- temuaModal --}}
+                <div x-show="temuanModal" style="display: none" x-on:keydown.escape.window="addModal = false"
+                    class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 h-full max-h-full bg-black/20">
+                    <div class="relative p-4 w-full max-w-2xl max-h-full" @click.outside="temuanModal = false">
+                        <!-- Modal content -->
+                        <div class="relative bg-white rounded-lg shadow ">
+                            <!-- Modal header -->
+                            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
+                                <h3 class="text-lg font-bold text-gray-900 ">
+                                    Tambah Data {{ $master }}
+                                </h3>
+                                <button type="button" @click="temuanModal = false"
+                                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
+                                    data-modal-hide="default-modal">
+                                    <span>
+                                        <i class="fas fa-times"></i>
+                                    </span>
+                                    <span class="sr-only">Close modal</span>
+                                </button>
+                            </div>
+                            <!-- Modal body -->
+                            <div class="p-4 md:p-5 space-y-4">
+                                <div>
+                                    <ol class="relative border-s border-gray-200 dark:border-gray-700">
+                                        @foreach ($data_temuan as $item)
+                                        <li class="mb-5 ms-4">
+                                            <div
+                                                class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700">
+                                            </div>
+                                            <time
+                                                class="mb-1 text-xs font-normal leading-none text-gray-400 dark:text-gray-500">February
+                                                2022</time>
+                                            <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
+                                            </h3>
+                                            <p class="mb-4 text-sm font-normal text-gray-500 dark:text-gray-400">Get
+                                                access to over 20+ pages including a dashboard layout, charts, kanban
+                                                board, calendar, and pre-order E-commerce & Marketing pages.</p>
+                                        </li>
+                                        @endforeach
+
+
+                                        <li class="mb-5 ms-4">
+                                            <div
+                                                class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700">
+                                            </div>
+                                            <time
+                                                class="mb-1 text-xs font-normal leading-none text-gray-400 dark:text-gray-500">February
+                                                2022</time>
+                                            <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Jurusan</h3>
+                                            <p class="mb-4 text-sm font-normal text-gray-500 dark:text-gray-400">Get
+                                                access to over 20+ pages including a dashboard layout, charts, kanban
+                                                board, calendar, and pre-order E-commerce & Marketing pages.</p>
+                                        </li>
+                                    </ol>
+                                </div>
+
+                                <form wire:submit.prevent="addTemuan" class="grid grid-cols-12 p-2">
+                                    <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                                        <label for="temuan" class="text-xs ">Temuan :</label>
+                                        <textarea type="text" id="temuan" name="temuan" wire:model="temuan.temuan"
+                                            placeholder="Masukan temuan"
+                                            class="p-2 text-xs rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200"></textarea>
+                                        @error('temuan.temuan') <span class="text-red-500 text-xs">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12" color="info"
+                                        type="submit" size="sm">
+                                        <span wire:loading.remove>
+                                            <i class="fas fa-plus"></i>
+                                        </span>
+                                        <span wire:loading class="animate-spin">
+                                            <i class="fas fa-circle-notch "></i>
+                                        </span>
+                                        Tambah Temuan
+                                    </x-button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
