@@ -22,6 +22,7 @@ return new class extends Migration
 
 
             $table->text('temuan');
+            $table->text('solusi');
             $table->timestamps();
         });
     }

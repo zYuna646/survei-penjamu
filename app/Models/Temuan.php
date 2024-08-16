@@ -13,7 +13,8 @@ class Temuan extends Model
         'indikator_id',
         'fakultas_id',
         'prodi_id',
-        'temuan'
+        'temuan',
+        'solusi'
     ];
 
     public function indikator()
