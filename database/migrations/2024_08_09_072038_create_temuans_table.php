@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreign('fakultas_id')->references('id')->on('fakultas')->onDelete('cascade');
 
             $table->text('temuan');
+            $table->text('solusi');
             $table->timestamps();
         });
     }
