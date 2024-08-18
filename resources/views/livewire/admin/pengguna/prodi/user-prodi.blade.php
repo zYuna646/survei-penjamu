@@ -158,9 +158,6 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $userProdi['email'] }}</td>
                             <td>{{ $userProdi['name'] }}</td>
-                            @php
-                                dd($userProdi)
-                            @endphp
                             <td>
                                 <div class="inline-flex gap-x-2">
                                     <!-- Edit button -->

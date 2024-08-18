@@ -65,4 +65,36 @@ class UserProfile extends Component
         return redirect()->to('user_profile'); 
 
     }
+
+    public function changeUserProfile()
+    {
+        $this->validate([
+            'user.name' => 'required',
+            'user.email' => 'required|min:8',
+        ]);
+
+        try{
+            DB::beginTransaction();
+
+            $dataUser = User::findOrFail($this->user['id']);
+            $dataUser->update([
+                'name' => $this->user['name'],
+                'email' => $this->user['email']
+            ]);
+
+            DB::commit();
+            session()->flash('toastMessage', 'Data user berhasil diubah.');
+            session()->flash('toastType', 'success');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
+
+       
+        
+        return redirect()->to('user_profile');
+    }
 }

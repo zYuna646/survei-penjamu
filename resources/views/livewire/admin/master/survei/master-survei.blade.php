@@ -119,6 +119,7 @@
                             <th>Target</th>
                             <th>Status</th>
                             <th>Aksi</th>
+                            <th>Manipulasi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -162,6 +163,15 @@
                                 @endif
                             </td>
                             <td>
+                                @if($survei['isAktif'])
+                                <x-button class="" color="info" size="sm" onclick="window.location.href='{{ route('manipulation_survei', $survei['id']) }}'">
+                                    Manipulasi
+                                </x-button>
+                                @else
+                                -,
+                                @endif
+                            </td>
+                            <td>
                                 <div class="inline-flex gap-x-1">
                                     <!--Fill button -->
                                     <x-button class="" color="info" size="sm"
@@ -182,6 +192,7 @@
                                     </x-button>
                                 </div>
                             </td>
+
                         </tr>
                         @endforeach
                     </tbody>

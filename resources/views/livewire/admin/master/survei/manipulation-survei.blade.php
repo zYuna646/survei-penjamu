@@ -70,17 +70,17 @@
             </div>
         </div>
         <div class="col-span-12 lg:col-span-8 w-full flex flex-col gap-y-4 h-fit">
-            <div class="flex flex-col gap-y-4">
+            <form class="flex flex-col gap-y-4">
                 <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm ">
                     <div class="mb-4">
                         <p class="text-lg font-bold">Jumlah</p>
                     </div>
-                    <form action="" class="flex gap-x-2 gap-4 w-full">
+                    <div class="flex gap-x-2 gap-4 w-full">
                         <input type="text" name="" placeholder="Jumlah Sebenarnya" value="{{ $jumlah }}" disabled
                             class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200" />
                         <input type="text" name="" placeholder="Jumlah" value="{{ $jumlah }}" id="jumlah"
                             class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200" />
-                    </form>
+                    </div>
                 </div>
                 @foreach($data as $index => $item)
                 <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
@@ -121,7 +121,7 @@
                     @endforeach
                 </div>
                 @endforeach
-            </div>
+            </form>
         </div>
     </section>
 

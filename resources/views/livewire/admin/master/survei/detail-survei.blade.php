@@ -15,7 +15,7 @@
         }
     </style>
     <section class=" max-w-screen-xl w-full mx-auto px-4 pt-24 grid grid-cols-12 gap-4 pb-12 ">
-        <div x-data=" { clickCount: 0 }"
+        <div
             class="p-8 col-span-12 lg:col-span-4 h-fit bg-white flex flex-col lg:flex-row gap-y-2 gap-x-4 rounded-lg border border-slate-100 shadow-sm w-full">
             <div class=" flex flex-col gap-y-2 w-full">
                 <h1 class="font-bold text-base">{{ $survei['name'] }}</h1>
@@ -46,12 +46,7 @@
                     <x-button color="danger" size="sm" onclick="window.location.href='{{ route('master_survei') }}'">
                         Kembali
                     </x-button>
-                    <template x-if="clickCount >= 2" x-transition>
-                        <x-button color="info" size="sm"
-                            onclick="window.location.href='{{ route('manipulation_survei', $survei['id']) }}'">
-                            Manipulasi Data
-                        </x-button>
-                    </template>
+                   
                 </div>
                 <hr class="w-full mt-4">
                 <div class="mt-2 flex flex-col gap-y-2">
@@ -230,7 +225,7 @@
                                     <td>{{$detail_rekapitulasi[$aspek->id][$item['id']]['tingkat_kepuasan'] }}%</td>
                                     <td>{{$detail_rekapitulasi[$aspek->id][$item['id']]['predikat_kepuasan']}}</td>
                                     <td>
-                                        <div @click="temuanModal = !temuanModal" wire:click="getTemuan({{ $item->id }})"
+                                        <div onclick="window.location.href='{{ route('temuan_survei', $item->id) }}'"
                                             class="underline text-color-info-500 hover:cursor-pointer hover:text-color-info-400">
                                             Periksa</div>
                                     </td>
