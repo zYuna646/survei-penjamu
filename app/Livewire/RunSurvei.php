@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use App\Models\Survey;
 use App\Models\Prodi;
+use App\Models\Jurusan;
+use App\Models\Fakultas;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -18,8 +20,14 @@ class RunSurvei extends Component
     public $responses = [];
 
     public $dataProdi;
+    public $dataJurusan;
+    public $dataFakultas;
     public $dataSurvei;
     public $prodi_id;
+
+    public $selectedFakultas;
+    public $selectedJurusan;
+    public $selectedProdi;
 
     public $prodi;
     public $data;
@@ -28,6 +36,8 @@ class RunSurvei extends Component
     {
         $this->dataSurvei = Survey::where('code', $code)->first();
         $this->dataProdi = Prodi::all();
+        $this->dataJurusan = Jurusan::all();
+        $this->dataFakultas = Fakultas::all();
         
         
         $aspekCollection = $this->dataSurvei->aspek;
@@ -52,6 +62,31 @@ class RunSurvei extends Component
         return view('livewire.landing.run-survei')
             ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar, 'showFooter' => $this->showFooter])
             ->title('UNG Survey - Survei ' . $this->dataSurvei['name']);
+    }
+
+    public function getJurusanByFakultas()
+    {
+        if ($this->selectedFakultas) {
+            $this->dataJurusan = Jurusan::where('fakultas_id', $this->selectedFakultas)->get();
+            $this->selectedJurusan = null; // Reset the selected Jurusan
+            $this->dataProdi = []; // Reset Prodi when Fakultas changes
+            $this->selectedProdi = null;
+        } else {
+            $this->dataJurusan = [];
+            $this->dataProdi = [];
+            $this->selectedJurusan = null;
+            $this->selectedProdi = null;
+        }
+    }
+    public function getProdiByJurusan()
+    {
+        if ($this->selectedJurusan) {
+            $this->dataProdi = Prodi::where('jurusan_id', $this->selectedJurusan)->get();
+            $this->selectedProdi = null; // Reset the selected Prodi
+        } else {
+            $this->dataProdi = [];
+            $this->selectedProdi = null;
+        }
     }
 
     public function sendSurveiRespon()

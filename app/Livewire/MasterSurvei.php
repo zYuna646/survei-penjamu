@@ -107,6 +107,34 @@ class MasterSurvei extends Component
 
         return redirect()->to('master_survei');
     }
+
+    public function changeSurveiUpdate($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $survey = Survey::find($id);
+            if ($survey) {
+                $survey->isUpdate = !$survey->isUpdate;
+                $survey->save();
+            }
+
+            DB::commit();
+
+            session()->flash('toastMessage', 'Data berhasil diubah');
+            session()->flash('toastType', 'success');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
+
+        return redirect()->to('master_survei');
+    }
+
+    
     public function deleteSurvei($id)    
     {
         try {

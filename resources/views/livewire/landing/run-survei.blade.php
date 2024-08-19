@@ -6,7 +6,7 @@
     }
 ">
     <!-- Toast -->
-    <div x-show="showToast" x-transition 
+    <div x-show="showToast" x-transition
         :class="toastType === 'success' ? 'text-color-success-500' : 'text-color-danger-500'"
         class="fixed top-24 right-5 z-50 flex items-center w-full max-w-xs p-4 rounded-lg shadow bg-white" role="alert">
         <div :class="toastType === 'success' ? 'text-color-success-500 bg-color-success-100' : 'text-color-danger-500 bg-color-danger-100'"
@@ -74,6 +74,27 @@
                         <p class="text-lg font-bold">Biodata Diri</p>
                     </div>
                     <div class="grid grid-cols-12">
+                        <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                            <label for="nama" class="text-sm ">Fakultas :</label>
+                            <select wire:change="getJurusanByFakultas" wire:model="selectedFakultas"
+                                class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                <option value="">Semua Fakultas</option>
+                                @foreach($dataFakultas as $fakultas)
+                                <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
+                                @endforeach
+                            </select>
+                           
+                        </div>
+                        <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                            <label for="nama" class="text-sm ">Jurusan :</label>
+                            <select  wire:change="getProdiByJurusan" wire:model="selectedJurusan"
+                                class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                <option value="">Semua Jurusan</option>
+                                @foreach($dataJurusan as $jurusan)
+                                <option value="{{ $jurusan->id }}">{{ $jurusan->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                             <label for="nama" class="text-sm ">Prodi :</label>
                             <select name="prodi_id" wire:model="prodi"

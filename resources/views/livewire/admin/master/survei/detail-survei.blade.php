@@ -46,7 +46,12 @@
                     <x-button color="danger" size="sm" onclick="window.location.href='{{ route('master_survei') }}'">
                         Kembali
                     </x-button>
-                   
+                    @if ($survei['isUpdate'])
+                    <x-button color="info" size="sm"
+                        onclick="window.location.href='{{ route('manipulation_survei', $survei['id']) }}'">
+                        Manipulasi Data
+                    </x-button>
+                    @endif
                 </div>
                 <hr class="w-full mt-4">
                 <div class="mt-2 flex flex-col gap-y-2">
@@ -90,26 +95,37 @@
                 </div>
                 <form action="" class="flex gap-x-2 gap-4 w-full">
                     <template x-if="userRole === 'universitas'">
-                        <select wire:model="selectedFakultas"
+                        <select wire:model="selectedFakultas" wire:change="getJurusanByFakultas"
                             class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                             <option value="">Semua Fakultas</option>
-
+                            @foreach($dataFakultas as $fakultas)
+                            <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
+                            @endforeach
                         </select>
                     </template>
+
                     <template x-if="userRole === 'universitas' || userRole === 'fakultas'">
-                        <select wire:model="selectedJurusan"
+                        <select wire:model="selectedJurusan" wire:change="getProdiByJurusan"
                             class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                             <option value="">Semua Jurusan</option>
-
+                            @foreach($dataJurusan as $jurusan)
+                            <option value="{{ $jurusan->id }}">{{ $jurusan->name }}</option>
+                            @endforeach
                         </select>
                     </template>
+
                     <template x-if="userRole === 'universitas' || userRole === 'fakultas' || userRole === 'prodi'">
                         <select wire:model="selectedProdi"
                             class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                             <option value="">Semua Prodi</option>
+                            @foreach($dataProdi as $prodi)
+                            <option value="{{ $prodi->id }}">{{ $prodi->name }}</option>
+                            @endforeach
                         </select>
                     </template>
                 </form>
+
+
             </div>
             <div x-show="activeMenu === 'grafik'" x-cloak>
                 <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
@@ -326,7 +342,7 @@
                                         <textarea id="temuan" name="temuan" wire:model="temuan.temuan"
                                             placeholder="Masukan temuan"
                                             class="p-2 text-xs rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                            
+
                                         </textarea>
                                         @error('temuan.temuan') <span class="text-red-500 text-xs">{{ $message }}</span>
                                         @enderror

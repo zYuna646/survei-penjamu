@@ -6,6 +6,9 @@ use App\Models\Survey;
 use App\Models\Aspek;
 use App\Models\Indikator;
 use App\Models\Temuan;
+use App\Models\Fakultas;
+use App\Models\Jurusan;
+use App\Models\Prodi;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -25,10 +28,20 @@ class DetailSurvei extends Component
     public $selected_indikator;
     public $data_temuan = [];
     public $curent_user_value = [];
+
+    public $dataFakultas;
+    public $dataJurusan;
+    public $dataProdi;
     
+    public $selectedFakultas;
+    public $selectedJurusan;
+    public $selectedProdi;
 
     public function mount($id)
     {
+        $this->dataFakultas = Fakultas::all();
+        $this->dataJurusan = Jurusan::all();
+        $this->dataProdi = Prodi::all();
         $this->user = Auth::user();
 
         $this->survei = Survey::FindOrFail($id);
@@ -47,11 +60,9 @@ class DetailSurvei extends Component
                 $jurusan = 0;
                 $prodi = 0;
                 
-                // $jurusan_id = 1; // contoh ID jurusan
-
+                
                 $tm = DB::table($table)
-                        ->where($indicator->id, 1)
-                      
+                        ->where($indicator->id, 1)        
                         ->count();
 
                 $cm = DB::table($table)
@@ -65,6 +76,7 @@ class DetailSurvei extends Component
                 $sm = DB::table($table)
                         ->where($indicator->id, 4)
                         ->count();
+               
 
                 $avg_tm[] = $tm;
                 $avg_cm[] = $cm;
@@ -166,101 +178,31 @@ class DetailSurvei extends Component
         }
     }
 
-    public function getTemuan($indikator_id)
+    public function getJurusanByFakultas()
     {
-        $this->selected_indikator = Indikator::find($indikator_id);
-
-        // Inisialisasi query dasar
-        $query = Temuan::where('indikator_id', $indikator_id);
-
-        switch ($this->user->role->slug) {
-            case 'universitas':
-                // Tampilkan semua data temuan
-                $this->temuan['temuan']= $query->where('fakultas_id', null)->where('prodi_id', null)->first()->temuan ?? '';
-                $query = Temuan::where('indikator_id', $indikator_id);
-                break;
-            case 'fakultas':
-                // Ambil ID fakultas pengguna
-                $fakultas_id = $this->user->fakultas->id;
-                
-                // Ambil ID prodi yang terkait dengan fakultas
-                 $prodi_ids = DB::table('prodis')
-                ->join('jurusans', 'prodis.jurusan_id', '=', 'jurusans.id')
-                ->where('jurusans.fakultas_id', $fakultas_id)
-                ->pluck('prodis.id');
-                
-                // Filter data temuan berdasarkan fakultas dan prodi dalam fakultas
-                $query->where(function ($q) use ($fakultas_id, $prodi_ids) {
-                    $q->where('fakultas_id', $fakultas_id)
-                    ->orWhereIn('prodi_id', $prodi_ids);
-                });
-
-                $this->temuan['temuan']= $query->where('fakultas_id', $fakultas_id)->first()->temuan ?? '';
-
-                break;
-            case 'prodi':
-                // Filter data temuan berdasarkan prodi pengguna
-                $prodi_id = $this->user->prodi->id;
-                $query->where('prodi_id', $prodi_id);
-                break;
-            default:
-                // Tangani peran yang tidak terduga jika perlu
-                break;
-        }
-
-        
-        // Ambil data temuan yang sudah difilter
-        $this->data_temuan = $query->get();
-    }
-    public function saveTemuan()
-    {
-        
-        $this->validate([
-            'temuan.temuan' => 'required'
-        ]);
-
-        $fakultas_id = null;
-        $prodi_id = null;
-
-        switch ($this->user->role->slug) {
-            case 'universitas':
-                // Both fakultas_id and prodi_id should be null
-                break;
-            case 'fakultas':
-                // Set fakultas_id as needed, prodi_id should be null
-                $fakultas_id = $this->user->fakultas->id; // Make sure $this->fakultas_id is set
-                break;
-            case 'prodi':
-                // Set prodi_id as needed, fakultas_id should be null
-                $prodi_id = $this->user->prodi->id; // Make sure $this->prodi_id is set
-                break;
-            default:
-                // Handle unexpected user roles if needed
-                break;
-        }
-
-        $existingTemuan = Temuan::where('indikator_id', $this->selected_indikator->id)
-        ->where('fakultas_id', $fakultas_id)
-        ->where('prodi_id', $prodi_id)
-        ->first();
-
-        if ($existingTemuan) {
-            // Jika sudah ada, lakukan update
-            $existingTemuan->update([
-                'temuan' => $this->temuan['temuan'],
-            ]);
+        if ($this->selectedFakultas) {
+            $this->dataJurusan = Jurusan::where('fakultas_id', $this->selectedFakultas)->get();
+            $this->selectedJurusan = null; // Reset the selected Jurusan
+            $this->dataProdi = []; // Reset Prodi when Fakultas changes
+            $this->selectedProdi = null;
         } else {
-            // Jika belum ada, lakukan insert
-            Temuan::create([
-                'temuan' => $this->temuan['temuan'],
-                'indikator_id' => $this->selected_indikator->id,
-                'fakultas_id' => $fakultas_id,
-                'prodi_id' => $prodi_id,
-            ]);
+            $this->dataJurusan = [];
+            $this->dataProdi = [];
+            $this->selectedJurusan = null;
+            $this->selectedProdi = null;
         }
-
-        return redirect()->route('detail_survei', ['id' => $this->survei->id]);
     }
+    public function getProdiByJurusan()
+    {
+        if ($this->selectedJurusan) {
+            $this->dataProdi = Prodi::where('jurusan_id', $this->selectedJurusan)->get();
+            $this->selectedProdi = null; // Reset the selected Prodi
+        } else {
+            $this->dataProdi = [];
+            $this->selectedProdi = null;
+        }
+    }
+
 
     private function calculateAverageRekapitulasi($avg_tm, $avg_cm, $avg_m, $avg_sm)
     {
