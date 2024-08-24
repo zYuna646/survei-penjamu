@@ -49,49 +49,58 @@
                     <h1 class="font-bold text-base">Filter Survei</h1>
                     <form action="" class="w-full flex flex-col gap-y-2">
                         <template x-if="userRole === 'universitas'">
-                            <select type="text" name="" wire:model="" placeholder="Semua Jurusan"
+                            <select type="text" name="" wire:model="selectedFakultas" placeholder="Semua Jurusan"
+                                wire:change="getJurusanByFakultas"
                                 class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 <option value="">Semua Fakultas</option>
+                                @foreach($dataFakultas as $fakultas)
+                                <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
+                                @endforeach
                             </select>
                         </template>
                         <template x-if="userRole === 'universitas' || userRole === 'fakultas'">
-                            <select type="text" name="" wire:model="" placeholder="Semua Jurusan"
+                            <select type="text" name="" wire:model="selectedJurusan" placeholder="Semua Jurusan"
+                                wire:change="getProdiByJurusan"
                                 class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 <option value="">Semua Jurusan</option>
+                                @foreach($dataJurusan as $jurusan)
+                                <option value="{{ $jurusan->id }}">{{ $jurusan->name }}</option>
+                                @endforeach
                             </select>
                         </template>
                         <template x-if="userRole === 'universitas' || userRole === 'fakultas' || userRole === 'prodi'">
-                            <select type="text" name="" wire:model="" placeholder="Semua Jurusan"
+                            <select type="text" name="" wire:model="selectedProdi" placeholder="Semua Prodi"
                                 class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 <option value="">Semua Prodi</option>
+                                @foreach($dataProdi as $prodi)
+                                <option value="{{ $prodi->id }}">{{ $prodi->name }}</option>
+                                @endforeach
                             </select>
                         </template>
                     </form>
-                    <x-button class="inline-flex gap-x-2 items-center w-fit" size="md" color="info">
-                        <span><i class="fas fa-filter"></i></span>
-                        Filter
-                    </x-button>
+
                 </div>
             </div>
         </div>
+
         <div class="col-span-12 lg:col-span-8 w-full flex flex-col gap-y-4 h-fit">
-            <form class="flex flex-col gap-y-4">
-                <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm ">
+            <form class="flex flex-col gap-y-4" wire:submit.prevent="prosesForm">
+                <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm">
                     <div class="mb-4">
                         <p class="text-lg font-bold">Jumlah</p>
                     </div>
                     <div class="flex gap-x-2 gap-4 w-full">
                         <div class="w-full">
-                            <label for="" class="text-sm ">Total :</label>
-                            <input type="text" name="" placeholder="Jumlah Sebenarnya" value="{{ $jumlah }}" disabled
+                            <label for="" class="text-sm">Total :</label>
+                            <input type="text" name="total_sebenarnya" placeholder="Jumlah Sebenarnya"
+                                value="{{ $jumlah }}" disabled
                                 class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200" />
                         </div>
                         <div class="w-full">
-                            <label for="" class="text-sm ">Total :</label>
-                            <input type="text" name="" placeholder="Jumlah" value="{{ $jumlah }}" id="jumlah"
+                            <label for="" class="text-sm">Total :</label>
+                            <input type="text" name="jumlah" placeholder="Jumlah" wire:model.defer="jumlah" id="jumlah"
                                 class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200" />
                         </div>
-
                     </div>
                 </div>
                 @foreach($data as $index => $item)
@@ -109,32 +118,30 @@
                             <div class="grid grid-cols-10 gap-4">
                                 <div class="lg:col-span-2 col-span-5">
                                     <label for="" class="text-sm">sm :</label>
-                                    <input type="number" id="tm-{{ $indicator->id }}" placeholder="TM"
-                                        value="{{ $record[$indicator->id][1] ?? '' }}"
+                                    <input type="number" wire:model.defer="record.{{ $indicator->id }}.1"
+                                        id="tm-{{ $indicator->id }}" placeholder="TM"
                                         class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 </div>
                                 <div class="lg:col-span-2 col-span-5">
                                     <label for="" class="text-sm">m :</label>
-                                    <input type="number" id="m-{{ $indicator->id }}" placeholder="M"
-                                        value="{{ $record[$indicator->id][2] ?? '' }}"
+                                    <input type="number" wire:model.defer="record.{{ $indicator->id }}.2"
+                                        id="m-{{ $indicator->id }}" placeholder="M"
                                         class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 </div>
                                 <div class="lg:col-span-2 col-span-5">
                                     <label for="" class="text-sm">cm :</label>
-                                    <input type="number" id="cm-{{ $indicator->id }}" placeholder="CM"
-                                        value="{{ $record[$indicator->id][3] ?? '' }}"
+                                    <input type="number" wire:model.defer="record.{{ $indicator->id }}.3"
+                                        id="cm-{{ $indicator->id }}" placeholder="CM"
                                         class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 </div>
                                 <div class="lg:col-span-2 col-span-5">
                                     <label for="" class="text-sm">tm :</label>
-
-                                    <input type="number" id="sm-{{ $indicator->id }}" placeholder="SM"
-                                        value="{{ $record[$indicator->id][4] ?? '' }}"
+                                    <input type="number" wire:model.defer="record.{{ $indicator->id }}.4"
+                                        id="sm-{{ $indicator->id }}" placeholder="SM"
                                         class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 </div>
                                 <div class="lg:col-span-2 col-span-5">
                                     <label for="" class="text-sm">sisa :</label>
-
                                     <input type="text" id="sisa-{{ $indicator->id }}"
                                         value="{{ $sisa[$indicator->id] ?? '' }}" placeholder="Sisa"
                                         class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200"
@@ -147,11 +154,13 @@
                 </div>
                 @endforeach
                 <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex">
-                    <x-button class="" size="md" color="info" @click="sendModal = !sendModal" >
+                    <x-button class="" size="md" color="info" type="submit">
                         Kirim Jawaban
                     </x-button>
                 </div>
             </form>
+
+
         </div>
     </section>
 

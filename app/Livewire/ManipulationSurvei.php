@@ -5,6 +5,9 @@ namespace App\Livewire;
 use App\Models\Survey;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Fakultas;
+use App\Models\Jurusan;
+use App\Models\Prodi;
 use Livewire\Component;
 
 class ManipulationSurvei extends Component
@@ -20,9 +23,20 @@ class ManipulationSurvei extends Component
     public $userRole;
     public $sisa = [];
 
+    public $dataFakultas;
+    public $dataJurusan;
+    public $dataProdi;
+
+    public $selectedFakultas;
+    public $selectedJurusan;
+    public $selectedProdi;
 
     public function mount($id)
     {
+        
+        $this->dataFakultas = Fakultas::all();
+        $this->dataJurusan = Jurusan::all();
+        $this->dataProdi = Prodi::all();
         $user = Auth::user();
         $this->userRole = $user->role->slug;
 
@@ -54,6 +68,45 @@ class ManipulationSurvei extends Component
     {
         $this->calculateSisa();
     }
+
+    public function getJurusanByFakultas()
+    {
+        if ($this->selectedFakultas) {
+            $this->dataJurusan = Jurusan::where('fakultas_id', $this->selectedFakultas)->get();
+            $this->selectedJurusan = null; // Reset the selected Jurusan
+            $this->dataProdi = []; // Reset Prodi when Fakultas changes
+            $this->selectedProdi = null;
+        } else {
+            $this->dataJurusan = [];
+            $this->dataProdi = [];
+            $this->selectedJurusan = null;
+            $this->selectedProdi = null;
+        }
+    }
+    public function getProdiByJurusan()
+    {
+        if ($this->selectedJurusan) {
+            $this->dataProdi = Prodi::where('jurusan_id', $this->selectedJurusan)->get();
+            $this->selectedProdi = null; // Reset the selected Prodi
+        } else {
+            $this->dataProdi = [];
+            $this->selectedProdi = null;
+        }
+    }
+    public function prosesForm()
+    {
+        $output = [
+            'jumlah' => $this->jumlah,
+            'record' => [],
+        ];
+    
+        foreach ($this->record as $aspekId => $values) {
+            $output['record']['aspek_' . $aspekId] = $values;
+        }
+    
+        dd($output);
+    }
+    
 
 
     public function calculateSisa()
