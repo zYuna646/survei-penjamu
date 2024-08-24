@@ -33,7 +33,6 @@ class UserProdi extends Component
     {
         $this->dataFakultas = Fakultas::all();
         $this->dataUserProdi = User::where('role_id', '4')->get();
-        // dd($this->dataUserJurusan);
     }
     public function render()
     {

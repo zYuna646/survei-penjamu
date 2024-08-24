@@ -15,14 +15,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('prodi_id')->nullable();
             $table->unsignedBigInteger('fakultas_id')->nullable();
-
             $table->foreignId('indikator_id')->constrained('indikators');
             $table->foreign('prodi_id')->references('id')->on('prodis')->onDelete('cascade');
             $table->foreign('fakultas_id')->references('id')->on('fakultas')->onDelete('cascade');
 
-
+            $table->text('solusi')->nullable();
             $table->text('temuan');
-            $table->text('solusi');
             $table->timestamps();
         });
     }

@@ -3,7 +3,9 @@
 namespace App\Livewire;
 
 use App\Models\Survey;
+use App\Models\Prodi;
 use App\Models\Jurusan;
+use App\Models\Fakultas;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -17,17 +19,25 @@ class RunSurvei extends Component
 
     public $responses = [];
 
+    public $dataProdi;
     public $dataJurusan;
+    public $dataFakultas;
     public $dataSurvei;
-    public $jurusan_id;
+    public $prodi_id;
 
-    public $jurusan;
+    public $selectedFakultas;
+    public $selectedJurusan;
+    public $selectedProdi;
+
+    public $prodi;
     public $data;
 
     public function mount($code)
     {
         $this->dataSurvei = Survey::where('code', $code)->first();
+        $this->dataProdi = Prodi::all();
         $this->dataJurusan = Jurusan::all();
+        $this->dataFakultas = Fakultas::all();
         
         
         $aspekCollection = $this->dataSurvei->aspek;
@@ -54,10 +64,35 @@ class RunSurvei extends Component
             ->title('UNG Survey - Survei ' . $this->dataSurvei['name']);
     }
 
+    public function getJurusanByFakultas()
+    {
+        if ($this->selectedFakultas) {
+            $this->dataJurusan = Jurusan::where('fakultas_id', $this->selectedFakultas)->get();
+            $this->selectedJurusan = null; // Reset the selected Jurusan
+            $this->dataProdi = []; // Reset Prodi when Fakultas changes
+            $this->selectedProdi = null;
+        } else {
+            $this->dataJurusan = [];
+            $this->dataProdi = [];
+            $this->selectedJurusan = null;
+            $this->selectedProdi = null;
+        }
+    }
+    public function getProdiByJurusan()
+    {
+        if ($this->selectedJurusan) {
+            $this->dataProdi = Prodi::where('jurusan_id', $this->selectedJurusan)->get();
+            $this->selectedProdi = null; // Reset the selected Prodi
+        } else {
+            $this->dataProdi = [];
+            $this->selectedProdi = null;
+        }
+    }
+
     public function sendSurveiRespon()
     {
         $this->validate([
-            'jurusan' => 'required',
+            'prodi' => 'required',
         ]);
         
 
@@ -70,7 +105,7 @@ class RunSurvei extends Component
                     $table[$key] = $value;
                 }
             }
-            $table['jurusan_id'] = $this->jurusan;
+            $table['prodi_id'] = $this->prodi;
             DB::table($this->dataSurvei->id)->insert($table);
             
             $this->isComplete = true;

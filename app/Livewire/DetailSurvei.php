@@ -5,6 +5,10 @@ namespace App\Livewire;
 use App\Models\Survey;
 use App\Models\Aspek;
 use App\Models\Indikator;
+use App\Models\Temuan;
+use App\Models\Fakultas;
+use App\Models\Jurusan;
+use App\Models\Prodi;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -16,15 +20,29 @@ class DetailSurvei extends Component
     public $showFooter = true;
     public $master = 'Survei';
     public $survei;
-    public $userRole;
+    public $user;
+    public $temuan = [];
 
     public $detail_rekapitulasi;
     public $detail_rekapitulasi_aspek;
+    public $selected_indikator;
+    public $data_temuan = [];
+    public $curent_user_value = [];
+
+    public $dataFakultas;
+    public $dataJurusan;
+    public $dataProdi;
+    
+    public $selectedFakultas;
+    public $selectedJurusan;
+    public $selectedProdi;
 
     public function mount($id)
     {
-        $user = Auth::user();
-        $this->userRole = $user->role->slug;
+        $this->dataFakultas = Fakultas::all();
+        $this->dataJurusan = Jurusan::all();
+        $this->dataProdi = Prodi::all();
+        $this->user = Auth::user();
 
         $this->survei = Survey::FindOrFail($id);
         $detail_rekapitulasi = [];
@@ -42,10 +60,23 @@ class DetailSurvei extends Component
                 $jurusan = 0;
                 $prodi = 0;
                 
-                $tm = DB::table($table)->where($indicator->id, 1)->count();
-                $cm = DB::table($table)->where($indicator->id, 2)->count();
-                $m = DB::table($table)->where($indicator->id, 3)->count();
-                $sm = DB::table($table)->where($indicator->id, 4)->count();
+                
+                $tm = DB::table($table)
+                        ->where($indicator->id, 1)        
+                        ->count();
+
+                $cm = DB::table($table)
+                        ->where($indicator->id, 2)
+                        ->count();
+
+                $m = DB::table($table)
+                        ->where($indicator->id, 3)
+                        ->count();
+
+                $sm = DB::table($table)
+                        ->where($indicator->id, 4)
+                        ->count();
+               
 
                 $avg_tm[] = $tm;
                 $avg_cm[] = $cm;
@@ -146,6 +177,32 @@ class DetailSurvei extends Component
             return 'Tidak Puas';
         }
     }
+
+    public function getJurusanByFakultas()
+    {
+        if ($this->selectedFakultas) {
+            $this->dataJurusan = Jurusan::where('fakultas_id', $this->selectedFakultas)->get();
+            $this->selectedJurusan = null; // Reset the selected Jurusan
+            $this->dataProdi = []; // Reset Prodi when Fakultas changes
+            $this->selectedProdi = null;
+        } else {
+            $this->dataJurusan = [];
+            $this->dataProdi = [];
+            $this->selectedJurusan = null;
+            $this->selectedProdi = null;
+        }
+    }
+    public function getProdiByJurusan()
+    {
+        if ($this->selectedJurusan) {
+            $this->dataProdi = Prodi::where('jurusan_id', $this->selectedJurusan)->get();
+            $this->selectedProdi = null; // Reset the selected Prodi
+        } else {
+            $this->dataProdi = [];
+            $this->selectedProdi = null;
+        }
+    }
+
 
     private function calculateAverageRekapitulasi($avg_tm, $avg_cm, $avg_m, $avg_sm)
     {

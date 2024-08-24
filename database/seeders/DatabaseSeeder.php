@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use App\Models\Fakultas;
 use App\Models\Jurusan;
 use App\Models\Prodi;
+use App\Models\Prodi;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;

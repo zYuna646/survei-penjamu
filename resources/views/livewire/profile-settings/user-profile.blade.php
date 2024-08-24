@@ -23,7 +23,7 @@
         </button>
     </div>
     <section class=" max-w-screen-xl w-full mx-auto px-4 pt-24 grid grid-cols-12 gap-4 pb-12 "
-        x-data="{ activeMenu: 'email' }">
+        x-data="{ activeMenu: 'profil' }">
         <div
             class="p-8 col-span-12 lg:col-span-4 h-fit bg-white flex flex-col lg:flex-row gap-y-2 gap-x-4 rounded-lg border border-slate-100 shadow-sm w-full">
             <div class=" flex flex-col gap-y-2 w-full">
@@ -69,14 +69,14 @@
                     </div>
                 </div>
                 <div class="mt-2 flex flex-col gap-y-2">
-                    <div @click="activeMenu = 'email'"
-                        :class="{ 'bg-color-info-500 text-white border-color-info-500': activeMenu === 'email' }"
+                    <div @click="activeMenu = 'profil'"
+                        :class="{ 'bg-color-info-500 text-white border-color-info-500': activeMenu === 'profil' }"
                         class="p-3 px-4 border  rounded-lg inline-flex gap-x-2 items-center hover:cursor-pointer transition-colors hover:bg-color-info-400 hover:text-white hover:border-color-info-400">
                         <span class="text-lg">
                             <i class="fas fa-envelope"></i>
                         </span>
                         <span class="font-semibold text-sm">
-                            Ganti Email
+                            Ganti Profil
                         </span>
                     </div>
                     <div @click="activeMenu = 'password'"
@@ -146,7 +146,41 @@
                     </form>
                 </div>
             </div>
-            <div x-show="activeMenu === 'email'" x-cloak>
+            <div x-show="activeMenu === 'profil'" x-cloak>
+                <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                    <div class="mb-4">
+                        <p class="text-lg font-bold">Profile User</p>
+                    </div>
+                    <hr class="mb-4">
+                    <p class="mb-4 text-sm">Silahkan ubah data profil user dengan data baru</p>
+                    <form wire:submit.prevent="changeUserProfile" class="grid grid-cols-12"
+                        x-data="{ showPassword: false }">
+                        <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                            <label for="name" class="text-sm">Nama User:</label>
+                            <input type="text" id="name" name="name"
+                                wire:model="user.name" placeholder="Masukan Kata Sandi Saat Ini"
+                                class="p-4 text-sm rounded-md bg-neutral-50 text-slate-800 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                            @error('user.name') <span class="text-red-500 text-xs">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                            <label for="email" class="text-sm">Email:</label>
+                            <input type="email" id="email" name="email"
+                                wire:model="user.email" placeholder="Masukan Kata Sandi Baru"
+                                class="p-4 text-sm rounded-md bg-neutral-50 text-slate-800 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                            @error('user.email') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+                        <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12" color="info" type="submit">
+                            <span wire:loading.remove>
+                                <i class="fas fa-edit"></i>
+                            </span>
+                            <span wire:loading class="animate-spin">
+                                <i class="fas fa-circle-notch"></i>
+                            </span>
+                            Simpan
+                        </x-button>
+                    </form>
+                </div>
             </div>
         </div>
     </section>

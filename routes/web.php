@@ -40,6 +40,7 @@ use App\Livewire\UserJurusan;
 use App\Livewire\EditUserJurusan;
 use App\Livewire\EditUserFakultas;
 use App\Livewire\ManipulationSurvei;
+use App\Livewire\TemuanSurvei;
 use App\Livewire\UserProfile;
 
 
@@ -74,4 +75,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user_fakultas', UserFakultas::class)->name('user_fakultas');
     Route::get('/edit_user_fakultas/{id}', EditUserFakultas::class)->name('edit_user_fakultas');
     Route::get('/manipulation_survei/{id}', ManipulationSurvei::class)->name('manipulation_survei');
+    Route::get('/temuan_survei/{id}', TemuanSurvei::class)->name('temuan_survei');
 });

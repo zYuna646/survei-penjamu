@@ -118,6 +118,7 @@
                             <th>Nama</th>
                             <th>Target</th>
                             <th>Status</th>
+                            <th>Perubahan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -162,6 +163,39 @@
                                 @endif
                             </td>
                             <td>
+                                @if($survei['isUpdate'])
+                                <div class="inline-flex gap-x-2 items-center">
+                                    <span
+                                        class="text-xs font-bold text-color-success-500 px-3 py-1 bg-color-success-100 rounded-lg">
+                                        Aktif
+                                    </span>
+                                    <button class="inline-flex gap-x-1 text-color-info-500 text-xs font-semibold"
+                                        onclick="consfirmUpdate({{ $survei['id'] }})">
+                                        <span>
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                        Ubah
+                                    </button>
+                                </div>
+
+                                @else
+                                <div class="inline-flex gap-x-2 items-center">
+                                    <span
+                                        class="text-xs font-bold text-color-danger-500 px-3 py-1 bg-color-danger-100 rounded-lg">
+                                        Non-Aktif
+                                    </span>
+
+                                    <button class="inline-flex gap-x-1 text-color-info-500 text-xs font-semibold"
+                                        onclick="consfirmUpdate({{ $survei['id'] }})">
+                                        <span>
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                        Ubah
+                                    </button>
+                                </div>
+                                @endif
+                            </td>
+                            <td>
                                 <div class="inline-flex gap-x-1">
                                     <!--Fill button -->
                                     <x-button class="" color="info" size="sm"
@@ -182,6 +216,7 @@
                                     </x-button>
                                 </div>
                             </td>
+
                         </tr>
                         @endforeach
                     </tbody>
@@ -208,6 +243,13 @@
         function confirmStatus(id) {
             if(confirm(`Ubah Status Survei?`)) {
                 @this.call('changeSurveiStatus', id);
+            }
+        }
+    </script>
+    <script>
+        function consfirmUpdate(id) {
+            if(confirm(`Ubah Update Survei?`)) {
+                @this.call('changeSurveiUpdate', id);
             }
         }
     </script>
