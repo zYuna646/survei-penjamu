@@ -87,7 +87,7 @@
                                 class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200" />
                         </div>
                         <div class="w-full">
-                            <label for="" class="text-sm ">Total :</label>
+                            <label for="" class="text-sm ">Total Ingin Dicapai :</label>
                             <input type="text" name="" placeholder="Jumlah" value="{{ $jumlah }}" id="jumlah"
                                 class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200" />
                         </div>
@@ -108,25 +108,25 @@
                             </div>
                             <div class="grid grid-cols-10 gap-4">
                                 <div class="lg:col-span-2 col-span-5">
-                                    <label for="" class="text-sm">sm :</label>
+                                    <label for="" class="text-sm">tm :</label>
                                     <input type="number" id="tm-{{ $indicator->id }}" placeholder="TM"
                                         value="{{ $record[$indicator->id][1] ?? '' }}"
                                         class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 </div>
                                 <div class="lg:col-span-2 col-span-5">
-                                    <label for="" class="text-sm">m :</label>
+                                    <label for="" class="text-sm">cm :</label>
                                     <input type="number" id="m-{{ $indicator->id }}" placeholder="M"
                                         value="{{ $record[$indicator->id][2] ?? '' }}"
                                         class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 </div>
                                 <div class="lg:col-span-2 col-span-5">
-                                    <label for="" class="text-sm">cm :</label>
+                                    <label for="" class="text-sm">m :</label>
                                     <input type="number" id="cm-{{ $indicator->id }}" placeholder="CM"
                                         value="{{ $record[$indicator->id][3] ?? '' }}"
                                         class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 </div>
                                 <div class="lg:col-span-2 col-span-5">
-                                    <label for="" class="text-sm">tm :</label>
+                                    <label for="" class="text-sm">sm :</label>
 
                                     <input type="number" id="sm-{{ $indicator->id }}" placeholder="SM"
                                         value="{{ $record[$indicator->id][4] ?? '' }}"

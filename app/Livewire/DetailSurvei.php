@@ -32,52 +32,81 @@ class DetailSurvei extends Component
     public $dataFakultas;
     public $dataJurusan;
     public $dataProdi;
-    
+
     public $selectedFakultas;
     public $selectedJurusan;
     public $selectedProdi;
 
     public function mount($id)
     {
+        // Load all Fakultas, Jurusan, and Prodi data for filtering options
         $this->dataFakultas = Fakultas::all();
         $this->dataJurusan = Jurusan::all();
         $this->dataProdi = Prodi::all();
         $this->user = Auth::user();
+        switch ($this->user->role->slug) {
+            case 'fakultas':
+                # code...
+                $this->selectedFakultas = $this->user->fakultas_id;
+                $this->getJurusanByFakultas();
+                break;
+            case 'prodi':
+                $this->selectedProdi = $this->user->prodi_id;
+                break;
+            default:
+                # code...
+                break;
+        }
+        // Load the survey data
+        $this->survei = Survey::findOrFail($id);
+        $this->getDetailSurvey();
 
-        $this->survei = Survey::FindOrFail($id);
+        // Initialize rekapitulasi arrays
+
+    }
+
+    public function getDetailSurvey()
+    {
         $detail_rekapitulasi = [];
         $detail_rekapitulasi_aspek = [];
 
+        // Initialize the query
+        $table = $this->survei->id; // Assuming the table name is based on survey id
+        $query = DB::table($table);
+
+        // Apply filters only if selections are made
+        if ($this->selectedProdi) {
+            // Filter by selected Prodi
+            $query->where('prodi_id', $this->selectedProdi);
+        } elseif ($this->selectedJurusan) {
+            // Filter by selected Jurusan
+            $prodiIds = Prodi::where('jurusan_id', $this->selectedJurusan)->pluck('id');
+            $query->whereIn('prodi_id', $prodiIds);
+        } elseif ($this->selectedFakultas) {
+            // Filter by selected Fakultas
+            $jurusanIds = Jurusan::where('fakultas_id', $this->selectedFakultas)->pluck('id');
+            $prodiIds = Prodi::whereIn('jurusan_id', $jurusanIds)->pluck('id');
+            $query->whereIn('prodi_id', $prodiIds);
+        }
+
+        // Loop through each Aspek in the survey
         foreach ($this->survei->aspek as $aspek) {
             $avg_tm = [];
             $avg_cm = [];
             $avg_m = [];
             $avg_sm = [];
 
+            // Loop through each Indikator in the Aspek
             foreach ($aspek->indicator as $indicator) {
-                $table = $this->survei->id; // Assuming the table is named like this
-                $fakultas = 0;
-                $jurusan = 0;
-                $prodi = 0;
-                
-                
-                $tm = DB::table($table)
-                        ->where($indicator->id, 1)        
-                        ->count();
+                // Clone the base query for each indicator
+                $indicatorQuery = clone $query;
 
-                $cm = DB::table($table)
-                        ->where($indicator->id, 2)
-                        ->count();
-
-                $m = DB::table($table)
-                        ->where($indicator->id, 3)
-                        ->count();
-
-                $sm = DB::table($table)
-                        ->where($indicator->id, 4)
-                        ->count();
-               
-
+                // Initialize counts for TM, CM, M, SM
+                $tm = $indicatorQuery->where($indicator->id, 1)->count();
+                $cm = $indicatorQuery->where($indicator->id, 2)->count();
+                $m = $indicatorQuery->where($indicator->id, 3)->count();
+                $sm = $indicatorQuery->where($indicator->id, 4)->count();
+                // Calculate averages and totals
                 $avg_tm[] = $tm;
                 $avg_cm[] = $cm;
                 $avg_m[] = $m;
@@ -99,11 +128,11 @@ class DetailSurvei extends Component
                         3 => $m,
                         4 => $sm,
                         'total' => $total,
-                        'nilai_butir' => number_format($nilai_butir,2),
+                        'nilai_butir' => number_format($nilai_butir, 2),
                         'ikm' => $ikm,
                         'mutu_layanan' => $mutu_layanan,
                         'kinerja_unit' => $kinerja_unit,
-                        'tingkat_kepuasan' => number_format( $tingkat_kepuasan * 100, 2),
+                        'tingkat_kepuasan' => number_format($tingkat_kepuasan * 100, 2),
                         'predikat_kepuasan' => $predikat_kepuasan
                     ];
                 } else {
@@ -123,11 +152,14 @@ class DetailSurvei extends Component
                 }
             }
 
+            // Calculate the average for the current Aspek
             $detail_rekapitulasi_aspek[$aspek->id] = $this->calculateAverageRekapitulasi($avg_tm, $avg_cm, $avg_m, $avg_sm);
         }
+
         $this->detail_rekapitulasi = $detail_rekapitulasi;
         $this->detail_rekapitulasi_aspek = $detail_rekapitulasi_aspek;
     }
+
 
     private function getMutuLayanan($nilai_butir)
     {
@@ -185,6 +217,7 @@ class DetailSurvei extends Component
             $this->selectedJurusan = null; // Reset the selected Jurusan
             $this->dataProdi = []; // Reset Prodi when Fakultas changes
             $this->selectedProdi = null;
+            $this->getDetailSurvey(); // Reload the survey data
         } else {
             $this->dataJurusan = [];
             $this->dataProdi = [];
@@ -197,6 +230,7 @@ class DetailSurvei extends Component
         if ($this->selectedJurusan) {
             $this->dataProdi = Prodi::where('jurusan_id', $this->selectedJurusan)->get();
             $this->selectedProdi = null; // Reset the selected Prodi
+            $this->getDetailSurvey(); // Reload the survey data
         } else {
             $this->dataProdi = [];
             $this->selectedProdi = null;
@@ -226,11 +260,11 @@ class DetailSurvei extends Component
             3 => $m,
             4 => $sm,
             'total' => $total,
-            'nilai_butir' => number_format($nilai_butir,2),
+            'nilai_butir' => number_format($nilai_butir, 2),
             'ikm' => $ikm,
             'mutu_layanan' => $this->getMutuLayanan($nilai_butir),
             'kinerja_unit' => $this->getKinerjaUnit($ikm),
-            'tingkat_kepuasan' => number_format( $this->getTingkatKepuasan($tm, $cm, $m, $sm, $total) * 100,2),
+            'tingkat_kepuasan' => number_format($this->getTingkatKepuasan($tm, $cm, $m, $sm, $total) * 100, 2),
             'predikat_kepuasan' => $this->getPredikatKepuasan($this->getTingkatKepuasan($tm, $cm, $m, $sm, $total))
         ];
     }
