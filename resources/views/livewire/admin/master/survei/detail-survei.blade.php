@@ -135,11 +135,20 @@
             <div x-show="activeMenu === 'grafik'" x-cloak>
                 <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
                     <div class="mb-4">
-                        <p class="text-lg font-bold">Grafik Rekapitulasi</p>
+                        <p class="text-lg font-bold">Perbandingan Respon Perfakultas</p>
                     </div>
                     <hr>
                     <div class="px-2 py-6 bg-white">
-                        {!! $chart->container() !!}
+                        {!! $facultyComparisonChart->container() !!}
+                    </div>
+                </div>
+                <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                    <div class="mb-4">
+                        <p class="text-lg font-bold">Perbandingan Respon PerProdi</p>
+                    </div>
+                    <hr>
+                    <div class="px-2 py-6 bg-white">
+                        {!! $prodiComparisonChart->container() !!}
                     </div>
                 </div>
             </div>
@@ -385,7 +394,9 @@
                 var table = $('.myTable').DataTable();
             });
         </script>
-        <script src="{{ $chart->cdn() }}"></script>
-        {{ $chart->script() }}
+        <script src="{{ $facultyComparisonChart->cdn() }}"></script>
+        {{ $facultyComparisonChart->script() }}
+        <script src="{{ $prodiComparisonChart->cdn() }}"></script>
+        {{ $prodiComparisonChart->script() }}
     @endpush
 </main>

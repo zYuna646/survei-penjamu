@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Charts\SatisfactionChart;
 use App\Models\Survey;
 use App\Models\Aspek;
 use App\Models\Indikator;
@@ -269,10 +270,132 @@ class DetailSurvei extends Component
         ];
     }
 
-    public function render(RecapChart $chart)
+    public function render(SatisfactionChart $satisfactionChart)
     {
-        return view('livewire.admin.master.survei.detail-survei', ['chart' => $chart->build($this->survei['name'])])
+        // Initialize data arrays
+        $facultyNames = [];
+        $facultyTM = [];
+        $facultyCM = [];
+        $facultyM = [];
+        $facultySM = [];
+
+        $prodiNames = [];
+        $prodiTM = [];
+        $prodiCM = [];
+        $prodiM = [];
+        $prodiSM = [];
+
+        // Gather data for faculties
+        foreach ($this->dataFakultas as $fakultas) {
+            $facultyNames[] = $fakultas->name;
+            $facultyData = $this->calculateFacultySatisfactionDistribution($fakultas->id);
+
+            $facultyTM[] = $facultyData['tm'];
+            $facultyCM[] = $facultyData['cm'];
+            $facultyM[] = $facultyData['m'];
+            $facultySM[] = $facultyData['sm'];
+        }
+
+        // Gather data for Prodis
+        foreach ($this->dataProdi as $prodi) {
+            $prodiNames[] = $prodi->name;
+            $prodiData = $this->calculateProdiSatisfactionDistribution($prodi->id);
+
+            $prodiTM[] = $prodiData['tm'];
+            $prodiCM[] = $prodiData['cm'];
+            $prodiM[] = $prodiData['m'];
+            $prodiSM[] = $prodiData['sm'];
+        }
+
+        // Build charts
+        $facultyComparisonChart = $satisfactionChart->buildFacultyComparisonChart($facultyNames, $facultyTM, $facultyCM, $facultyM, $facultySM);
+        $prodiComparisonChart = $satisfactionChart->buildProdiComparisonChart($prodiNames, $prodiTM, $prodiCM, $prodiM, $prodiSM);
+
+        return view('livewire.admin.master.survei.detail-survei', [
+            'facultyComparisonChart' => $facultyComparisonChart,
+            'prodiComparisonChart' => $prodiComparisonChart,
+        ])
             ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar, 'showFooter' => $this->showFooter])
             ->title('UNG Survey - Detil ' . $this->survei['name']);
     }
+
+    private function calculateFacultySatisfactionDistribution($facultyId)
+    {
+        $jurusanIds = Jurusan::where('fakultas_id', $facultyId)->pluck('id');
+        $prodiIds = Prodi::whereIn('jurusan_id', $jurusanIds)->pluck('id');
+
+        // Initialize totals
+        $totalTM = 0;
+        $totalCM = 0;
+        $totalM = 0;
+        $totalSM = 0;
+
+        // Loop through each aspect of the survey
+        foreach ($this->survei->aspek as $aspek) {
+            // Loop through each indicator within the aspect
+            foreach ($aspek->indicator as $indicator) {
+                $query = DB::table($this->survei->id)
+                    ->whereIn('prodi_id', $prodiIds)
+                    ->where($indicator->id, '!=', null);
+
+                // Sum up TM, CM, M, SM for this indicator
+                $totalTM += $query->where($indicator->id, 1)->count();
+                $totalCM += $query->where($indicator->id, 2)->count();
+                $totalM += $query->where($indicator->id, 3)->count();
+                $totalSM += $query->where($indicator->id, 4)->count();
+            }
+        }
+
+        return [
+            'tm' => $totalTM,
+            'cm' => $totalCM,
+            'm' => $totalM,
+            'sm' => $totalSM,
+        ];
+    }
+
+
+    private function calculateProdiSatisfactionDistribution($prodiId)
+    {
+        // Initialize totals
+        $totalTM = 0;
+        $totalCM = 0;
+        $totalM = 0;
+        $totalSM = 0;
+
+        // Loop through each aspect of the survey
+        foreach ($this->survei->aspek as $aspek) {
+            // Loop through each indicator within the aspect
+            foreach ($aspek->indicator as $indicator) {
+                $query = DB::table($this->survei->id)
+                    ->where('prodi_id', $prodiId)
+                    ->where($indicator->id, '!=', null);
+
+                // Sum up TM, CM, M, SM for this indicator
+                $totalTM += $query->where($indicator->id, 1)->count();
+                $totalCM += $query->where($indicator->id, 2)->count();
+                $totalM += $query->where($indicator->id, 3)->count();
+                $totalSM += $query->where($indicator->id, 4)->count();
+            }
+        }
+
+        return [
+            'tm' => $totalTM,
+            'cm' => $totalCM,
+            'm' => $totalM,
+            'sm' => $totalSM,
+        ];
+    }
+
+
+    // private function calculateSatisfactionDistribution($query)
+    // {
+    //     return [
+    //         'tm' => $query->where('response', 1)->count(),
+    //         'cm' => $query->where('response', 2)->count(),
+    //         'm' => $query->where('response', 3)->count(),
+    //         'sm' => $query->where('response', 4)->count(),
+    //     ];
+    // }
+
 }
