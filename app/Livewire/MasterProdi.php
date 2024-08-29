@@ -18,16 +18,16 @@ class MasterProdi extends Component
     public $prodi = [
         'nama' => '',
         'kode' => '',
-        'jurusan_id' => '',
+        'fakultas_id' => '',
     ];
 
     public $dataProdi;
-    public $dataJurusan;
+    public $dataFakultas;
 
     public function mount()
     {
         $this->dataProdi = Prodi::all();
-        $this->dataJurusan = Jurusan::all();
+        $this->dataFakultas = Fakultas::all();
     }
 
 
@@ -40,17 +40,13 @@ class MasterProdi extends Component
 
     public function addProdi()
     {
-        
-        
-        $jurusan = Jurusan::FindOrFail($this->prodi['jurusan_id']);
-
 
         try {
             DB::beginTransaction();
             Prodi::create([
                 'name' => $this->prodi['nama'],
                 'code' => $this->prodi['kode'],
-                'fakultas_id' => $jurusan->fakultas->id,
+                'fakultas_id' => $this->prodi['fakultas_id'],
             ]);
 
             DB::commit();
