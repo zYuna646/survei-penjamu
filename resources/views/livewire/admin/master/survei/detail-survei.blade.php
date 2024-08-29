@@ -1,5 +1,4 @@
-<main class="bg-[#f9fafc] min-h-screen"
-    x-data="{ activeMenu: 'grafik', userRole: '{{ $user->role->slug }}', temuanModal: false }">
+<main class="bg-[#f9fafc] min-h-screen" x-data="{ activeMenu: 'grafik', userRole: '{{ $user->role->slug }}', temuanModal: false }">
     <style>
         table,
         th,
@@ -43,14 +42,15 @@
                     </div>
                 </div>
                 <div class="inline-flex items-center gap-x-2 mt-4">
-                    <x-button color="danger" size="sm" onclick="window.location.href='{{ route('master_survei') }}'">
+                    <x-button color="danger" size="sm"
+                        onclick="window.location.href='{{ route('master_survei') }}'">
                         Kembali
                     </x-button>
                     @if ($survei['isUpdate'])
-                    <x-button color="info" size="sm"
-                        onclick="window.location.href='{{ route('manipulation_survei', $survei['id']) }}'">
-                        Edit Data
-                    </x-button>
+                        <x-button color="info" size="sm"
+                            onclick="window.location.href='{{ route('manipulation_survei', $survei['id']) }}'">
+                            Edit Data
+                        </x-button>
                     @endif
                 </div>
                 <hr class="w-full mt-4">
@@ -95,23 +95,23 @@
                 </div>
                 <form action="" class="flex gap-x-2 gap-4 w-full">
                     @if ($user->role->slug === 'universitas')
-                    <template x-if="userRole === 'universitas'">
-                        <select wire:model="selectedFakultas" wire:change="getProdiByFakultas"
-                            class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                            <option value="">Semua Fakultas</option>
-                            @foreach ($dataFakultas as $fakultas)
-                            <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
-                            @endforeach
-                        </select>
-                    </template>
+                        <template x-if="userRole === 'universitas'">
+                            <select wire:model="selectedFakultas" wire:change="getProdiByFakultas"
+                                class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                <option value="">Semua Fakultas</option>
+                                @foreach ($dataFakultas as $fakultas)
+                                    <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
+                                @endforeach
+                            </select>
+                        </template>
                     @endif
 
                     <template x-if="userRole === 'universitas' || userRole === 'fakultas' || userRole === 'prodi'">
-                        <select wire:model="selectedProdi"
+                        <select wire:model="selectedProdi" wire:change="getDetailSurvey"
                             class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                             <option value="">Semua Prodi</option>
                             @foreach ($dataProdi as $prodi)
-                            <option value="{{ $prodi->id }}">{{ $prodi->name }}</option>
+                                <option value="{{ $prodi->id }}">{{ $prodi->name }}</option>
                             @endforeach
                         </select>
                     </template>
@@ -141,139 +141,132 @@
             </div>
             <div x-show="activeMenu === 'tabel'" x-cloak>
                 @foreach ($survei->aspek as $aspek)
-                <div class="p-6 mt-2 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
-                    <div class="mb-4">
-                        <p class="text-lg font-bold">{{ $aspek->name }}</p>
-                    </div>
-                    <div class="text-xs mt-2 overflow-x-auto">
-                        <table class="w-full">
-                            <thead>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Pertanyaan</th>
-                                    <th>Tidak Memuaskan</th>
-                                    <th>Cukup Memuaskan</th>
-                                    <th>Memuaskan</th>
-                                    <th>Sangat Memuaskan</th>
-                                    <th>Total Responden</th>
-                                    <th>Nilai Butir</th>
-                                    <th>Mutu Layanan</th>
-                                    <th>Kinerja Unit Pelayanan</th>
-                                    <th>Tingkat Kepuasan</th>
-                                    <th>Predikat Tingkat Kepuasan</th>
+                    <div class="p-6 mt-2 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                        <div class="mb-4">
+                            <p class="text-lg font-bold">{{ $aspek->name }}</p>
+                        </div>
+                        <div class="text-xs mt-2 overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Pertanyaan</th>
+                                        <th>Tidak Memuaskan</th>
+                                        <th>Cukup Memuaskan</th>
+                                        <th>Memuaskan</th>
+                                        <th>Sangat Memuaskan</th>
+                                        <th>Total Responden</th>
+                                        <th>Nilai Butir</th>
+                                        <th>IKM</th>
+                                        <th>Mutu Layanan</th>
+                                        <th>Kinerja Unit Pelayanan</th>
+                                        <th>Tingkat Kepuasan</th>
+                                        <th>Predikat Tingkat Kepuasan</th>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($aspek->indicator as $index => $item)
-                                <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']][1] }}</td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']][2] }}</td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']][3] }}</td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']][4] }}</td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']]['total'] }}</td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']]['nilai_butir'] }}</td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']]['mutu_layanan'] }}
-                                    </td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']]['kinerja_unit'] }}
-                                    </td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']]['tingkat_kepuasan'] }}%
-                                    </td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']]['predikat_kepuasan'] }}
-                                    </td>
-                                </tr>
-                                @endforeach
-                                <tr>
-                                    <td></td>
-                                    <td class="font-bold">Total Rerata Penilaian Aspek</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id][1] }}</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id][2] }}</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id][3] }}</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id][4] }}</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id]['total'] }}</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id]['nilai_butir'] }}</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id]['mutu_layanan'] }}</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id]['kinerja_unit'] }}</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id]['tingkat_kepuasan'] }}%</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id]['predikat_kepuasan'] }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($aspek->indicator as $index => $item)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $item->name }}</td>
+                                            <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']][1] }}</td>
+                                            <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']][2] }}</td>
+                                            <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']][3] }}</td>
+                                            <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']][4] }}</td>
+                                            <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']]['total'] }}</td>
+                                            <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']]['nilai_butir'] }}</td>
+                                            <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']]['ikm'] }}</td>
+
+                                            <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']]['mutu_layanan'] }}
+                                            </td>
+                                            <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']]['kinerja_unit'] }}
+                                            </td>
+                                            <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']]['tingkat_kepuasan'] }}%
+                                            </td>
+                                            <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']]['predikat_kepuasan'] }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    <tr>
+                                        <td></td>
+                                        <td class="font-bold">Total Rerata Penilaian Aspek</td>
+                                        <td>{{ $detail_rekapitulasi_aspek[$aspek->id][1] }}</td>
+                                        <td>{{ $detail_rekapitulasi_aspek[$aspek->id][2] }}</td>
+                                        <td>{{ $detail_rekapitulasi_aspek[$aspek->id][3] }}</td>
+                                        <td>{{ $detail_rekapitulasi_aspek[$aspek->id][4] }}</td>
+                                        <td>{{ $detail_rekapitulasi_aspek[$aspek->id]['total'] }}</td>
+                                        <td>{{ $detail_rekapitulasi_aspek[$aspek->id]['nilai_butir'] }}</td>
+                                        <td>{{ $detail_rekapitulasi_aspek[$aspek->id]['mutu_layanan'] }}</td>
+                                        <td>{{ $detail_rekapitulasi_aspek[$aspek->id]['kinerja_unit'] }}</td>
+                                        <td>{{ $detail_rekapitulasi_aspek[$aspek->id]['tingkat_kepuasan'] }}%</td>
+                                        <td>{{ $detail_rekapitulasi_aspek[$aspek->id]['predikat_kepuasan'] }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
                 @endforeach
             </div>
             <div x-show="activeMenu === 'temuan'" x-cloak>
                 @foreach ($survei->aspek as $aspek)
-                <div class="p-6 mt-2 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
-                    <div class="mb-4">
-                        <p class="text-lg font-bold">{{ $aspek->name }}</p>
+                    <div class="p-6 mt-2 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                        <div class="mb-4">
+                            <p class="text-lg font-bold">{{ $aspek->name }}</p>
+                        </div>
+                        <div class="text-xs mt-2 overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Pertanyaan</th>
+                                        <th>TM</th>
+                                        <th>CM</th>
+                                        <th>M</th>
+                                        <th>SM</th>
+                                        <th>Total Rsp</th>
+                                        <th>Nilai Butir</th>
+                                        <th>Mutu Layanan</th>
+                                        <th>Kinerja Unit Pelayanan</th>
+                                        <th>Tingkat Kepuasan</th>
+                                        <th>Predikat</th>
+                                        <th>Temuan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($lowestIndicator as $index => $item)
+                                        @if ($item['aspek_id'] == $aspek->id)
+                                            <tr class="">
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ $item['name'] }}</td>
+                                                <td>{{ $item['detail_rekapitulasi'][1] }}</td>
+                                                <td>{{ $item['detail_rekapitulasi'][2] }}</td>
+                                                <td>{{ $item['detail_rekapitulasi'][3] }}</td>
+                                                <td>{{ $item['detail_rekapitulasi'][4] }}</td>
+                                                <td>{{ $item['detail_rekapitulasi']['total'] }}</td>
+                                                <td>{{ $item['detail_rekapitulasi']['nilai_butir'] }}
+                                                </td>
+                                                <td>{{ $item['detail_rekapitulasi']['mutu_layanan'] }}
+                                                </td>
+                                                <td>{{ $item['detail_rekapitulasi']['kinerja_unit'] }}
+                                                </td>
+                                                <td>{{ $item['detail_rekapitulasi']['tingkat_kepuasan'] }}%
+                                                </td>
+                                                <td>{{ $item['detail_rekapitulasi']['predikat_kepuasan'] }}
+                                                </td>
+                                                <td>
+                                                    <div onclick="window.location.href='{{ route('temuan_survei', $item['indicator_id']) }}'"
+                                                        class="underline text-color-info-500 hover:cursor-pointer hover:text-color-info-400">
+                                                        Periksa</div>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="text-xs mt-2 overflow-x-auto">
-                        <table class="w-full">
-                            <thead>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Pertanyaan</th>
-                                    <th>TM</th>
-                                    <th>CM</th>
-                                    <th>M</th>
-                                    <th>SM</th>
-                                    <th>Total Rsp</th>
-                                    <th>Nilai Butir</th>
-                                    <th>Mutu Layanan</th>
-                                    <th>Kinerja Unit Pelayanan</th>
-                                    <th>Tingkat Kepuasan</th>
-                                    <th>Predikat</th>
-                                    <th>Temuan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($aspek->indicator as $index => $item)
-                                <tr class="">
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']][1] }}</td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']][2] }}</td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']][3] }}</td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']][4] }}</td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']]['total'] }}</td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']]['nilai_butir'] }}</td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']]['mutu_layanan'] }}
-                                    </td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']]['kinerja_unit'] }}
-                                    </td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']]['tingkat_kepuasan'] }}%
-                                    </td>
-                                    <td>{{ $detail_rekapitulasi[$aspek->id][$item['id']]['predikat_kepuasan'] }}
-                                    </td>
-                                    <td>
-                                        <div onclick="window.location.href='{{ route('temuan_survei', $item->id) }}'"
-                                            class="underline text-color-info-500 hover:cursor-pointer hover:text-color-info-400">
-                                            Periksa</div>
-                                    </td>
-                                </tr>
-                                @endforeach
-                                <tr>
-                                    <td></td>
-                                    <td class="font-bold">Total Rerata Penilaian Aspek</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id][1] }}</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id][2] }}</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id][3] }}</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id][4] }}</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id]['total'] }}</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id]['nilai_butir'] }}</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id]['mutu_layanan'] }}</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id]['kinerja_unit'] }}</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id]['tingkat_kepuasan'] }}%</td>
-                                    <td>{{ $detail_rekapitulasi_aspek[$aspek->id]['predikat_kepuasan'] }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
                 @endforeach
                 {{-- temuaModal --}}
                 <div x-show="temuanModal" style="display: none" x-on:keydown.escape.window="addModal = false"
@@ -302,44 +295,45 @@
                                     <ol class="relative border-s border-gray-200 dark:border-gray-700">
                                         @if ($data_temuan && count($data_temuan) > 0)
 
-                                        @foreach ($data_temuan as $item)
-                                        @php
-                                        $name = null;
-                                        $label = null;
-                                        switch (true) {
-                                        case !is_null($item->prodi_id) && $item->prodi:
-                                        $name = $item->prodi->name;
-                                        $label = 'Prodi';
-                                        break;
-                                        case !is_null($item->fakultas_id) && $item->fakultas:
-                                        $name = $item->fakultas->name;
-                                        $label = 'Fakultas';
-                                        break;
-                                        default:
-                                        $name = '';
-                                        $label = 'Universitas';
-                                        break;
-                                        }
+                                            @foreach ($data_temuan as $item)
+                                                @php
+                                                    $name = null;
+                                                    $label = null;
+                                                    switch (true) {
+                                                        case !is_null($item->prodi_id) && $item->prodi:
+                                                            $name = $item->prodi->name;
+                                                            $label = 'Prodi';
+                                                            break;
+                                                        case !is_null($item->fakultas_id) && $item->fakultas:
+                                                            $name = $item->fakultas->name;
+                                                            $label = 'Fakultas';
+                                                            break;
+                                                        default:
+                                                            $name = '';
+                                                            $label = 'Universitas';
+                                                            break;
+                                                    }
 
-                                        @endphp
-                                        <li class="mb-4 ms-4">
-                                            <div
-                                                class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700">
-                                            </div>
-                                            <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
-                                                {{ $label }} {{ $name }}
-                                            </h3>
-                                            <time
-                                                class="mb-1 text-xs font-normal leading-none text-gray-400 dark:text-gray-500">
-                                                {{ $item->created_at }}
-                                            </time>
-                                            <p class="mb-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-                                                {{ $item->temuan }}.
-                                            </p>
-                                        </li>
-                                        @endforeach
+                                                @endphp
+                                                <li class="mb-4 ms-4">
+                                                    <div
+                                                        class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700">
+                                                    </div>
+                                                    <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
+                                                        {{ $label }} {{ $name }}
+                                                    </h3>
+                                                    <time
+                                                        class="mb-1 text-xs font-normal leading-none text-gray-400 dark:text-gray-500">
+                                                        {{ $item->created_at }}
+                                                    </time>
+                                                    <p
+                                                        class="mb-4 text-sm font-normal text-gray-500 dark:text-gray-400">
+                                                        {{ $item->temuan }}.
+                                                    </p>
+                                                </li>
+                                            @endforeach
                                         @else
-                                        <p>No data available.</p>
+                                            <p>No data available.</p>
                                         @endif
                                     </ol>
                                 </div>
@@ -347,17 +341,16 @@
                                 <form wire:submit.prevent="saveTemuan" class="grid grid-cols-12 p-2">
                                     <div class="flex flex-col gap-y-2 col-span-12 mb-2">
                                         <label for="temuan" class="text-xs ">Kirim Temuan :</label>
-                                        <textarea id="temuan" name="temuan" wire:model="temuan.temuan"
-                                            placeholder="Masukan temuan"
+                                        <textarea id="temuan" name="temuan" wire:model="temuan.temuan" placeholder="Masukan temuan"
                                             class="p-2 text-xs rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
 
                                         </textarea>
                                         @error('temuan.temuan')
-                                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                                            <span class="text-red-500 text-xs">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                    <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12" color="info"
-                                        type="submit" size="sm">
+                                    <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12"
+                                        color="info" type="submit" size="sm">
                                         <span wire:loading.remove>
                                             <i class="fas fa-plus"></i>
                                         </span>
@@ -375,15 +368,15 @@
         </div>
     </section>
     @push('scripts')
-    <script>
-        $(document).ready(function() {
+        <script>
+            $(document).ready(function() {
                 // Inisialisasi DataTables
                 var table = $('.myTable').DataTable();
             });
-    </script>
-    <script src="{{ $facultyComparisonChart->cdn() }}"></script>
-    {{ $facultyComparisonChart->script() }}
-    <script src="{{ $prodiComparisonChart->cdn() }}"></script>
-    {{ $prodiComparisonChart->script() }}
+        </script>
+        <script src="{{ $facultyComparisonChart->cdn() }}"></script>
+        {{ $facultyComparisonChart->script() }}
+        <script src="{{ $prodiComparisonChart->cdn() }}"></script>
+        {{ $prodiComparisonChart->script() }}
     @endpush
 </main>

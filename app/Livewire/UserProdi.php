@@ -6,6 +6,8 @@ use App\Models\Fakultas;
 use App\Models\Prodi;
 use App\Models\User;
 use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
+
 use Illuminate\Support\Facades\DB;
 
 class UserProdi extends Component
@@ -91,6 +93,11 @@ class UserProdi extends Component
         }
         
         return redirect()->to('user_prodi');
+    }
+
+    public function export()
+    {
+        return Excel::download(new \App\Exports\UserProdi(), 'user_prodi.xlsx');
     }
 
     public function deleteUser($id)

@@ -29,11 +29,19 @@
                 <h1 class="font-bold text-lg">{{ $master }}</h1>
                 <p class="text-slate-500 text-sm">List data {{ $master }} yang berhasil terinput dalam Database</p>
             </div>
-            <div>
-                <x-button class="" color="info" size="sm" @click="addModal = !addModal">
-                    Tambah {{ $master }}
-                </x-button>
+            <div class="flex">
+                <div  class="mr-2">
+                    <x-button class="" color="info" size="sm" @click="addModal = !addModal">
+                        Tambah {{ $master }}
+                    </x-button>
+                </div>
+                <div>
+                    <x-button class="" color="success" size="sm" wire:click="export">
+                        Export {{ $master }}
+                    </x-button>
+                </div>
             </div>
+           
         </div>
         {{-- add modal --}}
         <div x-show="addModal" style="display: none" x-on:keydown.escape.window="addModal = false"

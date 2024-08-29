@@ -37,6 +37,7 @@ class DetailSurvei extends Component
     public $selectedFakultas;
     public $selectedJurusan;
     public $selectedProdi;
+    public $lowestIndicator;
 
     public function mount($id)
     {
@@ -45,11 +46,14 @@ class DetailSurvei extends Component
         $this->dataJurusan = Jurusan::all();
         $this->dataProdi = Prodi::all();
         $this->user = Auth::user();
+       
+        // Load the survey data
+        $this->survei = Survey::findOrFail($id);
         switch ($this->user->role->slug) {
             case 'fakultas':
                 # code...
                 $this->selectedFakultas = $this->user->fakultas_id;
-                $this->getJurusanByFakultas();
+                $this->getProdiByFakultas();
                 break;
             case 'prodi':
                 $this->selectedProdi = $this->user->prodi_id;
@@ -58,9 +62,8 @@ class DetailSurvei extends Component
                 # code...
                 break;
         }
-        // Load the survey data
-        $this->survei = Survey::findOrFail($id);
         $this->getDetailSurvey();
+        $this->getLowest();
 
         // Initialize rekapitulasi arrays
 
@@ -157,6 +160,42 @@ class DetailSurvei extends Component
         $this->detail_rekapitulasi_aspek = $detail_rekapitulasi_aspek;
     }
 
+    private function getLowest()
+    {
+        // Initialize an array to hold all indicators with their 'nilai_butir' values
+        $allIndicators = [];
+    
+        // Iterate through aspects and indicators
+        foreach ($this->survei->aspek as $aspek) {
+            foreach ($aspek->indicator as $indicator) {
+                // Ensure 'nilai_butir' is set and valid
+                $nilaiButir = $this->detail_rekapitulasi[$aspek->id][$indicator->id]['nilai_butir'] ?? null;
+    
+                if ($nilaiButir !== null) {
+                    // Add indicator details to the array
+                    $allIndicators[] = [
+                        'name' => $indicator->name,
+                        'nilai_butir' => $nilaiButir,
+                        'aspek_id' => $aspek->id,
+                        'aspek_name' => $aspek->name,
+                        'indicator_id' => $indicator->id,
+                        'detail_rekapitulasi' => $this->detail_rekapitulasi[$aspek->id][$indicator->id]
+                    ];
+                }
+            }
+        }
+    
+        // Sort the indicators by 'nilai_butir' in ascending order
+        usort($allIndicators, function ($a, $b) {
+            return $a['nilai_butir'] <=> $b['nilai_butir'];
+        });
+    
+        // Limit to the 5 lowest values
+        $lowestIndicators = array_slice($allIndicators, 0, 5);
+    
+        // Return the results
+        $this->lowestIndicator = $lowestIndicators;
+    }    
 
     private function getMutuLayanan($nilai_butir)
     {
@@ -211,9 +250,11 @@ class DetailSurvei extends Component
     {
         if ($this->selectedFakultas) {
             $this->dataProdi = Prodi::where('fakultas_id', $this->selectedFakultas)->get();
+            $this->getDetailSurvey();
         } else {
             $this->dataProdi = [];
             $this->selectedProdi = null;
+            $this->getDetailSurvey();
         }
     }
 

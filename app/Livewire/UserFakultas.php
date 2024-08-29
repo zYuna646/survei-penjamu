@@ -3,8 +3,10 @@
 namespace App\Livewire;
 use App\Models\Fakultas;
 use App\Models\Jurusan;
+use App\Models\Role;
 use App\Models\User;
 use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 
 
@@ -71,6 +73,11 @@ class UserFakultas extends Component
         }
         
         return redirect()->to('user_fakultas');
+    }
+
+    public function export()
+    {
+        return Excel::download(new \App\Exports\UserFakultas(), 'user_fakultas.xlsx');
     }
 
     public function deleteUser($id)

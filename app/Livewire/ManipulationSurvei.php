@@ -19,7 +19,7 @@ class ManipulationSurvei extends Component
     public $dataSurvei;
     public $data;
     public $jumlah;
-    public $record;
+    public $record = [];
     public $userRole;
     public $sisa = [];
 
@@ -33,13 +33,25 @@ class ManipulationSurvei extends Component
 
     public function mount($id)
     {
-        
+
         $this->dataFakultas = Fakultas::all();
         $this->dataJurusan = Jurusan::all();
         $this->dataProdi = Prodi::all();
         $user = Auth::user();
         $this->userRole = $user->role->slug;
-
+        switch ($user->role->slug) {
+            case 'fakultas':
+                # code...
+                $this->selectedFakultas = $user->fakultas_id;
+                $this->getProdiByFakultas();
+                break;
+            case 'prodi':
+                $this->selectedProdi = $user->prodi_id;
+                break;
+            default:
+                # code...
+                break;
+        }
         $this->dataSurvei = Survey::where('id', $id)->first();
         $aspekCollection = $this->dataSurvei->aspek;
         $data = [];
@@ -81,19 +93,37 @@ class ManipulationSurvei extends Component
 
     public function prosesForm()
     {
-        dd('here');
-        $output = [
-            'jumlah' => $this->jumlah,
-            'record' => [],
-        ];
-    
-        foreach ($this->record as $aspekId => $values) {
-            $output['record']['aspek_' . $aspekId] = $values;
+        if (!$this->selectedProdi) {
+            dd('Pilih Prodi Terlebih Dahulu');
         }
-    
-        dd($output);
+        // Debugging: Print the current record
+        // Get the table name from the survei data
+        $table = $this->dataSurvei->id;
+
+        // Delete all existing records for the selected prodi
+        DB::table($table)->where('prodi_id', $this->selectedProdi)->delete();
+        // Prepare data for insertion
+        for ($i = 0; $i < $this->jumlah; $i++) {
+            $dataToInsert = [];
+            foreach ($this->record as $key => $value) {
+                for ($j = 1; $j <= 4; $j++) {
+                    if ($value[$j] != 0) {
+
+                        $dataToInsert[$key] = $j;
+                        $value[$j] = $value[$j] - 1; // Adjust the value
+                        break;
+                    }
+                }
+            }
+            $dataToInsert['prodi_id'] = $this->selectedProdi;
+            // Insert the data into the table
+            DB::table($table)->insert($dataToInsert);
+        }
+
+        return redirect('/detail_survei/' . $this->dataSurvei->id);
     }
-    
+
+
 
 
     public function calculateSisa()

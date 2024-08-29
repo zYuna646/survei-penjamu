@@ -48,25 +48,32 @@
                 <div class="flex flex-col gap-y-4 w-full">
                     <h1 class="font-bold text-base">Filter Survei</h1>
                     <form action="" class="w-full flex flex-col gap-y-2">
-                        <template x-if="userRole === 'universitas'">
-                            <select type="text" name="" wire:model="selectedFakultas" placeholder="Semua Jurusan"
-                                wire:change="getProdiByFakultas"
-                                class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                <option value="">Semua Fakultas</option>
-                                @foreach($dataFakultas as $fakultas)
-                                <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
-                                @endforeach
-                            </select>
-                        </template>
-                        <template x-if="userRole === 'universitas' || userRole === 'fakultas' || userRole === 'prodi'">
-                            <select type="text" name="" wire:model="selectedProdi" placeholder="Semua Prodi"
-                                class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                <option value="">Semua Prodi</option>
-                                @foreach($dataProdi as $prodi)
-                                <option value="{{ $prodi->id }}">{{ $prodi->name }}</option>
-                                @endforeach
-                            </select>
-                        </template>
+                        @if ($userRole === 'universitas')
+                            <template x-if="userRole === 'universitas'">
+                                <select type="text" name="" wire:model="selectedFakultas"
+                                    placeholder="Semua Jurusan" wire:change="getProdiByFakultas"
+                                    class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                    <option value="">Semua Fakultas</option>
+                                    @foreach ($dataFakultas as $fakultas)
+                                        <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
+                                    @endforeach
+                                </select>
+                            </template>
+                        @endif
+                        @if ($userRole === 'universitas' || $userRole === 'fakultas')
+                            <template
+                                x-if="userRole === 'universitas' || userRole === 'fakultas' || userRole === 'prodi'">
+                                <select type="text" name="" wire:model="selectedProdi"
+                                    placeholder="Semua Prodi"
+                                    class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                    <option value="">Semua Prodi</option>
+                                    @foreach ($dataProdi as $prodi)
+                                        <option value="{{ $prodi->id }}">{{ $prodi->name }}</option>
+                                    @endforeach
+                                </select>
+                            </template>
+                        @endif
+
                     </form>
 
                 </div>
@@ -88,62 +95,62 @@
                         </div>
                         <div class="w-full">
                             <label for="" class="text-sm ">Total Ingin Dicapai :</label>
-                            <input type="text" name="" placeholder="Jumlah" value="{{ $jumlah }}" id="jumlah"
+                            <input type="text" name="" placeholder="Jumlah" wire:model='jumlah'
+                                value="{{ $jumlah }}" id="jumlah"
                                 class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200" />
                         </div>
                     </div>
                 </div>
-                @foreach($data as $index => $item)
-                <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
-                    <div class="mb-4">
-                        <p class="text-lg font-bold">{{ $item[0]->name }}</p>
-                    </div>
-                    @foreach($item[1] as $indicatorIndex => $indicator)
-                    <div class="flex flex-col gap-y-4 mb-4">
-                        <div class="flex flex-col gap-y-2 border p-4 rounded-md">
-                            <div class="flex flex-col">
-                                <p class="text-sm">Indikator {{ $loop->iteration }}.</p>
-                                <p class="font-bold italic text-sm">{{ $indicator->name }}</p>
-                            </div>
-                            <div class="grid grid-cols-10 gap-4">
-                                <div class="lg:col-span-2 col-span-5">
-                                    <label for="" class="text-sm">tm :</label>
-                                    <input type="number" id="tm-{{ $indicator->id }}" placeholder="TM"
-                                        value="{{ $record[$indicator->id][1] ?? '' }}"
-                                        class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                </div>
-                                <div class="lg:col-span-2 col-span-5">
-                                    <label for="" class="text-sm">cm :</label>
-                                    <input type="number" id="m-{{ $indicator->id }}" placeholder="M"
-                                        value="{{ $record[$indicator->id][2] ?? '' }}"
-                                        class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                </div>
-                                <div class="lg:col-span-2 col-span-5">
-                                    <label for="" class="text-sm">m :</label>
-                                    <input type="number" id="cm-{{ $indicator->id }}" placeholder="CM"
-                                        value="{{ $record[$indicator->id][3] ?? '' }}"
-                                        class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                </div>
-                                <div class="lg:col-span-2 col-span-5">
-                                    <label for="" class="text-sm">sm :</label>
-
-                                    <input type="number" id="sm-{{ $indicator->id }}" placeholder="SM"
-                                        value="{{ $record[$indicator->id][4] ?? '' }}"
-                                        class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                </div>
-                                <div class="lg:col-span-2 col-span-5">
-                                    <label for="" class="text-sm">sisa :</label>
-                                    <input type="text" id="sisa-{{ $indicator->id }}"
-                                        value="{{ $sisa[$indicator->id] ?? '' }}" placeholder="Sisa"
-                                        class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200"
-                                        readonly>
-                                </div>
-                            </div>
+                @foreach ($data as $index => $item)
+                    <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                        <div class="mb-4">
+                            <p class="text-lg font-bold">{{ $item[0]->name }}</p>
                         </div>
+                        @foreach ($item[1] as $indicatorIndex => $indicator)
+                            <div class="flex flex-col gap-y-4 mb-4">
+                                <div class="flex flex-col gap-y-2 border p-4 rounded-md">
+                                    <div class="flex flex-col">
+                                        <p class="text-sm">Indikator {{ $loop->iteration }}.</p>
+                                        <p class="font-bold italic text-sm">{{ $indicator->name }}</p>
+                                    </div>
+                                    <div class="grid grid-cols-10 gap-4">
+                                        <div class="lg:col-span-2 col-span-5">
+                                            <label for="tm-{{ $indicator->id }}" class="text-sm">tm :</label>
+                                            <input type="number" id="tm-{{ $indicator->id }}" placeholder="TM"
+                                                wire:model="record.{{ $indicator->id }}.1" value="{{ $record[$indicator->id][1] ?? 0 }}"
+                                                class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                        </div>
+                                        <div class="lg:col-span-2 col-span-5">
+                                            <label for="m-{{ $indicator->id }}" class="text-sm">cm :</label>
+                                            <input type="number" id="m-{{ $indicator->id }}" placeholder="M"
+                                                wire:model="record.{{ $indicator->id }}.2" value="{{ $record[$indicator->id][2] ?? 0 }}"
+                                                class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                        </div>
+                                        <div class="lg:col-span-2 col-span-5">
+                                            <label for="cm-{{ $indicator->id }}" class="text-sm">m :</label>
+                                            <input type="number" id="cm-{{ $indicator->id }}" placeholder="CM"
+                                                wire:model="record.{{ $indicator->id }}.3" value="{{ $record[$indicator->id][3] ?? 0 }}"
+                                                class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                        </div>
+                                        <div class="lg:col-span-2 col-span-5">
+                                            <label for="sm-{{ $indicator->id }}" class="text-sm">sm :</label>
+                                            <input type="number" id="sm-{{ $indicator->id }}" placeholder="SM"
+                                                wire:model="record.{{ $indicator->id }}.4" value="{{ $record[$indicator->id][4] ?? 0 }}"
+                                                class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                        </div>
+                                        <div class="lg:col-span-2 col-span-5">
+                                            <label for="sisa-{{ $indicator->id }}" class="text-sm">sisa :</label>
+                                            <input type="text" id="sisa-{{ $indicator->id }}" placeholder="Sisa"
+                                                value="{{ $sisa[$indicator->id] ?? '' }}" readonly
+                                                class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
-                    @endforeach
-                </div>
                 @endforeach
+
                 <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex">
                     <x-button class="" size="md" color="info" type="submit">
                         Kirim Jawaban
@@ -154,13 +161,14 @@
 
         </div>
     </section>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const jumlah = parseFloat(document.getElementById('jumlah').value);
+            const jumlahInput = document.getElementById('jumlah');
+            let jumlah = parseFloat(jumlahInput.value) || 0;
 
             function updateSisa(indicatorId) {
                 const tm = parseFloat(document.getElementById(`tm-${indicatorId}`).value) || 0;
+
                 const m = parseFloat(document.getElementById(`m-${indicatorId}`).value) || 0;
                 const cm = parseFloat(document.getElementById(`cm-${indicatorId}`).value) || 0;
                 const sm = parseFloat(document.getElementById(`sm-${indicatorId}`).value) || 0;
@@ -168,13 +176,46 @@
                 document.getElementById(`sisa-${indicatorId}`).value = sisa;
             }
 
-            // Add event listeners to inputs
+            function checkAllSisa() {
+                let allZero = true;
+                document.querySelectorAll('input[id^="sisa-"]').forEach(input => {
+                    if (parseFloat(input.value) !== 0) {
+                        allZero = false;
+                    }
+                });
+                const submitButton = document.querySelector(
+                    'button[type="submit"]'); // Update this selector if needed
+                if (submitButton) {
+                    submitButton.style.display = allZero ? 'block' : 'none';
+                }
+            }
+
+            function updateAllSisa() {
+                document.querySelectorAll('input[id^="sisa-"]').forEach(input => {
+                    const indicatorId = input.id.split('-')[1];
+                    updateSisa(indicatorId);
+                });
+                checkAllSisa();
+            }
+
+            // Event listener for changes in jumlah
+            jumlahInput.addEventListener('input', () => {
+                jumlah = parseFloat(jumlahInput.value) || 0;
+                updateAllSisa(); // Recalculate all sisa values
+            });
+
+            // Add event listeners to all inputs of type number
             document.querySelectorAll('input[type="number"]').forEach(input => {
                 input.addEventListener('input', (event) => {
                     const indicatorId = event.target.id.split('-')[1];
                     updateSisa(indicatorId);
+                    checkAllSisa(); // Check if all sisa values are zero
                 });
             });
+
+            // Initial check in case sisa values are pre-filled
+            updateAllSisa();
         });
     </script>
+
 </main>
