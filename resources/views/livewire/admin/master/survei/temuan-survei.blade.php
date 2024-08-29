@@ -1,5 +1,5 @@
 <main class="bg-[#f9fafc] min-h-screen"
-    x-data="{ showToast: {{ session()->has('toastMessage') ? 'true' : 'false' }}, toastMessage: '{{ session('toastMessage') }}', toastType: '{{ session('toastType') }}' }"
+    x-data="{  ,showToast: {{ session()->has('toastMessage') ? 'true' : 'false' }}, toastMessage: '{{ session('toastMessage') }}', toastType: '{{ session('toastType') }}' }"
     x-init="
     if (showToast) {
         setTimeout(() => showToast = false, 5000);
@@ -39,8 +39,9 @@
         </div>
 
     </section>
-    <section class="max-w-screen-xl w-full mx-auto px-4 mt-4 pb-12">
-        <div class="flex flex-col gap-y-2 mb-4"
+    <section class="max-w-screen-xl w-full mx-auto px-4 mt-4 pb-12" x-data="{ userRole: '{{ $user->role->slug }}' }">
+        @if ($user->role->slug === 'universitas')
+        <div x-if="userRole === 'universitas'" class="flex flex-col gap-y-2 mb-4"
             x-data="{ addUniversitasTemuan : false, addUniversitasSolusi : false, expand : false, editUniversitasTemuan : false, editUniversitasSolusi : false }">
             <div class="w-full flex justify-between items-center p-5 bg-white rounded-lg border-slate-100 shadow-sm ">
                 <h4 class=" font-semibold">Temuan Univertias ({{ count($dataTemuanUniv) }})</h4>
@@ -191,10 +192,10 @@
                 </div>
             </div>
         </div>
+        @endif
 
-
-
-        <div class="flex flex-col gap-y-2 mb-4"
+        @if ($user->role->slug === 'fakultas')
+        <div x-if="userRole === 'fakultas'" class="flex flex-col gap-y-2 mb-4"
             x-data="{ addFakultasTemuan : false, addFakultasSolusi : false, expand : false, editUniversitasTemuan : false, editUniversitasSolusi : false }">
             <div class="w-full flex justify-between items-center p-5 bg-white rounded-lg border-slate-100 shadow-sm ">
                 <h4 class=" font-semibold">Temuan Fakultas ({{ count($dataTemuanFakultas) }})</h4>
@@ -343,9 +344,13 @@
                 </div>
             </div>
         </div>
+        @endif
 
 
-        <div class="flex flex-col gap-y-2 mb-4"
+
+
+        @if ($user->role->slug === 'prodi')
+        <div x-if="userRole === 'prodi'" class="flex flex-col gap-y-2 mb-4"
             x-data="{ addProdiTemuan : false, addProdiSolusi : false, expand : false, editUniversitasTemuan : false, editUniversitasSolusi : false }">
             <div class="w-full flex justify-between items-center p-5 bg-white rounded-lg border-slate-100 shadow-sm ">
                 <h4 class=" font-semibold">Temuan Prodi ({{ count($dataTemuanProdi) }})</h4>
@@ -496,6 +501,9 @@
                 </div>
             </div>
         </div>
+        @endif
+
+
     </section>
     @push('scripts')
     <script>

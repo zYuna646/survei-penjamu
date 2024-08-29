@@ -21,7 +21,6 @@ class UserProdi extends Component
         'email' => '',
         'password' => '',
         'prodi_id' => '',
-        'jurusan_id' => '',
         'fakultas_id' => '',
     ];
     
@@ -43,28 +42,20 @@ class UserProdi extends Component
         ->title('UNG Survey - Pengguna Prodi');
     }
 
-    public function getJurusanByFakultas()
+    public function getProdiByFakultas()
     {
         $fakultasId = $this->userProdi['fakultas_id'];
-        $this->dataJurusan = Jurusan::where('fakultas_id', $fakultasId)->get();
-    }
-    public function getProdiByJurusan()
-    {
-        $jurusanId = $this->userProdi['jurusan_id'];
-        $this->dataProdi = Prodi::where('jurusan_id', $jurusanId)->get();
+        $this->dataProdi = Prodi::where('fakultas_id', $fakultasId)->get();
     }
 
     public function addUserProdi()
     {
-        $fakultas = Fakultas::where('code', '0')->first();
-        $jurusan = Jurusan::where('code', '0')->first();
         // Validate the input
         $this->validate([
             'userProdi.nama' => 'required|string|max:255',
             'userProdi.email' => 'required|string|email|max:255|unique:users,email',
             'userProdi.password' => 'required|string|min:8',
             'userProdi.fakultas_id' => 'required|exists:fakultas,id',
-            'userProdi.jurusan_id' => 'required|exists:jurusans,id',
             'userProdi.prodi_id' => 'required|exists:prodis,id',
         ]);
 
@@ -76,8 +67,8 @@ class UserProdi extends Component
                 'email' => $this->userProdi['email'],
                 'password' => bcrypt($this->userProdi['password']),
                 'role_id' => 4,
-                'fakultas_id' => $fakultas->id,
-                'prodi_id' => $jurusan->id,
+                'fakultas_id' => $this->userProdi['fakultas_id'],
+                'prodi_id' => $this->userProdi['prodi_id'],
             ]);
 
             DB::commit();
