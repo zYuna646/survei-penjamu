@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code');
-            $table->unsignedBigInteger('jurusan_id');
+            $table->unsignedBigInteger('fakultas_id');
             $table->timestamps();
 
-            $table->foreign('jurusan_id')->references('id')->on('jurusans')->onDelete('cascade');
+            $table->foreign('fakultas_id')->references('id')->on('fakultas')->onDelete('cascade');
         });
     }
 
@@ -28,7 +28,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('prodis', function (Blueprint $table) {
-            $table->dropForeign(['jurusan_id']);
+            $table->dropForeign(['fakultas_id']);
         });
 
         Schema::dropIfExists('prodis');

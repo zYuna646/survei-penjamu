@@ -11,11 +11,11 @@ class Prodi extends Model
     protected $fillable = [
         'name',
         'code',
-        'jurusan_id'
+        'fakutlas_id'
     ];
 
-    public function jurusan()
+    public function fakultas()
     {
-        return $this->belongsTo(Jurusan::class);
+        return $this->belongsTo(Fakultas::class);
     }
 }
