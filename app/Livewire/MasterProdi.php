@@ -18,7 +18,6 @@ class MasterProdi extends Component
     public $prodi = [
         'nama' => '',
         'kode' => '',
-        'fakultas_id' => '',
         'jurusan_id' => '',
     ];
 
@@ -41,19 +40,17 @@ class MasterProdi extends Component
 
     public function addProdi()
     {
-        $this->validate([
-            'prodi.nama' => 'required|string|max:255',
-            'prodi.kode' => 'required|string|max:10|unique:prodis,code',
-            'prodi.jurusan_id' => 'required|exists:jurusans,id',
-        ]);
         
+        
+        $jurusan = Jurusan::FindOrFail($this->prodi['jurusan_id']);
+
+
         try {
             DB::beginTransaction();
-    
             Prodi::create([
                 'name' => $this->prodi['nama'],
                 'code' => $this->prodi['kode'],
-                'jurusan_id' => $this->prodi['jurusan_id'],
+                'fakultas_id' => $jurusan->fakultas->id,
             ]);
 
             DB::commit();

@@ -29,7 +29,7 @@ class FakultasSeeder extends Seeder
         $prodi = Prodi::create([
             'name' => 'Tidak Ada',
             'code' => '0',
-            'jurusan_id' => $jurusan->id,
+            'fakultas_id' => $Fakultas->id,
         ]);
     }
 }

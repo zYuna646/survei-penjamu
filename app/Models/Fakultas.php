@@ -13,8 +13,8 @@ class Fakultas extends Model
         'code',
     ];
 
-    public function jurusan()
+    public function prodi()
     {
-        return $this->hasMany(Jurusan::class);
+        return $this->hasMany(Prodi::class);
     }
 }

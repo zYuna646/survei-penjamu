@@ -110,7 +110,6 @@
                             <th>No.</th>
                             <th>Kode</th>
                             <th>Nama</th>
-                            <th>Jurusan</th>
                             <th>Fakultas</th>
                             <th>Aksi</th>
                         </tr>
@@ -121,8 +120,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $prodi['code'] }}</td>
                             <td>{{ $prodi['name'] }}</td>
-                            <td>{{ $prodi->jurusan->name }}</td>
-                            <td>{{ $prodi->jurusan->fakultas->name }}</td>
+                            <td>{{ $prodi->fakultas->name }}</td>
                             <td>
                                 <div class="inline-flex gap-x-2">
                                     <!-- Edit button -->

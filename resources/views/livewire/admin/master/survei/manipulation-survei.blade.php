@@ -50,21 +50,11 @@
                     <form action="" class="w-full flex flex-col gap-y-2">
                         <template x-if="userRole === 'universitas'">
                             <select type="text" name="" wire:model="selectedFakultas" placeholder="Semua Jurusan"
-                                wire:change="getJurusanByFakultas"
+                                wire:change="getProdiByFakultas"
                                 class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 <option value="">Semua Fakultas</option>
                                 @foreach($dataFakultas as $fakultas)
                                 <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
-                                @endforeach
-                            </select>
-                        </template>
-                        <template x-if="userRole === 'universitas' || userRole === 'fakultas'">
-                            <select type="text" name="" wire:model="selectedJurusan" placeholder="Semua Jurusan"
-                                wire:change="getProdiByJurusan"
-                                class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                <option value="">Semua Jurusan</option>
-                                @foreach($dataJurusan as $jurusan)
-                                <option value="{{ $jurusan->id }}">{{ $jurusan->name }}</option>
                                 @endforeach
                             </select>
                         </template>
@@ -97,8 +87,8 @@
                                 class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200" />
                         </div>
                         <div class="w-full">
-                            <label for="" class="text-sm">Total :</label>
-                            <input type="text" name="jumlah" placeholder="Jumlah" wire:model.defer="jumlah" id="jumlah"
+                            <label for="" class="text-sm ">Total Ingin Dicapai :</label>
+                            <input type="text" name="" placeholder="Jumlah" value="{{ $jumlah }}" id="jumlah"
                                 class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200" />
                         </div>
                     </div>
@@ -117,27 +107,28 @@
                             </div>
                             <div class="grid grid-cols-10 gap-4">
                                 <div class="lg:col-span-2 col-span-5">
-                                    <label for="" class="text-sm">sm :</label>
-                                    <input type="number" wire:model.defer="record.{{ $indicator->id }}.1"
-                                        id="tm-{{ $indicator->id }}" placeholder="TM"
-                                        class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                </div>
-                                <div class="lg:col-span-2 col-span-5">
-                                    <label for="" class="text-sm">m :</label>
-                                    <input type="number" wire:model.defer="record.{{ $indicator->id }}.2"
-                                        id="m-{{ $indicator->id }}" placeholder="M"
+                                    <label for="" class="text-sm">tm :</label>
+                                    <input type="number" id="tm-{{ $indicator->id }}" placeholder="TM"
+                                        value="{{ $record[$indicator->id][1] ?? '' }}"
                                         class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 </div>
                                 <div class="lg:col-span-2 col-span-5">
                                     <label for="" class="text-sm">cm :</label>
-                                    <input type="number" wire:model.defer="record.{{ $indicator->id }}.3"
-                                        id="cm-{{ $indicator->id }}" placeholder="CM"
+                                    <input type="number" id="m-{{ $indicator->id }}" placeholder="M"
+                                        value="{{ $record[$indicator->id][2] ?? '' }}"
                                         class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 </div>
                                 <div class="lg:col-span-2 col-span-5">
-                                    <label for="" class="text-sm">tm :</label>
-                                    <input type="number" wire:model.defer="record.{{ $indicator->id }}.4"
-                                        id="sm-{{ $indicator->id }}" placeholder="SM"
+                                    <label for="" class="text-sm">m :</label>
+                                    <input type="number" id="cm-{{ $indicator->id }}" placeholder="CM"
+                                        value="{{ $record[$indicator->id][3] ?? '' }}"
+                                        class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                </div>
+                                <div class="lg:col-span-2 col-span-5">
+                                    <label for="" class="text-sm">sm :</label>
+
+                                    <input type="number" id="sm-{{ $indicator->id }}" placeholder="SM"
+                                        value="{{ $record[$indicator->id][4] ?? '' }}"
                                         class="p-2 text-xs w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 </div>
                                 <div class="lg:col-span-2 col-span-5">

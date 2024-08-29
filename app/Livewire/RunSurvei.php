@@ -26,7 +26,6 @@ class RunSurvei extends Component
     public $prodi_id;
 
     public $selectedFakultas;
-    public $selectedJurusan;
     public $selectedProdi;
 
     public $prodi;
@@ -64,25 +63,10 @@ class RunSurvei extends Component
             ->title('UNG Survey - Survei ' . $this->dataSurvei['name']);
     }
 
-    public function getJurusanByFakultas()
+    public function getProdiByFakultas()
     {
         if ($this->selectedFakultas) {
-            $this->dataJurusan = Jurusan::where('fakultas_id', $this->selectedFakultas)->get();
-            $this->selectedJurusan = null; // Reset the selected Jurusan
-            $this->dataProdi = []; // Reset Prodi when Fakultas changes
-            $this->selectedProdi = null;
-        } else {
-            $this->dataJurusan = [];
-            $this->dataProdi = [];
-            $this->selectedJurusan = null;
-            $this->selectedProdi = null;
-        }
-    }
-    public function getProdiByJurusan()
-    {
-        if ($this->selectedJurusan) {
-            $this->dataProdi = Prodi::where('jurusan_id', $this->selectedJurusan)->get();
-            $this->selectedProdi = null; // Reset the selected Prodi
+            $this->dataProdi = Prodi::where('fakultas_id', $this->selectedFakultas)->get();
         } else {
             $this->dataProdi = [];
             $this->selectedProdi = null;
