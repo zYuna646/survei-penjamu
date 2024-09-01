@@ -37,6 +37,7 @@ class ManipulationSurvei extends Component
         $this->dataFakultas = Fakultas::all();
         $this->dataJurusan = Jurusan::all();
         $this->dataProdi = Prodi::all();
+        $this->dataSurvei = Survey::where('id', $id)->first();
         $user = Auth::user();
         $this->userRole = $user->role->slug;
         switch ($user->role->slug) {
@@ -52,29 +53,58 @@ class ManipulationSurvei extends Component
                 # code...
                 break;
         }
-        $this->dataSurvei = Survey::where('id', $id)->first();
+        $this->getData();
+    }
+
+    public function getData()
+    {
         $aspekCollection = $this->dataSurvei->aspek;
         $data = [];
         $record = [];
-        foreach ($aspekCollection as $aspek) {
-            $data[$aspek->id][0] = $aspek;
-            $data[$aspek->id][1] = $aspek->indicator;
-            foreach ($aspek->indicator as $indicator) {
-                $tmp = [
-                    1 => DB::table($this->dataSurvei->id)->where($indicator->id, 1)->count(),
-                    2 => DB::table($this->dataSurvei->id)->where($indicator->id, 2)->count(),
-                    3 => DB::table($this->dataSurvei->id)->where($indicator->id, 3)->count(),
-                    4 => DB::table($this->dataSurvei->id)->where($indicator->id, 4)->count(),
-                ];
-                $record[$indicator->id] = $tmp;
+    
+        if ($this->selectedProdi) {
+            // Fetch the base query result for the selected prodi
+            $baseQuery = DB::table($this->dataSurvei->id)->where('prodi_id', $this->selectedProdi);
+            $this->jumlah = $baseQuery->count();
+    
+            foreach ($aspekCollection as $aspek) {
+                $data[$aspek->id][0] = $aspek;
+                $data[$aspek->id][1] = $aspek->indicator;
+                foreach ($aspek->indicator as $indicator) {
+                    // Get the counts for each indicator value (1-4)
+                    $tmp = [
+                        1 => $baseQuery->where($indicator->id, 1)->count(),
+                        2 => $baseQuery->where($indicator->id, 2)->count(),
+                        3 => $baseQuery->where($indicator->id, 3)->count(),
+                        4 => $baseQuery->where($indicator->id, 4)->count(),
+                    ];
+                    $record[$indicator->id] = $tmp;
+                }
             }
+        } else {
+            foreach ($aspekCollection as $aspek) {
+                $data[$aspek->id][0] = $aspek;
+                $data[$aspek->id][1] = $aspek->indicator;
+                foreach ($aspek->indicator as $indicator) {
+                    // Default counts to zero
+                    $tmp = [
+                        1 => 0,
+                        2 => 0,
+                        3 => 0,
+                        4 => 0,
+                    ];
+                    $record[$indicator->id] = $tmp;
+                }
+            }
+            $this->jumlah = 0;
         }
-        $this->jumlah = DB::table($this->dataSurvei->id)->count();
+    
         $this->record = $record;
         $this->data = $data;
-
+    
         $this->calculateSisa();
     }
+    
 
     public function updated($field)
     {
@@ -89,6 +119,11 @@ class ManipulationSurvei extends Component
             $this->dataProdi = [];
             $this->selectedProdi = null;
         }
+    }
+
+    public function prodiChanged()
+    {
+        $this->getData();
     }
 
     public function prosesForm()

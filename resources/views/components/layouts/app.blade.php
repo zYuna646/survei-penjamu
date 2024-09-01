@@ -21,18 +21,23 @@
     {{-- jquery --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <script src="{{ mix('js/app.js') }}"></script> --}}
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <script src="{{ mix('js/app.js') }}"></script> 
+
+
     <title>{{ $title ?? 'Page Title' }}</title>
     @stack('styles')
 </head>
 
 <body>
     @if (isset($showNavbar) && $showNavbar)
-    <livewire:navbar />
+        <livewire:navbar />
     @endif
     {{ $slot }}
     @if (isset($showFooter) && $showFooter)
-    <livewire:footer />
+        <livewire:footer />
     @endif
 
     @stack('scripts')

@@ -63,7 +63,7 @@
                         @if ($userRole === 'universitas' || $userRole === 'fakultas')
                             <template
                                 x-if="userRole === 'universitas' || userRole === 'fakultas' || userRole === 'prodi'">
-                                <select type="text" name="" wire:model="selectedProdi"
+                                <select id="prodi-select" type="text" name="" wire:model="selectedProdi" wire:change="prodiChanged"
                                     placeholder="Semua Prodi"
                                     class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                     <option value="">Semua Prodi</option>
@@ -163,19 +163,22 @@
     </section>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const jumlahInput = document.getElementById('jumlah');
-            let jumlah = parseFloat(jumlahInput.value) || 0;
-
+            const prodiSelect = document.getElementById('prodi-select');
+    
+            // Function to update sisa values based on the current jumlah value
             function updateSisa(indicatorId) {
                 const tm = parseFloat(document.getElementById(`tm-${indicatorId}`).value) || 0;
-
                 const m = parseFloat(document.getElementById(`m-${indicatorId}`).value) || 0;
                 const cm = parseFloat(document.getElementById(`cm-${indicatorId}`).value) || 0;
                 const sm = parseFloat(document.getElementById(`sm-${indicatorId}`).value) || 0;
-                const sisa = jumlah - (tm + m + cm + sm);
+                const jumlahInput = document.getElementById('jumlah');
+    
+                const jumlah = parseFloat(jumlahInput.value) || 0; // Get the current value of jumlah directly
+                const sisa = jumlah - (tm + m + cm + sm); // Calculate sisa using the current jumlah
                 document.getElementById(`sisa-${indicatorId}`).value = sisa;
             }
-
+    
+            // Check if all sisa values are zero to control the submit button visibility
             function checkAllSisa() {
                 let allZero = true;
                 document.querySelectorAll('input[id^="sisa-"]').forEach(input => {
@@ -183,13 +186,13 @@
                         allZero = false;
                     }
                 });
-                const submitButton = document.querySelector(
-                    'button[type="submit"]'); // Update this selector if needed
+                const submitButton = document.querySelector('button[type="submit"]');
                 if (submitButton) {
                     submitButton.style.display = allZero ? 'block' : 'none';
                 }
             }
-
+    
+            // Update all sisa values based on current jumlah and indicator inputs
             function updateAllSisa() {
                 document.querySelectorAll('input[id^="sisa-"]').forEach(input => {
                     const indicatorId = input.id.split('-')[1];
@@ -197,25 +200,26 @@
                 });
                 checkAllSisa();
             }
-
-            // Event listener for changes in jumlah
-            jumlahInput.addEventListener('input', () => {
-                jumlah = parseFloat(jumlahInput.value) || 0;
-                updateAllSisa(); // Recalculate all sisa values
-            });
-
-            // Add event listeners to all inputs of type number
+    
+            // Set up a continuous check for the jumlah input value every 500 milliseconds
+            setInterval(() => {
+                updateAllSisa(); // Recalculate all sisa values periodically
+            }, 500); // Check every 500 milliseconds (adjust as needed)
+    
+            // Initial setup: Add event listeners to all inputs of type number
             document.querySelectorAll('input[type="number"]').forEach(input => {
                 input.addEventListener('input', (event) => {
                     const indicatorId = event.target.id.split('-')[1];
                     updateSisa(indicatorId);
-                    checkAllSisa(); // Check if all sisa values are zero
+                    checkAllSisa();
                 });
             });
-
+    
             // Initial check in case sisa values are pre-filled
             updateAllSisa();
         });
     </script>
+    
+    
 
 </main>
