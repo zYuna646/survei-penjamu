@@ -35,8 +35,9 @@
                 <h1 class="text-2xl lg:text-5xl text-white font-black">Survey <span
                         class="text-color-primary-500">Penjamu</span></h1>
                 <p class="text-lg lg:text-2xl text-white font-bold lg:mt-4">Universitas Negeri Gorontalo</p>
-                <p class="text-white text-xs lg:text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro
-                    dolore consequuntur iste hic voluptate sequi saepe a laboriosam magni. Corporis?</p>
+                <p class="text-white text-xs lg:text-sm">Aplikasi Survei Penjaminan Mutu Universitas Negeri Gorontalo
+                    adalah platform digital yang mengumpulkan data survei dari mahasiswa, dosen, dan staf untuk
+                    mendukung penjaminan mutu universitas.</p>
                 <x-button class="w-fit mt-4" onclick="window.location.href='{{ route('list_survei') }}'">
                     Lihat Survei
                 </x-button>
