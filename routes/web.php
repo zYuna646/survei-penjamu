@@ -39,6 +39,7 @@ use App\Livewire\EditUserProdi;
 use App\Livewire\UserJurusan;
 use App\Livewire\EditUserJurusan;
 use App\Livewire\EditUserFakultas;
+use App\Livewire\LaporanSurvei;
 use App\Livewire\ManipulationSurvei;
 use App\Livewire\TemuanSurvei;
 use App\Livewire\UserProfile;
@@ -68,7 +69,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/detail_survei/{id}', DetailSurvei::class)->name('detail_survei');
     Route::get('/create_survei/{id}', CreateSurvei::class)->name('create_survei');
     Route::get('/recap_survei', RecapSurvei::class)->name('recap_survei');
-   
+    Route::get('/laporan_survei_kepuasan', LaporanSurvei::class)->name('laporan_survei');
+    
 
     Route::get('/user_prodi', UserProdi::class)->name('user_prodi');
     Route::get('/edit_user_prodi/{id}', EditUserProdi::class)->name('edit_user_prodi');

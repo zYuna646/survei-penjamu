@@ -17,9 +17,9 @@ class FakultasSeeder extends Seeder
      */
     public function run(): void
     {
-        $tb_f = DB::table('tb_fakultas')->get();
-        $tb_p = DB::table('tb_prodi')->get();
-        $tb_je = DB::table('tb_jenjang')->get();
+        $tb_f = DB::table('fakultas')->get();
+        $tb_p = DB::table('prodi')->get();
+        $tb_je = DB::table('jenjang')->get();
 
         // Create the 'Tidak Ada' Fakultas and Prodi
         $fakultasTidakAda = Fakultas::create([
