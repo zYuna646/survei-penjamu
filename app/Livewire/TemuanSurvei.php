@@ -47,6 +47,8 @@ class TemuanSurvei extends Component
         $this->validate([
             'temuan' => 'required'
         ]);
+
+        // dd($this->temuan);  
         
         Temuan::create([
             'indikator_id' => $this->indikator->id,
