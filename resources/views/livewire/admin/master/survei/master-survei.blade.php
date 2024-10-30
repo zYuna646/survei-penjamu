@@ -204,11 +204,17 @@
                                             <i class="fas fa-cog"></i>
                                         </span>
                                     </x-button>
+                                    <x-button class="" color="info" size="sm" onclick="window.location.href='{{ route('laporan_survei', $survei['id']) }}'" >
+                                        <span>
+                                            <i class="fas fa-file"></i>
+                                        </span>
+                                    </x-button>
                                     <!-- Edit button -->
                                     <x-button class="" color="info" size="sm"
                                         onclick="window.location.href='{{ route('detail_survei', $survei['id']) }}'">
                                         Detail
                                     </x-button>
+                                    
                                     <!-- Delete button (if needed) -->
                                     <x-button class="" color="danger" size="sm"
                                         onclick="confirmDelete({{ $survei['id'] }})">
