@@ -192,40 +192,43 @@
                                                     Non-Aktif
                                                 </span>
 
-                                                <button
-                                                    class="inline-flex gap-x-1 text-color-info-500 text-xs font-semibold"
-                                                    onclick="consfirmUpdate({{ $survei['id'] }})">
-                                                    <span>
-                                                        <i class="fas fa-edit"></i>
-                                                    </span>
-                                                    Ubah
-                                                </button>
-                                            </div>
-                                        @endif
-                                    </td>
+                                    <button class="inline-flex gap-x-1 text-color-info-500 text-xs font-semibold"
+                                        onclick="consfirmUpdate({{ $survei['id'] }})">
+                                        <span>
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                        Ubah
+                                    </button>
+                                </div>
                                 @endif
-
-                                <td>
-                                    <div class="inline-flex gap-x-1">
-                                        <!--Fill button -->
-                                        <x-button class="" color="info" size="sm"
-                                            onclick="window.location.href='{{ route('create_survei', $survei['id']) }}'">
-                                            <span>
-                                                <i class="fas fa-cog"></i>
-                                            </span>
-                                        </x-button>
-                                        <!-- Edit button -->
-                                        <x-button class="" color="info" size="sm"
-                                            onclick="window.location.href='{{ route('detail_survei', $survei['id']) }}'">
-                                            Detail
-                                        </x-button>
-                                        <!-- Delete button (if needed) -->
-                                        <x-button class="" color="danger" size="sm"
-                                            onclick="confirmDelete({{ $survei['id'] }})">
-                                            Hapus
-                                        </x-button>
-                                    </div>
-                                </td>
+                            </td>
+                            <td>
+                                <div class="inline-flex gap-x-1">
+                                    <!--Fill button -->
+                                    <x-button class="" color="info" size="sm"
+                                        onclick="window.location.href='{{ route('create_survei', $survei['id']) }}'">
+                                        <span>
+                                            <i class="fas fa-cog"></i>
+                                        </span>
+                                    </x-button>
+                                    <x-button class="" color="info" size="sm" onclick="window.location.href='{{ route('laporan_survei', $survei['id']) }}'" >
+                                        <span>
+                                            <i class="fas fa-file"></i>
+                                        </span>
+                                    </x-button>
+                                    <!-- Edit button -->
+                                    <x-button class="" color="info" size="sm"
+                                        onclick="window.location.href='{{ route('detail_survei', $survei['id']) }}'">
+                                        Detail
+                                    </x-button>
+                                    
+                                    <!-- Delete button (if needed) -->
+                                    <x-button class="" color="danger" size="sm"
+                                        onclick="confirmDelete({{ $survei['id'] }})">
+                                        Hapus
+                                    </x-button>
+                                </div>
+                            </td>
 
                             </tr>
                         @endforeach
