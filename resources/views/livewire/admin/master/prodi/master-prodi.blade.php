@@ -73,16 +73,15 @@
                                 @error('prodi.kode') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                                <label for="jurusan_id" class="text-sm">Jurusan :</label>
-                                <select name="jurusan_id" id="jurusan_id" wire:model="prodi.jurusan_id"
+                                <label for="fakultas_id" class="text-sm">Fakultas :</label>
+                                <select name="fakultas_id" id="fakultas_id" wire:model="prodi.fakultas_id"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                    <option value="">Pilih Jurusan</option>
-                                    @foreach($dataJurusan as $jurusan)
-                                    <option value="{{ $jurusan->id }}">{{ $jurusan->name }} - {{
-                                        $jurusan->fakultas->name }}</option>
+                                    <option value="">Pilih Fakultas</option>
+                                    @foreach($dataFakultas as $fakultas)
+                                    <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
                                     @endforeach
                                 </select>
-                                @error('prodi.jurusan_id') <span class="text-red-500 text-xs">{{ $message }}</span>
+                                @error('prodi.fakultas_id') <span class="text-red-500 text-xs">{{ $message }}</span>
                                 @enderror
                             </div>
                             <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12" color="info"

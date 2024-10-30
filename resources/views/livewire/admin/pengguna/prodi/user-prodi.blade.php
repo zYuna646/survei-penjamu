@@ -30,7 +30,7 @@
                 <p class="text-slate-500 text-sm">List data {{ $master }} yang berhasil terinput dalam Database</p>
             </div>
             <div class="flex">
-                <div  class="mr-2">
+                <div class="mr-2">
                     <x-button class="" color="info" size="sm" @click="addModal = !addModal">
                         Tambah {{ $master }}
                     </x-button>
@@ -41,7 +41,7 @@
                     </x-button>
                 </div>
             </div>
-           
+
         </div>
         {{-- add modal --}}
         <div x-show="addModal" style="display: none" x-on:keydown.escape.window="addModal = false"
@@ -74,10 +74,10 @@
                                 @error('userProdi.nama') <span class="text-red-500 text-xs">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="flex flex-col gap-y-2 md:col-span-4 col-span-12 ">
+                            <div class="flex flex-col gap-y-2 md:col-span-6 col-span-12 ">
                                 <label for="fakultas" class="text-sm ">fakultas :</label>
                                 <select id="fakultas" name="fakultas" wire:model="userProdi.fakultas_id"
-                                    wire:change="getJurusanByFakultas"
+                                    wire:change="getProdiByFakultas"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                     <option value="">Pilih Fakultas</option>
                                     @foreach($dataFakultas as $fakultas)
@@ -88,21 +88,7 @@
                                     }}</span>
                                 @enderror
                             </div>
-                            <div class="flex flex-col gap-y-2 md:col-span-4 col-span-12 ">
-                                <label for="jurusan" class="text-sm ">Jurusan :</label>
-                                <select id="jurusan" name="jurusan" wire:model="userProdi.jurusan_id"
-                                    wire:change="getProdiByJurusan"
-                                    class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                    <option value="">Pilih Jurusan</option>
-                                    @foreach($dataJurusan as $jurusan)
-                                    <option value="{{ $jurusan->id }}">{{ $jurusan->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('userProdi.jurusan_id') <span class="text-red-500 text-xs">{{ $message
-                                    }}</span>
-                                @enderror
-                            </div>
-                            <div class="flex flex-col gap-y-2 md:col-span-4 col-span-12 ">
+                            <div class="flex flex-col gap-y-2 md:col-span-6 col-span-12 ">
                                 <label for="prodi" class="text-sm ">Prodi :</label>
                                 <select id="prodi" name="prodi" wire:model="userProdi.prodi_id"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">

@@ -1,6 +1,10 @@
-<main class="bg-[#f9fafc] min-h-screen" x-data="{ showToast: {{ session()->has('toastMessage') ? 'true' : 'false' }}, toastMessage: '{{ session('toastMessage') }}', toastType: '{{ session('toastType') }}' }" x-init="if (showToast) {
-    setTimeout(() => showToast = false, 5000);
-}">
+<main class="bg-[#f9fafc] min-h-screen"
+    x-data="{  ,showToast: {{ session()->has('toastMessage') ? 'true' : 'false' }}, toastMessage: '{{ session('toastMessage') }}', toastType: '{{ session('toastType') }}' }"
+    x-init="
+    if (showToast) {
+        setTimeout(() => showToast = false, 5000);
+    }
+">
     <!-- Toast -->
     <div x-show="showToast" x-transition
         :class="toastType === 'success' ? 'text-color-success-500' : 'text-color-danger-500'"
@@ -36,47 +40,43 @@
         </div>
 
     </section>
-    <section class="max-w-screen-xl w-full mx-auto px-4 mt-4 pb-12">
-        @if (Auth::user()->role->name == 'Universitas')
-            <div class="flex flex-col gap-y-2 mb-4" x-data="{ addUniversitasTemuan: false, addUniversitasSolusi: false, expand: false, editUniversitasTemuan: false, editUniversitasSolusi: false }">
-                <div
-                    class="w-full flex justify-between items-center p-5 bg-white rounded-lg border-slate-100 shadow-sm ">
-                    <h4 class=" font-semibold">Temuan Univertias ({{ count($dataTemuanUniv) }})</h4>
-                    <div class="inline-flex gap-x-2">
-                        @if (Auth::user()->role->name == 'Universitas')
-                            <x-button size="sm" color="default"
-                                @click="addUniversitasTemuan = !addUniversitasTemuan">
-                                Buat Temuan
-                            </x-button>
-                        @endif
-
-                        <x-button size="sm" color="default" @click="expand = !expand">
-                            <span>
-                                <i :class="expand ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"></i>
-                            </span>
-                        </x-button>
-                    </div>
+    <section class="max-w-screen-xl w-full mx-auto px-4 mt-4 pb-12" x-data="{ userRole: '{{ $user->role->slug }}' }">
+        @if ($user->role->slug === 'universitas')
+        <div x-if="userRole === 'universitas'" class="flex flex-col gap-y-2 mb-4"
+            x-data="{ addUniversitasTemuan : false, addUniversitasSolusi : false, expand : false, editUniversitasTemuan : false, editUniversitasSolusi : false }">
+            <div class="w-full flex justify-between items-center p-5 bg-white rounded-lg border-slate-100 shadow-sm ">
+                <h4 class=" font-semibold">Temuan Univertias ({{ count($dataTemuanUniv) }})</h4>
+                <div class="inline-flex gap-x-2">
+                    <x-button size="sm" color="default" @click="addUniversitasTemuan = !addUniversitasTemuan">
+                        Buat Temuan
+                    </x-button>
+                    <x-button size="sm" color="default" @click="expand = !expand">
+                        <span>
+                            <i :class="expand ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"></i>
+                        </span>
+                    </x-button>
                 </div>
-                @foreach ($dataTemuanUniv as $item)
-                    <div x-show="expand" x-transition style="display: none"
-                        class="w-full flex flex-col gap-y-2 p-6 bg-white rounded-lg border-slate-100 shadow-sm">
-                        <div class="flex flex-col gap-y-2">
-                            <div class="w-full inline-flex justify-between items-center">
-                                <div class="inline-flex text-slate-500 gap-x-2 items-center">
-                                    <div class="w-5">
-                                        <img src="{{ Auth::user()->avatar_url ?? '/avatar/placeholder.jpg' }}"
-                                            alt="" class="w-full rounded-full hover:cursor-pointer" />
-                                    </div>
-                                    <span class="text-xs font-semibold">Admin, {{ $item->created_at }}</span>
-                                </div>
-                                <button class="inline-flex gap-x-1 text-color-danger-500 text-xs font-semibold"
-                                    onclick="confirmDelete({{ $item->id }})">
-                                    <span>
-                                        <i class="fas fa-trash"></i>
-                                    </span>
-                                </button>
+            </div>
+            @foreach ($dataTemuanUniv as $item)
+            <div x-show="expand" x-transition style="display: none"
+                class="w-full flex flex-col gap-y-2 p-6 bg-white rounded-lg border-slate-100 shadow-sm">
+                <div class="flex flex-col gap-y-2">
+                    <div class="w-full inline-flex justify-between items-center">
+                        <div class="inline-flex text-slate-500 gap-x-2 items-center">
+                            <div class="w-5">
+                                <img src="{{ Auth::user()->avatar_url ?? '/avatar/placeholder.jpg' }}" alt=""
+                                    class="w-full rounded-full hover:cursor-pointer" />
                             </div>
-                            <p class="font-semibold px-1 text-sm">{{ $item->temuan }}.
+                            <span class="text-xs font-semibold">Admin, {{ $item->created_at }}</span>
+                        </div>
+                        <button class="inline-flex gap-x-1 text-color-danger-500 text-xs font-semibold"
+                            onclick="confirmDelete({{ $item->id }})">
+                            <span>
+                                <i class="fas fa-trash"></i>
+                            </span>
+                        </button>
+                    </div>
+                    <p class="font-semibold px-1 text-sm">{{ $item->temuan }}.
 
                             </p>
                         </div>
@@ -147,95 +147,93 @@
                     </div>
                 @endforeach
 
-                {{-- universitas temuan add --}}
-                <div x-show="addUniversitasTemuan" style="display: none"
-                    x-on:keydown.escape.window="addUniversitasTemuan = false"
-                    class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 h-full max-h-full bg-black/20">
-                    <div class="relative p-4 w-full max-w-2xl max-h-full" @click.outside="addUniversitasTemuan = false">
-                        <!-- Modal content -->
-                        <div class="relative bg-white rounded-lg shadow ">
-                            <!-- Modal header -->
-                            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
-                                <h3 class="text-lg font-bold text-gray-900 ">
-                                    Tambah {{ $master }} Universitas
-                                </h3>
-                                <button type="button" @click="addUniversitasTemuan = false"
-                                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
-                                    data-modal-hide="default-modal">
-                                    <span>
-                                        <i class="fas fa-times"></i>
+            {{-- universitas temuan add --}}
+            <div x-show="addUniversitasTemuan" style="display: none"
+                x-on:keydown.escape.window="addUniversitasTemuan = false"
+                class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 h-full max-h-full bg-black/20">
+                <div class="relative p-4 w-full max-w-2xl max-h-full" @click.outside="addUniversitasTemuan = false">
+                    <!-- Modal content -->
+                    <div class="relative bg-white rounded-lg shadow ">
+                        <!-- Modal header -->
+                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
+                            <h3 class="text-lg font-bold text-gray-900 ">
+                                Tambah {{ $master }} Universitas
+                            </h3>
+                            <button type="button" @click="addUniversitasTemuan = false"
+                                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
+                                data-modal-hide="default-modal">
+                                <span>
+                                    <i class="fas fa-times"></i>
+                                </span>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="p-4 md:p-5 space-y-4">
+                            <form wire:submit.prevent="addTemuanUniversitas" class="grid grid-cols-12 p-2">
+                                <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                                    <label for="temuan" class="text-sm ">{{ $master }} :</label>
+                                    <textarea id="temuan" name="temuan" wire:model="temuan"
+                                        placeholder="Masukan {{ $master }}"
+                                        class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200"></textarea>
+                                    @error('temuan') <span class="text-red-500 text-xs">{{ $message
+                                        }}</span>
+                                    @enderror
+                                </div>
+                                <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12" color="info"
+                                    type="submit">
+                                    <span wire:loading.remove>
+                                        <i class="fas fa-plus"></i>
                                     </span>
-                                    <span class="sr-only">Close modal</span>
-                                </button>
-                            </div>
-                            <!-- Modal body -->
-                            <div class="p-4 md:p-5 space-y-4">
-                                <form wire:submit.prevent="addTemuanUniversitas" class="grid grid-cols-12 p-2">
-                                    <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                                        <label for="temuan" class="text-sm ">{{ $master }} :</label>
-                                        <textarea id="temuan" name="temuan" wire:model="temuan" placeholder="Masukan {{ $master }}"
-                                            class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200"></textarea>
-                                        @error('temuan')
-                                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12"
-                                        color="info" type="submit">
-                                        <span wire:loading.remove>
-                                            <i class="fas fa-plus"></i>
-                                        </span>
-                                        <span wire:loading class="animate-spin">
-                                            <i class="fas fa-circle-notch "></i>
-                                        </span>
-                                        Tambah {{ $master }}
-                                    </x-button>
-                                </form>
-                            </div>
+                                    <span wire:loading class="animate-spin">
+                                        <i class="fas fa-circle-notch "></i>
+                                    </span>
+                                    Tambah {{ $master }}
+                                </x-button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         @endif
 
-        @if (Auth::user()->role->name != 'prodi')
-            <div class="flex flex-col gap-y-2 mb-4" x-data="{ addFakultasTemuan: false, addFakultasSolusi: false, expand: false, editUniversitasTemuan: false, editUniversitasSolusi: false }">
-                <div
-                    class="w-full flex justify-between items-center p-5 bg-white rounded-lg border-slate-100 shadow-sm ">
-                    <h4 class=" font-semibold">Temuan Fakultas ({{ count($dataTemuanFakultas) }})</h4>
-                    <div class="inline-flex gap-x-2">
-                        @if (Auth::user()->role->name == 'Fakultas')
-                            <x-button size="sm" color="default" @click="addFakultasTemuan = !addFakultasTemuan">
-                                Buat Temuan
-                            </x-button>
-                        @endif
-
-                        <x-button size="sm" color="default" @click="expand = !expand">
-                            <span>
-                                <i :class="expand ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"></i>
-                            </span>
-                        </x-button>
-                    </div>
+        @if ($user->role->slug === 'fakultas')
+        <div x-if="userRole === 'fakultas'" class="flex flex-col gap-y-2 mb-4"
+            x-data="{ addFakultasTemuan : false, addFakultasSolusi : false, expand : false, editUniversitasTemuan : false, editUniversitasSolusi : false }">
+            <div class="w-full flex justify-between items-center p-5 bg-white rounded-lg border-slate-100 shadow-sm ">
+                <h4 class=" font-semibold">Temuan Fakultas ({{ count($dataTemuanFakultas) }})</h4>
+                <div class="inline-flex gap-x-2">
+                    <x-button size="sm" color="default" @click="addFakultasTemuan = !addFakultasTemuan">
+                        Buat Temuan
+                    </x-button>
+                    <x-button size="sm" color="default" @click="expand = !expand">
+                        <span>
+                            <i :class="expand ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"></i>
+                        </span>
+                    </x-button>
                 </div>
-                @foreach ($dataTemuanFakultas as $item)
-                    <div x-show="expand" x-transition style="display: none"
-                        class="w-full flex flex-col gap-y-2 p-6 bg-white rounded-lg border-slate-100 shadow-sm">
-                        <div class="flex flex-col gap-y-2">
-                            <div class="w-full inline-flex justify-between items-center">
-                                <div class="inline-flex text-slate-500 gap-x-2 items-center">
-                                    <div class="w-5">
-                                        <img src="{{ Auth::user()->avatar_url ?? '/avatar/placeholder.jpg' }}"
-                                            alt="" class="w-full rounded-full hover:cursor-pointer" />
-                                    </div>
-                                    <span class="text-xs font-semibold">{{ $item->fakultas->name }} ,
-                                        {{ $item->created_at }}</span>
-                                </div>
-                                <button class="inline-flex gap-x-1 text-color-danger-500 text-xs font-semibold"
-                                    onclick="confirmDelete({{ $item->id }})">
-                                    <span>
-                                        <i class="fas fa-trash"></i>
-                                    </span>
-                                </button>
+            </div>
+            @foreach ($dataTemuanFakultas as $item)
+            <div x-show="expand" x-transition style="display: none"
+                class="w-full flex flex-col gap-y-2 p-6 bg-white rounded-lg border-slate-100 shadow-sm">
+                <div class="flex flex-col gap-y-2">
+                    <div class="w-full inline-flex justify-between items-center">
+                        <div class="inline-flex text-slate-500 gap-x-2 items-center">
+                            <div class="w-5">
+                                <img src="{{ Auth::user()->avatar_url ?? '/avatar/placeholder.jpg' }}" alt=""
+                                    class="w-full rounded-full hover:cursor-pointer" />
                             </div>
+                            <span class="text-xs font-semibold">{{ $item->fakultas->name }} , {{ $item->created_at
+                                }}</span>
+                        </div>
+                        <button class="inline-flex gap-x-1 text-color-danger-500 text-xs font-semibold"
+                            onclick="confirmDelete({{ $item->id }})">
+                            <span>
+                                <i class="fas fa-trash"></i>
+                            </span>
+                        </button>
+                    </div>
 
                             <p class="font-semibold px-1 text-sm">{{ $item->temuan }}. </p>
                         </div>
@@ -306,59 +304,62 @@
                     </div>
                 @endforeach
 
-                {{-- fakultas temuan add --}}
-                <div x-show="addFakultasTemuan" style="display: none"
-                    x-on:keydown.escape.window="addFakultasTemuan = false"
-                    class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 h-full max-h-full bg-black/20">
-                    <div class="relative p-4 w-full max-w-2xl max-h-full" @click.outside="addFakultasTemuan = false">
-                        <!-- Modal content -->
-                        <div class="relative bg-white rounded-lg shadow ">
-                            <!-- Modal header -->
-                            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
-                                <h3 class="text-lg font-bold text-gray-900 ">
-                                    Tambah {{ $master }} Universitas
-                                </h3>
-                                <button type="button" @click="addFakultasTemuan = false"
-                                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
-                                    data-modal-hide="default-modal">
-                                    <span>
-                                        <i class="fas fa-times"></i>
+            {{-- fakultas temuan add --}}
+            <div x-show="addFakultasTemuan" style="display: none" x-on:keydown.escape.window="addFakultasTemuan = false"
+                class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 h-full max-h-full bg-black/20">
+                <div class="relative p-4 w-full max-w-2xl max-h-full" @click.outside="addFakultasTemuan = false">
+                    <!-- Modal content -->
+                    <div class="relative bg-white rounded-lg shadow ">
+                        <!-- Modal header -->
+                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
+                            <h3 class="text-lg font-bold text-gray-900 ">
+                                Tambah {{ $master }} Universitas
+                            </h3>
+                            <button type="button" @click="addFakultasTemuan = false"
+                                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
+                                data-modal-hide="default-modal">
+                                <span>
+                                    <i class="fas fa-times"></i>
+                                </span>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="p-4 md:p-5 space-y-4">
+                            <form wire:submit.prevent="addTemuanFakultas" class="grid grid-cols-12 p-2">
+                                <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                                    <label for="temuan" class="text-sm ">{{ $master }} :</label>
+                                    <textarea id="temuan" name="temuan" wire:model="temuan"
+                                        placeholder="Masukan {{ $master }}"
+                                        class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200"></textarea>
+                                    @error('temuan') <span class="text-red-500 text-xs">{{ $message
+                                        }}</span>
+                                    @enderror
+                                </div>
+                                <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12" color="info"
+                                    type="submit">
+                                    <span wire:loading.remove>
+                                        <i class="fas fa-plus"></i>
                                     </span>
-                                    <span class="sr-only">Close modal</span>
-                                </button>
-                            </div>
-                            <!-- Modal body -->
-                            <div class="p-4 md:p-5 space-y-4">
-                                <form wire:submit.prevent="addTemuanFakultas" class="grid grid-cols-12 p-2">
-                                    <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                                        <label for="temuan" class="text-sm ">{{ $master }} :</label>
-                                        <textarea id="temuan" name="temuan" wire:model="temuan" placeholder="Masukan {{ $master }}"
-                                            class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200"></textarea>
-                                        @error('temuan')
-                                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12"
-                                        color="info" type="submit">
-                                        <span wire:loading.remove>
-                                            <i class="fas fa-plus"></i>
-                                        </span>
-                                        <span wire:loading class="animate-spin">
-                                            <i class="fas fa-circle-notch "></i>
-                                        </span>
-                                        Tambah {{ $master }}
-                                    </x-button>
-                                </form>
-                            </div>
+                                    <span wire:loading class="animate-spin">
+                                        <i class="fas fa-circle-notch "></i>
+                                    </span>
+                                    Tambah {{ $master }}
+                                </x-button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         @endif
 
 
 
-        <div class="flex flex-col gap-y-2 mb-4" x-data="{ addProdiTemuan: false, addProdiSolusi: false, expand: false, editUniversitasTemuan: false, editUniversitasSolusi: false }">
+
+        @if ($user->role->slug === 'prodi')
+        <div x-if="userRole === 'prodi'" class="flex flex-col gap-y-2 mb-4"
+            x-data="{ addProdiTemuan : false, addProdiSolusi : false, expand : false, editUniversitasTemuan : false, editUniversitasSolusi : false }">
             <div class="w-full flex justify-between items-center p-5 bg-white rounded-lg border-slate-100 shadow-sm ">
                 <h4 class=" font-semibold">Temuan Prodi ({{ count($dataTemuanProdi) }})</h4>
                 <div class="inline-flex gap-x-2">
@@ -512,6 +513,9 @@
                 </div>
             </div>
         </div>
+        @endif
+
+
     </section>
     @push('scripts')
         <script>
