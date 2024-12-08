@@ -35,7 +35,7 @@
                     </select>
                     @error('userProdi.fakultas_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
-                <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                {{-- <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="jurusan" class="text-sm">Jurusan :</label>
                     <select type="jurusan" id="jurusan" name="jurusan" wire:model="userProdi.jurusan_id"
                         wire:change="getProdiByJurusan"
@@ -46,7 +46,7 @@
                         @endforeach
                     </select>
                     @error('userProdi.jurusan_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                </div>
+                </div> --}}
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="prodi" class="text-sm">Prodi :</label>
                     <select type="prodi" id="prodi" name="prodi" wire:model="userProdi.prodi_id"
