@@ -24,7 +24,7 @@ class EditUserProdi extends Component
     protected $rules = [
         'userProdi.name' => 'required|string|max:255',
         'userProdi.fakultas_id' => 'required|exists:fakultas,id',
-        'userProdi.jurusan_id' => 'required|exists:jurusans,id',
+        // 'userProdi.jurusan_id' => 'required|exists:jurusans,id',
         'userProdi.prodi_id' => 'required|exists:prodis,id',
         'userProdi.email' => 'required|email|max:255',
         'userProdi.newpass' => 'nullable|min:8',
@@ -35,8 +35,8 @@ class EditUserProdi extends Component
     {
         $this->userProdi = User::findOrFail($id)->toArray();
         $this->dataFakultas = Fakultas::all(); 
-        $this->dataJurusan = Jurusan::where('fakultas_id', $this->userProdi['fakultas_id'])->get();
-        $this->dataProdi = Prodi::where('jurusan_id', $this->userProdi['jurusan_id'])->get();
+        // $this->dataJurusan = Jurusan::where('fakultas_id', $this->userProdi['fakultas_id'])->get();
+        $this->dataProdi = Prodi::where('fakultas_id', $this->userProdi['fakultas_id'])->get();
     }
 
     public function getJurusanByFakultas()
