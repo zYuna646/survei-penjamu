@@ -8,10 +8,6 @@ use Livewire\Component;
 class LaporanSurvei extends Component
 {
     public $survei;
-    public function mount($id){
-        $survei = Survey::findOrFail($id);
-        $this->survei = $survei->toArray();
-    }
 
     public function render()
     {

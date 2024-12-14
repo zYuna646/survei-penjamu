@@ -203,8 +203,15 @@
                                         @endif
 
                                         <!-- Laporan Survei Button -->
-                                        <x-button class="" color="info" size="sm"
+                                        {{-- <x-button class="" color="info" size="sm"
                                             onclick="window.location.href='{{ route('laporan_survei', $survei['id']) }}'">
+                                            <span>
+                                                <i class="fas fa-file"></i>
+                                            </span>
+                                        </x-button> --}}
+
+                                        <x-button class="" color="info" size="sm"
+                                            onclick="window.location.href='{{ route('create_document', $survei['id']) }}'">
                                             <span>
                                                 <i class="fas fa-file"></i>
                                             </span>
