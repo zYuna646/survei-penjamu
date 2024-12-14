@@ -1,12 +1,15 @@
-<main class="bg-[#f9fafc] min-h-screen" x-data="{ showToast: {{ session()->has('toastMessage') ? 'true' : 'false' }}, toastMessage: '{{ session('toastMessage') }}', toastType: '{{ session('toastType') }}' }" x-init="if (showToast) {
-    setTimeout(() => showToast = false, 5000);
-}">
+<main class="bg-[#f9fafc] min-h-screen"
+    x-data="{ showToast: {{ session()->has('toastMessage') ? 'true' : 'false' }}, toastMessage: '{{ session('toastMessage') }}', toastType: '{{ session('toastType') }}' }"
+    x-init="
+    if (showToast) {
+        setTimeout(() => showToast = false, 5000);
+    }
+">
     <!-- Toast -->
     <div x-show="showToast" x-transition
         :class="toastType === 'success' ? 'text-color-success-500' : 'text-color-danger-500'"
         class="fixed top-24 right-5 z-50 flex items-center w-full max-w-xs p-4 rounded-lg shadow bg-white" role="alert">
-        <div :class="toastType === 'success' ? 'text-color-success-500 bg-color-success-100' :
-            'text-color-danger-500 bg-color-danger-100'"
+        <div :class="toastType === 'success' ? 'text-color-success-500 bg-color-success-100' : 'text-color-danger-500 bg-color-danger-100'"
             class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg">
             <span>
                 <i :class="toastType === 'success' ? 'fas fa-check' : 'fas fa-exclamation'"></i>
@@ -19,14 +22,13 @@
             <span><i class="fas fa-times"></i></span>
         </button>
     </div>
-    <section class="max-w-screen-xl w-full mx-auto px-4 pt-24" x-data="{ addModal: false }">
+    <section class="max-w-screen-xl w-full mx-auto px-4 pt-24" x-data="{ addModal : false }">
 
         <div
             class="mt-4 p-6 bg-white flex flex-col lg:flex-row lg:items-center gap-y-2 justify-between rounded-lg border border-slate-100 shadow-sm">
             <div>
                 <h1 class="font-bold text-lg">{{ $master }}</h1>
-                <p class="text-slate-500 text-sm">List data {{ $master }} yang berhasil terinput dalam Database
-                </p>
+                <p class="text-slate-500 text-sm">List data {{ $master }} yang berhasil terinput dalam Database</p>
             </div>
             <div>
                 <x-button class="" color="info" size="sm" @click="addModal = !addModal">
@@ -62,9 +64,7 @@
                                 <input type="text" id="survei" name="survei" wire:model="survei.nama"
                                     placeholder="Masukan Nama {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                @error('survei.nama')
-                                    <span class="text-red-500 text-xs">{{ $message }}</span>
-                                @enderror
+                                @error('survei.nama') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                                 <label for="kode" class="text-sm ">Jenis {{ $master }} :</label>
@@ -72,12 +72,11 @@
                                     placeholder="Masukan Kode {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                     <option value="">Pilih Jenis</option>
-                                    @foreach ($dataJenis as $jenis)
-                                        <option value="{{ $jenis->id }}">{{ $jenis->name }}</option>
+                                    @foreach($dataJenis as $jenis)
+                                    <option value="{{ $jenis->id }}">{{ $jenis->name }}</option>
                                     @endforeach
                                 </select>
-                                @error('survei.jenis_id')
-                                    <span class="text-red-500 text-xs">{{ $message }}</span>
+                                @error('survei.jenis_id') <span class="text-red-500 text-xs">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
@@ -85,12 +84,11 @@
                                 <select name="target_id" id="target" wire:model="survei.target_id"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                     <option value="">Pilih Target</option>
-                                    @foreach ($dataTarget as $target)
-                                        <option value="{{ $target->id }}">{{ $target->name }}</option>
+                                    @foreach($dataTarget as $target)
+                                    <option value="{{ $target->id }}">{{ $target->name }}</option>
                                     @endforeach
                                 </select>
-                                @error('survei.target_id')
-                                    <span class="text-red-500 text-xs">{{ $message }}</span>
+                                @error('survei.target_id') <span class="text-red-500 text-xs">{{ $message }}</span>
                                 @enderror
                             </div>
                             <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12" color="info"
@@ -120,77 +118,72 @@
                             <th>Nama</th>
                             <th>Target</th>
                             <th>Status</th>
-                            @if (Auth::user()->role == 'universitas')
                             <th>Perubahan</th>
-                            @endif
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($dataSurvei as $survei)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $survei['code'] }}</td>
-                                <td>{{ $survei['name'] }}</td>
-                                <td>{{ $survei['target']->name }}</td>
-                                <td>
-                                    @if ($survei['isAktif'])
-                                        <div class="inline-flex gap-x-2 items-center">
-                                            <span
-                                                class="text-xs font-bold text-color-success-500 px-3 py-1 bg-color-success-100 rounded-lg">
-                                                Aktif
-                                            </span>
-                                            <button
-                                                class="inline-flex gap-x-1 text-color-info-500 text-xs font-semibold"
-                                                onclick="confirmStatus({{ $survei['id'] }})">
-                                                <span>
-                                                    <i class="fas fa-edit"></i>
-                                                </span>
-                                                Ubah
-                                            </button>
-                                        </div>
-                                    @else
-                                        <div class="inline-flex gap-x-2 items-center">
-                                            <span
-                                                class="text-xs font-bold text-color-danger-500 px-3 py-1 bg-color-danger-100 rounded-lg">
-                                                Non-Aktif
-                                            </span>
+                        @foreach($dataSurvei as $survei)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $survei['code'] }}</td>
+                            <td>{{ $survei['name'] }}</td>
+                            <td>{{ $survei['target']->name }}</td>
+                            <td>
+                                @if($survei['isAktif'])
+                                <div class="inline-flex gap-x-2 items-center">
+                                    <span
+                                        class="text-xs font-bold text-color-success-500 px-3 py-1 bg-color-success-100 rounded-lg">
+                                        Aktif
+                                    </span>
+                                    <button class="inline-flex gap-x-1 text-color-info-500 text-xs font-semibold"
+                                        onclick="confirmStatus({{ $survei['id'] }})">
+                                        <span>
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                        Ubah
+                                    </button>
+                                </div>
 
-                                            <button
-                                                class="inline-flex gap-x-1 text-color-info-500 text-xs font-semibold"
-                                                onclick="confirmStatus({{ $survei['id'] }})">
-                                                <span>
-                                                    <i class="fas fa-edit"></i>
-                                                </span>
-                                                Ubah
-                                            </button>
-                                        </div>
-                                    @endif
-                                </td>
-                                @if (Auth::user()->role == 'universitas')
-                                    <td>
+                                @else
+                                <div class="inline-flex gap-x-2 items-center">
+                                    <span
+                                        class="text-xs font-bold text-color-danger-500 px-3 py-1 bg-color-danger-100 rounded-lg">
+                                        Non-Aktif
+                                    </span>
 
-                                        @if ($survei['isUpdate'])
-                                            <div class="inline-flex gap-x-2 items-center">
-                                                <span
-                                                    class="text-xs font-bold text-color-success-500 px-3 py-1 bg-color-success-100 rounded-lg">
-                                                    Aktif
-                                                </span>
-                                                <button
-                                                    class="inline-flex gap-x-1 text-color-info-500 text-xs font-semibold"
-                                                    onclick="consfirmUpdate({{ $survei['id'] }})">
-                                                    <span>
-                                                        <i class="fas fa-edit"></i>
-                                                    </span>
-                                                    Ubah
-                                                </button>
-                                            </div>
-                                        @else
-                                            <div class="inline-flex gap-x-2 items-center">
-                                                <span
-                                                    class="text-xs font-bold text-color-danger-500 px-3 py-1 bg-color-danger-100 rounded-lg">
-                                                    Non-Aktif
-                                                </span>
+                                    <button class="inline-flex gap-x-1 text-color-info-500 text-xs font-semibold"
+                                        onclick="confirmStatus({{ $survei['id'] }})">
+                                        <span>
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                        Ubah
+                                    </button>
+                                </div>
+                                @endif
+                            </td>
+                            <td>
+                                @if($survei['isUpdate'])
+                                <div class="inline-flex gap-x-2 items-center">
+                                    <span
+                                        class="text-xs font-bold text-color-success-500 px-3 py-1 bg-color-success-100 rounded-lg">
+                                        Aktif
+                                    </span>
+                                    <button class="inline-flex gap-x-1 text-color-info-500 text-xs font-semibold"
+                                        onclick="consfirmUpdate({{ $survei['id'] }})">
+                                        <span>
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                        Ubah
+                                    </button>
+                                </div>
+
+                                @else
+                                <div class="inline-flex gap-x-2 items-center">
+                                    <span
+                                        class="text-xs font-bold text-color-danger-500 px-3 py-1 bg-color-danger-100 rounded-lg">
+                                        Non-Aktif
+                                    </span>
 
                                     <button class="inline-flex gap-x-1 text-color-info-500 text-xs font-semibold"
                                         onclick="consfirmUpdate({{ $survei['id'] }})">
@@ -230,7 +223,7 @@
                                 </div>
                             </td>
 
-                            </tr>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -239,32 +232,32 @@
 
     </section>
     @push('scripts')
-        <script>
-            $(document).ready(function() {
-                // Inisialisasi DataTables
-                var table = $('#myTable').DataTable();
-            });
-        </script>
-        <script>
-            function confirmDelete(id) {
-                if (confirm(`Hapus Survei?`)) {
-                    @this.call('deleteSurvei', id);
-                }
+    <script>
+        $(document).ready(function() {
+        // Inisialisasi DataTables
+        var table = $('#myTable').DataTable();
+    });
+    </script>
+    <script>
+        function confirmDelete(id) {
+            if(confirm(`Hapus Survei?`)) {
+                @this.call('deleteSurvei', id);
             }
-        </script>
-        <script>
-            function confirmStatus(id) {
-                if (confirm(`Ubah Status Survei?`)) {
-                    @this.call('changeSurveiStatus', id);
-                }
+        }
+    </script>
+    <script>
+        function confirmStatus(id) {
+            if(confirm(`Ubah Status Survei?`)) {
+                @this.call('changeSurveiStatus', id);
             }
-        </script>
-        <script>
-            function consfirmUpdate(id) {
-                if (confirm(`Ubah Update Survei?`)) {
-                    @this.call('changeSurveiUpdate', id);
-                }
+        }
+    </script>
+    <script>
+        function consfirmUpdate(id) {
+            if(confirm(`Ubah Update Survei?`)) {
+                @this.call('changeSurveiUpdate', id);
             }
-        </script>
+        }
+    </script>
     @endpush
 </main>

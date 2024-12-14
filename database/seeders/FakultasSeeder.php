@@ -48,29 +48,38 @@ class FakultasSeeder extends Seeder
             User::create([
                 'name' => $f->fakultas_nama,
                 'email' => strtolower($f->fakultas_alias) . '@gmail.com',
-                'password' => bcrypt($f->fakultas_nama),
+                'password' => bcrypt($f->fakultas_nama), // Use a default password or something more secure
                 'role_id' => $fakultasRole->id,
                 'fakultas_id' => $fakultas->id,
-                'prodi_id' => $prodiTidakAda->id,
+                'prodi_id' => $prodiTidakAda->id, // No Prodi ID for Fakultas users
             ]);
 
             foreach ($tb_p->where('prodi_fakultas', $f->fakultas_id) as $p) {
+                $jenjang = $tb_je->where('jenjang_id', $p->prodi_jenjang)->first();
                 $prodi = Prodi::create([
-                    'name' => $p->prodi_nama,
-                    'code' => Str::slug($p->prodi_nama),
+                    'name' => $jenjang->jenjang_nama .'-'.$p->prodi_nama,
+                    'code' => Str::slug($jenjang->jenjang_nama .'-'.$p->prodi_nama),
                     'fakultas_id' => $fakultas->id,
                 ]);
 
                 // Create a user with Prodi role
                 User::create([
-                    'name' => $p->prodi_nama,
-                    'email' => strtolower(Str::slug($p->prodi_nama)) . '@gmail.com',
-                    'password' => bcrypt($p->prodi_nama),
+                    'name' => $jenjang->jenjang_nama .'-'.$p->prodi_nama,
+                    'email' => strtolower($jenjang->jenjang_nama .'-'.$p->prodi_nama) . '@gmail.com',
+                    'password' => bcrypt($jenjang->jenjang_nama .'-'.$p->prodi_nama), // Use a default password or something more secure
                     'role_id' => $prodiRole->id,
                     'fakultas_id' => $fakultasTidakAda->id,
                     'prodi_id' => $prodi->id,
                 ]);
             }
         }
+    }
+
+    /**
+     * Generate a slug from a string.
+     */
+    private function slug($string)
+    {
+        return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $string)));
     }
 }

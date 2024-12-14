@@ -22,7 +22,7 @@
                 <p class="italic">Assalamualaikum wr. wb.</p>
                 <p>
                     Segala puji dan syukur senantiasa dipanjatkan kehadirat Allah SWT., karena berkat
-                    rahmat dan hidayahNya maka <span class="text-red-500 font-bold">LAPORAN SURVEI KEPUASAN DOSEN</span>  dapat
+                    rahmat dan hidayahNya maka Laporan Survei {{$survei->name}} dapat
                     diselesaikan.
                 </p>
                 <p>
@@ -155,7 +155,7 @@
     </section>
     <section class="p-12 min-h-screen h-full flex flex-col gap-y-12">
         <div class="font-bold text-center text-xl flex flex-col gap-y-12">
-            <p>BAB 1 PENDAHULUAN</p>
+            <p>BAB I. PENDAHULUAN</p>
         </div>
         <div class="w-full flex flex-col gap-y-2">
             <P class="font-bold">
@@ -205,8 +205,8 @@
                 B. TUJUAN KEGIATAN
             </P>
             <p>
-                Laporan kegiatan survei kepuasan Dosen bertujuan untuk: Mengetahui indeks
-                kepuasan Dosen terhadap layanan yang diberikan oleh Universitas Negeri Gorontalo
+                Laporan kegiatan survei {{$survei->name}} bertujuan untuk: Mengetahui indeks
+                kepuasan {{$survei->target->name}} terhadap layanan yang diberikan oleh Universitas Negeri Gorontalo
             </p>
             <P class="font-bold">
                 B. TUJUAN KEGIATAN
@@ -231,19 +231,18 @@
     </section>
     <section class="p-12 min-h-screen h-full flex flex-col gap-y-12">
         <div class="font-bold text-center text-xl flex flex-col gap-y-12">
-            <p>BAB 2 METODE PENGUKURAN</p>
+            <p>BAB II. METODE PENGUKURAN</p>
         </div>
         <div class="w-full flex flex-col gap-y-2">
             <P class="font-bold">
                 A. RUANG LINGKUP
             </P>
             <p>
-                Universitas Negeri Gorontalo memiliki 13 fakultas yaitu Fakultas Ilmu Pendidikan
-                (FIP), Fakultas Matematika dan Ilmu Pengetahuan Alam (FMIPA), Fakultas Sastra dan
-                Budaya (FSB), Fakultas Ilmu Sosial (FIS), Fakultas Olahraga dan Kesehatan (FOK), Fakultas
-                Teknik (FT), Fakultas Pertanian (FAPERTA), Fakultas Ekonomi (FE), Fakultas Hukum (FH),
-                Fakultas Kelautan dan Teknologi Perikanan (FKTP), Fakultas Kedokteran (FK), Program
-                Pascasarjana, dan Sekolah Vokasi. Sedangkan jumlah program studi terdapat 93 program
+                Universitas Negeri Gorontalo memiliki {{$fakultas->count()}} fakultas yaitu 
+                @foreach ($fakultas as $item)
+                    {{$item->name}} ({{$item->code}}) ,
+                @endforeach
+                Sedangkan jumlah program studi terdapat {{$prodi->count()}} program
                 studi.
             </p>
             <P class="font-bold">
@@ -402,13 +401,15 @@
     </section>
     <section class="p-12 min-h-screen h-full flex flex-col gap-y-12">
         <div class="font-bold text-center text-xl flex flex-col gap-y-12">
-            <p>BAB 2 METODE PENGUKURAN</p>
+            <p>BAB III. HASIL KEGIATAN</p>
         </div>
         <div class="w-full flex flex-col gap-y-2">
             <p>
                 Teknik pengambilan data pada survei indeks kepuasan dilakukan secara online di 
                 laman XXX yang dilakukan pada XXX. Jumlah responden yang mengisi survei kepuasan di 
-                prodi XXX sebanyak XXX. 
+                @foreach ($prodi as $item)
+                    {{$item->name}} sebanyak {{$totalRespondenProdi[$item->id]}} responden,
+                @endforeach 
             </p>
             <P class="font-bold">
                 A. Analisis Tingkat Kepuasan
