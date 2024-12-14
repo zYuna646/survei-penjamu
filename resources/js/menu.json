@@ -16,10 +16,6 @@
           "link": "master_fakultas"
         },
         {
-          "name": "Jurusan",
-          "link": "master_jurusan"
-        },
-        {
           "name": "Prodi",
           "link": "master_prodi"
         },
@@ -65,15 +61,6 @@
     {
       "name": "Survei",
       "link": "master_survei"
-    },
-    {
-      "name": "Pengguna",
-      "link": [
-        {
-          "name": "Prodi",
-          "link": "user_prodi"
-        }
-      ]
     }
   ],
   "guest": [
