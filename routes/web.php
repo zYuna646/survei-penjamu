@@ -33,6 +33,7 @@ use App\Livewire\RunSurvei;
 use App\Livewire\RecapSurvei;
 use App\Livewire\ListSurvei;
 use App\Livewire\CompleteSurvei;
+use App\Livewire\CreateDocument;
 use App\Livewire\UserFakultas;
 use App\Livewire\UserProdi;
 use App\Livewire\EditUserProdi;
@@ -69,7 +70,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/detail_survei/{id}', DetailSurvei::class)->name('detail_survei');
     Route::get('/create_survei/{id}', CreateSurvei::class)->name('create_survei');
     Route::get('/recap_survei', RecapSurvei::class)->name('recap_survei');
-    Route::get('/laporan_survei_kepuasan/{id}', LaporanSurvei::class)->name('laporan_survei');
+    Route::get('/create_document/{id}', CreateDocument::class)->name('create_document');
+    Route::get('/laporan_survei_kepuasan', LaporanSurvei::class)->name('laporan_kepuasan');
     
 
     Route::get('/user_prodi', UserProdi::class)->name('user_prodi');
