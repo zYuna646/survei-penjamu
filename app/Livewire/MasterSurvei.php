@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Target;
 use App\Models\Jenis;
 use App\Models\Survey;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -15,6 +16,7 @@ class MasterSurvei extends Component
     public $showNavbar = true;
     public $showFooter = true;
     public $master = 'Survei';
+    public $userRole;
 
     public $survei = [
         'nama' => '',
@@ -33,15 +35,18 @@ class MasterSurvei extends Component
         $this->dataTarget = Target::all();
         $this->dataJenis = Jenis::all();
 
+        $user = Auth::user();
+        $this->userRole = $user->role->slug;
     }
+    
 
     public function render()
     {
         return view('livewire.admin.master.survei.master-survei')
-        ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar , 'showFooter' => $this->showFooter])
-        ->title('UNG Survey - Master Survei');
+            ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar, 'showFooter' => $this->showFooter])
+            ->title('UNG Survey - Master Survei');
     }
-    
+
     public function addSurvei()
     {
         $this->validate([
@@ -62,16 +67,15 @@ class MasterSurvei extends Component
 
             DB::commit();
 
-            Schema::create($survey->id, function (Blueprint $table){
+            Schema::create($survey->id, function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('prodi_id')->nullable();
                 $table->foreign('prodi_id')->references('id')->on('prodis')->onDelete('cascade');
                 $table->timestamps();
-            }); 
+            });
 
             session()->flash('toastMessage', 'Data berhasil ditambahkan');
             session()->flash('toastType', 'success');
-
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -97,7 +101,6 @@ class MasterSurvei extends Component
 
             session()->flash('toastMessage', 'Data berhasil diubah');
             session()->flash('toastType', 'success');
-
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -123,7 +126,6 @@ class MasterSurvei extends Component
 
             session()->flash('toastMessage', 'Data berhasil diubah');
             session()->flash('toastType', 'success');
-
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -134,28 +136,27 @@ class MasterSurvei extends Component
         return redirect()->to('master_survei');
     }
 
-    
-    public function deleteSurvei($id)    
+
+    public function deleteSurvei($id)
     {
         try {
             DB::beginTransaction();
 
             Survey::findOrFail($id)->delete();
-            
+
             DB::commit();
 
             Schema::dropIfExists($id);
 
             session()->flash('toastMessage', 'Data berhasil dihapus');
             session()->flash('toastType', 'success');
-            
         } catch (\Exception $e) {
             DB::rollBack();
 
             session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
             session()->flash('toastType', 'error');
         }
-        
-        return redirect()->to('master_survei'); 
+
+        return redirect()->to('master_survei');
     }
 }
