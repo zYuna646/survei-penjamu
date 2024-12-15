@@ -14,15 +14,23 @@ class LaporanSurvei extends Component
     public $fakultas;
     public $prodi;
     public $totalRespondenProdi;
-    public function mount($id){
-        $survei = Survey::findOrFail($id);
-        $this->survei = $survei;
-        $this->fakultas = Fakultas::where('code', '!=', '0')->get();
-        $this->prodi = Prodi::where('code', '!=', '0')->get();
+    public $selectedProdi;
+    public $tahunAkademik;
+    public $detail;
+    public $detailAspek;
 
-        foreach ($this->prodi as $p) {
-            $this->totalRespondenProdi[$p->id] = $this->countRespondenByProdi($p->id);
-        }
+
+    public function mount($survei = null, $fakultas = null, $prodi = null, $selectedProdi = null, $totalRespoondenProdi = null, $tahunAkademik = null, $detail = null, $detailAspek = null)
+    {
+        $this->survei = $survei ? collect($survei) : null;
+        $this->fakultas = $fakultas ? collect($fakultas) : Fakultas::where('code', '!=', '0')->get();
+        $this->prodi = $prodi ? collect($prodi) : Prodi::where('code', '!=', '0')->get();
+        $this->selectedProdi = $selectedProdi;
+        $this->totalRespondenProdi = $totalRespoondenProdi;
+        $this->tahunAkademik = $tahunAkademik;
+        $this->detail = $detail;
+        $this->detailAspek = $detailAspek;
+
     }
 
     public function render()
@@ -30,7 +38,8 @@ class LaporanSurvei extends Component
         return view('livewire.admin.report.laporan-survei');
     }
 
-    public function countRespondenByProdi($prodi_id){
+    public function countRespondenByProdi($prodi_id)
+    {
         return DB::table($this->survei->id)->where('prodi_id', $prodi_id)->count();
     }
 }

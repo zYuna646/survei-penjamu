@@ -8,6 +8,7 @@ use App\Models\Survey;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Barryvdh\DomPDF\Facade as PDF;
+
 class CreateDocument extends Component
 {
     public $showNavbar = true;
@@ -67,9 +68,11 @@ class CreateDocument extends Component
             'detail' => $this->detail_rekapitulasi,
             'detailAspek' => $this->detail_rekapitulasi_aspek,
         ];
+
+        return redirect()->route('laporan_kepuasan', $data);
     }
 
-    
+
     public function countRespondenByProdi($prodi_id)
     {
         return DB::table($this->dataSurvei->id)->where('prodi_id', $prodi_id)->count();
@@ -88,7 +91,6 @@ class CreateDocument extends Component
         if ($this->selectedProdi) {
             // Filter by selected Prodi
             $query->where('prodi_id', $this->selectedProdi);
-
         } elseif ($this->selectedFakultas) {
             // Filter by selected Fakultas
             $prodiIds = Prodi::where('fakultas_id', $this->selectedFakultas)->pluck('id');
@@ -245,5 +247,4 @@ class CreateDocument extends Component
             'predikat_kepuasan' => $this->getPredikatKepuasan($this->getTingkatKepuasan($tm, $cm, $m, $sm, $total))
         ];
     }
-
 }
