@@ -67,7 +67,6 @@
                     <span wire:loading class="animate-spin">
                         <i class="fas fa-circle-notch"></i>
                     </span>
-                    Download Laporan {{ $master }}
                     Cetak {{ $master }}
                 </x-button>
             </form>

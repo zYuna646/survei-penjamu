@@ -1,9 +1,9 @@
 <main>
     <section class="p-24 h-screen flex flex-col justify-between ">
         <div class="font-bold text-center text-xl">
-            <p>LAPORAN SURVEI KEPUASAN DOSEN</p>
+            <p>LAPORAN SURVEI {{$survei->name}}</p>
             <p>UNIVERSITAS NEGERI GORONTALO</p>
-            <p>Tahun 2023</p>
+            <p>Tahun {{$tahunAkademik}}</p>
         </div>
         <div class="flex items-center justify-center w-full mt-24">
             <img src="/logo/ung.png" alt="" class="w-60">
@@ -12,7 +12,7 @@
             <p>LEMBAGA PENJAMINAN MUTU</p>
             <p>DAN PENGEMBANGAN PEMBELAJARAN</p>
             <p>UNIVERSITAS NEGERI GORONTALO</p>
-            <p>2023</p>
+            <p>{{$tahunAkademik}}</p>
         </div>
     </section>
     <section class="p-12 min-h-screen h-full flex flex-col justify-between">
@@ -407,15 +407,13 @@
             <p>
                 Teknik pengambilan data pada survei indeks kepuasan dilakukan secara online di 
                 laman XXX yang dilakukan pada XXX. Jumlah responden yang mengisi survei kepuasan di 
-                @foreach ($prodi as $item)
-                    {{$item->name}} sebanyak {{$totalRespondenProdi[$item->id]}} responden,
-                @endforeach 
+                {{$selectedProdi->name}} sebanyak {{$totalRespoondenProdi}} responden.
             </p>
             <P class="font-bold">
                 A. Analisis Tingkat Kepuasan
             </P>
             <p>
-                Berdasarkan hasil pengolaha data, tingkat kepuasan mahasiswa di Prodi XXX disajikan pada 
+                Berdasarkan hasil pengolaha data, tingkat kepuasan mahasiswa di Prodi {{$selectedProdi->name}} disajikan pada 
                 gambar di bawah ini:
             </p>
             <div class="w-full min-h-24 border-2 border-black">
