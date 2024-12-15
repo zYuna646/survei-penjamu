@@ -129,7 +129,10 @@
                 </li>
                 <li class="inline-flex w-full font-normal ps-12 ">
                     <p class="min-w-fit">A. ANALISIS TINGKAT KEPUASAN DOSEN</p>
-                    <div class="w-full border-b-2 border-dashed border-black"></div>
+                    <div class="w-full border-b-2 border-dashed border-black">
+
+
+                    </div>
                     <p class="">ii</p>
                 </li>
                 <li class="inline-flex w-full font-bold">
@@ -418,7 +421,11 @@
                 disajikan pada
                 gambar di bawah ini:
             </p>
-            <div class="w-full min-h-24 border-2 border-black">
+            <div class=" mx-auto p-12">
+                
+                <div class="w-[4rem]" style="width: 42rem">
+                    {!! $facultyComparisonChart->container() !!}
+                </div>
             </div>
             <p>
                 Hasil pengukuran tingkat kepuasan di dalam setiap aspek diuraikan berikut ini:
@@ -662,5 +669,8 @@
 
         </div>
     </section>
-
+    @push('scripts')
+        <script src="{{ $facultyComparisonChart->cdn() }}"></script>
+        {{ $facultyComparisonChart->script() }}
+    @endpush
 </main>

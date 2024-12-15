@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Charts\SatisfactionChart;
 use App\Models\Fakultas;
 use App\Models\Prodi;
 use App\Models\Survey;
@@ -21,7 +22,7 @@ class LaporanSurvei extends Component
     public $tanggalKegiatan;
     public $totalRespoondenProdi;
 
-    public function mount($survei, $prodi , $tahunAkademik , $tanggalKegiatan )
+    public function mount($survei, $prodi, $tahunAkademik, $tanggalKegiatan)
     {
         $this->survei = Survey::find($survei);
         $this->fakultas = Fakultas::where('code', '!=', '0')->get();
@@ -33,9 +34,73 @@ class LaporanSurvei extends Component
         $this->getDetailSurvey();
     }
 
-    public function render()
+    private function calculateFacultySatisfactionDistribution($facultyId)
     {
-        return view('livewire.admin.report.laporan-survei');
+        $fakultasIds = Fakultas::where('id', $facultyId)->pluck('id');
+        $prodiIds = Prodi::whereIn('fakultas_id', $fakultasIds)->pluck('id');
+
+        // Initialize totals
+        $totalTM = 0;
+        $totalCM = 0;
+        $totalM = 0;
+        $totalSM = 0;
+
+        // Loop through each aspect of the survey
+        foreach ($this->survei->aspek as $aspek) {
+            // Loop through each indicator within the aspect
+            foreach ($aspek->indicator as $indicator) {
+                $query = DB::table($this->survei->id)
+                    ->whereIn('prodi_id', $prodiIds)
+                    ->where($indicator->id, '!=', null);
+
+                // Sum up TM, CM, M, SM for this indicator
+                $totalTM += $query->where($indicator->id, 1)->count();
+                $totalCM += $query->where($indicator->id, 2)->count();
+                $totalM += $query->where($indicator->id, 3)->count();
+                $totalSM += $query->where($indicator->id, 4)->count();
+            }
+        }
+
+        return [
+            'tm' => $totalTM,
+            'cm' => $totalCM,
+            'm' => $totalM,
+            'sm' => $totalSM,
+        ];
+    }
+
+    public function render(SatisfactionChart $satisfactionChart)
+    {
+        // Initialize data arrays
+        $facultyNames = [];
+        $facultyTM = [];
+        $facultyCM = [];
+        $facultyM = [];
+        $facultySM = [];
+
+        $prodiNames = [];
+        $prodiTM = [];
+        $prodiCM = [];
+        $prodiM = [];
+        $prodiSM = [];
+
+        // Gather data for faculties
+        foreach ($this->fakultas as $item) {
+            $facultyNames[] = $item->name;
+            $facultyData = $this->calculateFacultySatisfactionDistribution($item->id);
+
+            $facultyTM[] = $facultyData['tm'];
+            $facultyCM[] = $facultyData['cm'];
+            $facultyM[] = $facultyData['m'];
+            $facultySM[] = $facultyData['sm'];
+        }
+
+        // Build charts
+        $facultyComparisonChart = $satisfactionChart->buildFacultyComparisonChart($facultyNames, $facultyTM, $facultyCM, $facultyM, $facultySM);
+        
+        return view('livewire.admin.report.laporan-survei', [
+            'facultyComparisonChart' => $facultyComparisonChart,
+        ]);
     }
 
     public function countRespondenByProdi($prodi_id)
