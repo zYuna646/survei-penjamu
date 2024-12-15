@@ -59,4 +59,6 @@ class CreateDocument extends Component
         // Redirect ke halaman tujuan
         return redirect()->route('laporan_kepuasan');
     }
+
+    
 }

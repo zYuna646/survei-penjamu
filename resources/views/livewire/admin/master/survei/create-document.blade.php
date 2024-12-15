@@ -67,7 +67,7 @@
                     <span wire:loading class="animate-spin">
                         <i class="fas fa-circle-notch"></i>
                     </span>
-                    Edit {{ $master }}
+                    Cetak {{ $master }}
                 </x-button>
             </form>
         </div>
