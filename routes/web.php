@@ -71,7 +71,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/create_survei/{id}', CreateSurvei::class)->name('create_survei');
     Route::get('/recap_survei', RecapSurvei::class)->name('recap_survei');
     Route::get('/create_document/{id}', CreateDocument::class)->name('create_document');
-    Route::get('/laporan_survei_kepuasan', LaporanSurvei::class)->name('laporan_kepuasan');
+    Route::get('/laporan_survei_kepuasan/{id}', LaporanSurvei::class)->name('laporan_kepuasan');
     
 
     Route::get('/user_prodi', UserProdi::class)->name('user_prodi');

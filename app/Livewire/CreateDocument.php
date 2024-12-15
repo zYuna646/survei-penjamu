@@ -57,7 +57,7 @@ class CreateDocument extends Component
         $this->selectedProdi = $this->createDocument['prodi_id'];
         $this->getDetailSurvey();
         // dd($this->detail_rekapitulasi);
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('livewire.admin.report.laporan-survei', [
+        $data = [
             'survei' => $this->dataSurvei,
             'fakultas' => Fakultas::where('code', '!=', '0')->get(),
             'prodi' => Prodi::where('code', '!=', '0')->get(),
@@ -66,15 +66,10 @@ class CreateDocument extends Component
             'tahunAkademik' => $this->createDocument['tahun_akademik'],
             'detail' => $this->detail_rekapitulasi,
             'detailAspek' => $this->detail_rekapitulasi_aspek,
-        ]);
-        // dd('formData', [
-        //     'tahun_akademik' => $this->createDocument['tahun_akademik'],
-        //     'tanggal' => $this->createDocument['tanggal'],
-        //     'fakultas_id' => $this->createDocument['fakultas_id'],
-        //     'prodi_id' => $this->createDocument['prodi_id'],
-        // ]);
-        return $pdf->download('laporan.pdf');
+        ];
     }
+
+    
     public function countRespondenByProdi($prodi_id)
     {
         return DB::table($this->dataSurvei->id)->where('prodi_id', $prodi_id)->count();

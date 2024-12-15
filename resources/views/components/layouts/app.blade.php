@@ -17,6 +17,7 @@
 
     {{-- datatables.net --}}
     <link href="{{ asset('/DataTables/datatables.css') }}" rel="stylesheet">
+    <Link href="{{asset('/template.css')}}"></Link>
 
     {{-- jquery --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
