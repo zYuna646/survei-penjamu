@@ -62,11 +62,12 @@
                 </div>
                 <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12" color="info" type="submit">
                     <span wire:loading.remove>
-                        <i class="fas fa-edit"></i>
+                        <i class="fas fa-download"></i>
                     </span>
                     <span wire:loading class="animate-spin">
                         <i class="fas fa-circle-notch"></i>
                     </span>
+                    Download Laporan {{ $master }}
                     Cetak {{ $master }}
                 </x-button>
             </form>

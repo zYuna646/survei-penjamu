@@ -48,16 +48,12 @@ class CreateDocument extends Component
     {
         $this->validate();
 
-        // Simpan data ke session
-        session()->put('formData', [
+        dd('formData', [
             'tahun_akademik' => $this->createDocument['tahun_akademik'],
             'tanggal' => $this->createDocument['tanggal'],
             'fakultas_id' => $this->createDocument['fakultas_id'],
             'prodi_id' => $this->createDocument['prodi_id'],
         ]);
-
-        // Redirect ke halaman tujuan
-        return redirect()->route('laporan_kepuasan');
     }
 
     

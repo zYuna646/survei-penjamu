@@ -26,7 +26,7 @@
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="fakultas" class="text-sm">Fakultas :</label>
                     <select type="fakultas" id="fakultas" name="fakultas" wire:model="userProdi.fakultas_id"
-                        wire:change="getJurusanByFakultas"
+                        wire:change="getProdiByFakultas"
                         class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                         <option value="">Pilih Fakultas</option>
                         @foreach($dataFakultas as $fakultas)

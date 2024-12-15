@@ -39,20 +39,10 @@ class EditUserProdi extends Component
         $this->dataProdi = Prodi::where('fakultas_id', $this->userProdi['fakultas_id'])->get();
     }
 
-    public function getJurusanByFakultas()
+    public function getProdiByFakultas()
     {
-        $fakultasId = $this->userProdi['fakultas_id'];
-        $this->dataJurusan = Jurusan::where('fakultas_id', $fakultasId)->get();
-        $this->dataProdi = [];
-        $this->userProdi['jurusan_id'] = null;
-        $this->userProdi['prodi_id'] = null;
-    }
-
-    public function getProdiByJurusan()
-    {
-        $jurusanId = $this->userProdi['jurusan_id'];
-        $this->dataProdi = Prodi::where('jurusan_id', $jurusanId)->get();
-        $this->userProdi['prodi_id'] = null;
+        $fakultasId = $this->userProdi['fakultas_id'] ?? null;
+        $this->dataProdi = $fakultasId ? Prodi::where('fakultas_id', $fakultasId)->get() : [];
     }
 
     public function render()
@@ -74,7 +64,6 @@ class EditUserProdi extends Component
             $user->update([
                 'name' => $this->userProdi['name'],
                 'fakultas_id' => $this->userProdi['fakultas_id'],
-                'jurusan_id' => $this->userProdi['jurusan_id'],
                 'prodi_id' => $this->userProdi['prodi_id'],
                 'email' => $this->userProdi['email'],
                 'password' => isset($this->userProdi['newpass']) ? bcrypt($this->userProdi['newpass']) : $user->password,
