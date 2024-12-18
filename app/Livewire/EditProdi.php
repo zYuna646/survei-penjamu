@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Fakultas;
 use Livewire\Component;
 use App\Models\Prodi;
 use App\Models\Jurusan;
@@ -14,11 +15,11 @@ class EditProdi extends Component
     public $master = 'Prodi';
 
     public $prodi = [];
-    public $dataJurusan;
+    public $dataFakultas;
 
     public function mount($id)
     {
-        $this->dataJurusan = Jurusan::all();
+        $this->dataFakultas = Fakultas::all();
         $prodi = Prodi::findOrFail($id);
 
         // Assign all data to the jurusan property
@@ -39,7 +40,7 @@ class EditProdi extends Component
         $this->validate([
             'prodi.name' => 'required|string|max:255',
             'prodi.code' => 'required|string|max:10|unique:prodis,code,' . $this->prodi['id'],
-            'prodi.jurusan_id' => 'required|exists:jurusans,id',
+            'prodi.fakultas_id' => 'required|exists:fakultas,id',
         ]);
 
         try {

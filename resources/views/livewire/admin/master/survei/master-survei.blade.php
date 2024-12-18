@@ -263,7 +263,7 @@
             }
         </script>
         <script>
-            function consfirmUpdate(id) {
+            function confirmUpdate(id) {
                 if (confirm(`Ubah Update Survei?`)) {
                     @this.call('changeSurveiUpdate', id);
                 }
