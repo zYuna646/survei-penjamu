@@ -547,7 +547,7 @@
     </section>
     <section class="p-12 h-screen flex flex-col gap-y-12">
         <div class="font-bold text-center text-xl flex flex-col gap-y-12">
-            <p>BAB 4 KESIMPULAN DAN TINDAK LANJUT</p>
+            <p>BAB IV. KESIMPULAN DAN TINDAK LANJUT</p>
         </div>
         <div class="w-full flex flex-col gap-y-2">
             <p>
@@ -670,7 +670,13 @@
         </div>
     </section>
     @push('scripts')
-        <script src="{{ $facultyComparisonChart->cdn() }}"></script>
-        {{ $facultyComparisonChart->script() }}
-    @endpush
+    <script src="{{ $facultyComparisonChart->cdn() }}"></script>
+    {{ $facultyComparisonChart->script() }}
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            window.print();
+        });
+    </script>
+@endpush
 </main>

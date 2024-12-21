@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Charts\SatisfactionChart;
+use App\Models\Aspek;
 use App\Models\Fakultas;
 use App\Models\Prodi;
 use App\Models\Survey;
@@ -34,31 +35,26 @@ class LaporanSurvei extends Component
         $this->getDetailSurvey();
     }
 
-    private function calculateFacultySatisfactionDistribution($facultyId)
+    private function calculateFacultySatisfactionDistribution($aspekId)
     {
-        $fakultasIds = Fakultas::where('id', $facultyId)->pluck('id');
-        $prodiIds = Prodi::whereIn('fakultas_id', $fakultasIds)->pluck('id');
 
         // Initialize totals
         $totalTM = 0;
         $totalCM = 0;
         $totalM = 0;
         $totalSM = 0;
+        $aspek = Aspek::find($aspekId);
 
-        // Loop through each aspect of the survey
-        foreach ($this->survei->aspek as $aspek) {
-            // Loop through each indicator within the aspect
-            foreach ($aspek->indicator as $indicator) {
-                $query = DB::table($this->survei->id)
-                    ->whereIn('prodi_id', $prodiIds)
-                    ->where($indicator->id, '!=', null);
+        foreach ($aspek->indicator as $indicator) { 
+            $query = DB::table($this->survei->id)
+                ->where('prodi_id', $this->selectedProdi->id)
+                ->where($indicator->id, '!=', null);
 
-                // Sum up TM, CM, M, SM for this indicator
-                $totalTM += $query->where($indicator->id, 1)->count();
-                $totalCM += $query->where($indicator->id, 2)->count();
-                $totalM += $query->where($indicator->id, 3)->count();
-                $totalSM += $query->where($indicator->id, 4)->count();
-            }
+            // Sum up TM, CM, M, SM for this indicator
+            $totalTM += $query->where($indicator->id, 1)->count();
+            $totalCM += $query->where($indicator->id, 2)->count();
+            $totalM += $query->where($indicator->id, 3)->count();
+            $totalSM += $query->where($indicator->id, 4)->count();
         }
 
         return [
@@ -85,7 +81,7 @@ class LaporanSurvei extends Component
         $prodiSM = [];
 
         // Gather data for faculties
-        foreach ($this->fakultas as $item) {
+        foreach ($this->survei->aspek as $item) {
             $facultyNames[] = $item->name;
             $facultyData = $this->calculateFacultySatisfactionDistribution($item->id);
 
@@ -97,7 +93,7 @@ class LaporanSurvei extends Component
 
         // Build charts
         $facultyComparisonChart = $satisfactionChart->buildFacultyComparisonChart($facultyNames, $facultyTM, $facultyCM, $facultyM, $facultySM);
-        
+
         return view('livewire.admin.report.laporan-survei', [
             'facultyComparisonChart' => $facultyComparisonChart,
         ]);
