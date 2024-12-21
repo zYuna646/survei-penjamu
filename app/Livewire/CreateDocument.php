@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Charts\SatisfactionChart;
 use App\Models\Aspek;
 use App\Models\Fakultas;
 use App\Models\Prodi;
@@ -26,6 +27,8 @@ class CreateDocument extends Component
     public $selectedFakultas;
     public $detail_rekapitulasi;
     public $detail_rekapitulasi_aspek;
+    public $prodi;
+    public $fakultas;
     protected $rules = [
         'createDocument.tahun_akademik' => 'required|numeric|min:2000|max:3000',
         'createDocument.tanggal' => 'required|date',
@@ -53,11 +56,46 @@ class CreateDocument extends Component
         $this->dataProdi = $fakultasId ? Prodi::where('fakultas_id', $fakultasId)->get() : [];
     }
 
-    public function downloadDocument()
+    public function downloadDocument(SatisfactionChart $satisfactionChart)
     {
 
+        $facultyNames = [];
+        $facultyTM = [];
+        $facultyCM = [];
+        $facultyM = [];
+        $facultySM = [];
+
+        $prodiNames = [];
+        $prodiTM = [];
+        $prodiCM = [];
+        $prodiM = [];
+        $prodiSM = [];
+
+        // Gather data for faculties
+        foreach ($this->survei->aspek as $item) {
+            $facultyNames[] = $item->name;
+            $facultyData = $this->calculateFacultySatisfactionDistribution($item->id);
+
+            $facultyTM[] = $facultyData['tm'];
+            $facultyCM[] = $facultyData['cm'];
+            $facultyM[] = $facultyData['m'];
+            $facultySM[] = $facultyData['sm'];
+        }
+
+        // Build charts
+        $facultyComparisonChart = $satisfactionChart->buildFacultyComparisonChart($facultyNames, $facultyTM, $facultyCM, $facultyM, $facultySM);
         // Render PDF using the updated data
-        $pdf = PDF::loadView('pdf.report', ['survei' => $this->survei]);
+        $this->getDetailSurvey();
+        $this->selectedProdi = Prodi::find($prodi);
+        $this->prodi =  Prodi::where('code', '!=', 0)->get();
+        $this->fakultas = Fakultas::where('code', '!=', '0')->get();
+        $pdf = PDF::loadView('pdf.report', [
+            'facultyComparisonChart' => $facultyComparisonChart,
+            'survei' => $this->survei,
+            'totalRespondenProdi' => $this->countRespondenByProdi($prodi),
+            'fakultas' => $this->fakultas,
+            
+        ]);
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->stream();
         }, 'laporan.pdf');
