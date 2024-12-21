@@ -59,6 +59,12 @@ class CreateDocument extends Component
     public function downloadDocument(SatisfactionChart $satisfactionChart)
     {
 
+        // Render PDF using the updated data
+        $this->getDetailSurvey();
+        $this->selectedProdi = Prodi::find($this->createDocument['prodi_id']);
+        $this->prodi =  Prodi::where('code', '!=', 0)->get();
+        $this->fakultas = Fakultas::where('code', '!=', '0')->get();
+
         $facultyNames = [];
         $facultyTM = [];
         $facultyCM = [];
@@ -70,6 +76,11 @@ class CreateDocument extends Component
         $prodiCM = [];
         $prodiM = [];
         $prodiSM = [];
+
+
+        $facultyComparisonChart = $satisfactionChart->buildFacultyComparisonChart($facultyNames, $facultyTM, $facultyCM, $facultyM, $facultySM);
+
+
 
         // Gather data for faculties
         foreach ($this->survei->aspek as $item) {
@@ -83,19 +94,18 @@ class CreateDocument extends Component
         }
 
         // Build charts
-        $facultyComparisonChart = $satisfactionChart->buildFacultyComparisonChart($facultyNames, $facultyTM, $facultyCM, $facultyM, $facultySM);
-        // Render PDF using the updated data
-        $this->getDetailSurvey();
-        $this->selectedProdi = Prodi::find($prodi);
-        $this->prodi =  Prodi::where('code', '!=', 0)->get();
-        $this->fakultas = Fakultas::where('code', '!=', '0')->get();
-        $pdf = PDF::loadView('pdf.report', [
+        $pdf = PDF::loadView('livewire.admin.report.laporan-survei', [
             'facultyComparisonChart' => $facultyComparisonChart,
             'survei' => $this->survei,
-            'totalRespondenProdi' => $this->countRespondenByProdi($prodi),
+            'totalRespoondenProdi' => $this->countRespondenByProdi($this->createDocument['prodi_id']),
+            'prodi' => $this->selectedProdi,
             'fakultas' => $this->fakultas,
-            
+            'tahunAkademik' => $this->createDocument['tahun_akademik'],
+            'tanggalKegiatan' => $this->createDocument['tanggal'],
+            'selectedProdi' => $this->selectedProdi,
         ]);
+
+        
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->stream();
         }, 'laporan.pdf');
@@ -302,5 +312,4 @@ class CreateDocument extends Component
     {
         return DB::table($this->survei->id)->where('prodi_id', $prodi_id)->count();
     }
-
 }
