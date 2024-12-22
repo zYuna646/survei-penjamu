@@ -41,7 +41,6 @@
             </div>
         </div>
         <div class="w-full flex flex-col gap-y-2">
-            <p class="italic">Wassalamualaikum</p>
             <table class="w-full">
                 <tbody>
                     <tr class="w-[50%]">
