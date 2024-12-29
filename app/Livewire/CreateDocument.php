@@ -94,7 +94,7 @@ class CreateDocument extends Component
         }
 
         // Build charts
-        $pdf = PDF::loadView('pdf.report', [
+        $pdf = PDF::loadView('pdf.bab4', [
             'facultyComparisonChart' => $facultyComparisonChart,
             'survei' => $this->survei,
             'totalRespoondenProdi' => $this->countRespondenByProdi($this->createDocument['prodi_id']),

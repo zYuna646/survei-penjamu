@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BAB III - Laporan Survei </title>
+    <style>
+        @page {
+            margin-top: 2cm;
+            margin-bottom: 2cm;
+            margin-left: 2cm;
+            margin-right: 2cm;
+        }
+
+        body {
+            font-family: 'Helvetica', sans-serif;
+            margin: 0;
+        }
+
+        * {
+            font-size: 12;
+        }
+
+        .heading-1 {
+            text-align: center;
+        }
+
+        .heading-2 {
+            margin-bottom: 0;
+        }
+
+        .kop {
+            border-bottom: 1px solid black;
+        }
+
+        .audit-detail {
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
+
+        .audit-detail th,
+        .audit-detail td {
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .audit-detail th {
+            padding-right: 20px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .table th,
+        .table td {
+            border: 1px solid #000;
+            padding: 8px;
+        }
+
+        .table th {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table td {
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .paragraf {
+            text-align: justify;
+            text-indent: 25px;
+            line-height: 2em;
+        }
+
+        .number-list {
+            list-style-type: decimal;
+            margin-left: 25px;
+            padding: 0px;
+            line-height: 2em;
+        }
+
+        .number-list li {
+            text-align: justify;
+        }
+
+        .ttd {
+            width: 100%;
+        }
+
+        .ttd td {
+            width: 33.33%;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h5 class="heading-1">
+        BAB III <br> <br>
+        HASIL KEGIATAN
+    </h5>
+    <p class="paragraf">
+        Teknik pengambilan data pada survei indeks kepuasan dilakukan secara online di laman XXX yang dilakukan pada
+        XXX. Jumlah responden yang mengisi survei kepuasan di prodi XXX sebanyak XXX.
+    </p>
+    <h6>
+        A. Analisis Tingkat Kepuasan
+    </h6>
+    <p class="paragraf">
+        Berdasarkan hasil pengolaha data, tingkat kepuasan mahasiswa di Prodi XXX disajikan pada gambar di bawah ini:
+    </p>
+    <div class="w-[4rem]" style="width: 42rem">
+        {!! $facultyComparisonChart->container() !!}
+    </div>
+    <p class="paragraf">
+        Hasil pengukuran tingkat kepuasan di dalam setiap aspek diuraikan berikut ini:
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Instrumen</th>
+                <th>IKM</th>
+                <th>Kinerja Unit Pelayanan</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{-- @foreach ($survei->aspek as $index => $item)
+            <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ $item->name }}</td>
+                <td>{{ $detail_rekapitulasi_aspek[$item->id]['ikm'] }}</td>
+                <td>{{ $detail_rekapitulasi_aspek[$item->id]['kinerja_unit'] }}</td>
+            </tr>
+            @endforeach --}}
+        </tbody>
+    </table>
+    <ul style="list-style: circle">
+        <li>
+            a. Aspek Tangible (Bukti Fisik)
+            <p class="paragraf">
+                Pada dimensi Tangible (Bukti Fisik) terdiri dari 12 aitem/pernyataan yang terdistribusi pada 2 indikator
+                yaitu bukti fisik dan peralatan. Setiap indikator terdiri dari beberapa aitem yaitu:
+                Pada aspek tangible ini, diukur tingkat kepuasan untuk setiap aitem/pernyataan, hasilnya disajikan pada
+                tabel berikut:
+
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Pernyataan</th>
+                        <th>IKM</th>
+                        <th>Mutu layanan</th>
+                        <th>Unit Kinerja Pelayanan</th>
+                    </tr>
+                </thead>
+            </table>
+            <p class="paragraf">
+                Pada dimensi Tangible (Bukti Fisik) terdiri dari 12 aitem/pernyataan yang terdistribusi pada 2 indikator
+                yaitu bukti fisik dan peralatan. Setiap indikator terdiri dari beberapa aitem yaitu:
+                Pada aspek tangible ini, diukur tingkat kepuasan untuk setiap aitem/pernyataan, hasilnya disajikan pada
+                tabel berikut:
+            </p>
+        </li>
+    </ul>
+</body>
+
+@push('scripts')
+    <script src="{{ $facultyComparisonChart->cdn() }}"></script>
+    {{ $facultyComparisonChart->script() }}
+@endpush
+
+</html>
