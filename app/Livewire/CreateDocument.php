@@ -58,7 +58,7 @@ class CreateDocument extends Component
 
     public function downloadDocument(SatisfactionChart $satisfactionChart)
     {
-
+        $this->validate();
         // Render PDF using the updated data
         $this->getDetailSurvey();
         $this->selectedProdi = Prodi::find($this->createDocument['prodi_id']);
@@ -94,7 +94,7 @@ class CreateDocument extends Component
         }
 
         // Build charts
-        $pdf = PDF::loadView('livewire.admin.report.laporan-survei', [
+        $pdf = PDF::loadView('pdf.report', [
             'facultyComparisonChart' => $facultyComparisonChart,
             'survei' => $this->survei,
             'totalRespoondenProdi' => $this->countRespondenByProdi($this->createDocument['prodi_id']),
@@ -103,6 +103,8 @@ class CreateDocument extends Component
             'tahunAkademik' => $this->createDocument['tahun_akademik'],
             'tanggalKegiatan' => $this->createDocument['tanggal'],
             'selectedProdi' => $this->selectedProdi,
+            'detail_rekapitulasi' => $this->detail_rekapitulasi,
+            'detail_rekapitulasi_aspek' => $this->detail_rekapitulasi_aspek
         ]);
 
         
