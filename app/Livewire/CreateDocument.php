@@ -10,6 +10,7 @@ use App\Models\Survey;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
 
 class CreateDocument extends Component
 {
@@ -62,8 +63,9 @@ class CreateDocument extends Component
         // Render PDF using the updated data
         $this->getDetailSurvey();
         $this->selectedProdi = Prodi::find($this->createDocument['prodi_id']);
-        $this->prodi =  Prodi::where('code', '!=', 0)->get();
+        $this->prodi = Prodi::where('code', '!=', 0)->get();
         $this->fakultas = Fakultas::where('code', '!=', '0')->get();
+        $pdfMerger = PDFMerger::init();
 
         $facultyNames = [];
         $facultyTM = [];
@@ -81,7 +83,6 @@ class CreateDocument extends Component
         $facultyComparisonChart = $satisfactionChart->buildFacultyComparisonChart($facultyNames, $facultyTM, $facultyCM, $facultyM, $facultySM);
 
 
-
         // Gather data for faculties
         foreach ($this->survei->aspek as $item) {
             $facultyNames[] = $item->name;
@@ -93,24 +94,79 @@ class CreateDocument extends Component
             $facultySM[] = $facultyData['sm'];
         }
 
-        // Build charts
-        $pdf = PDF::loadView('pdf.bab4', [
-            'facultyComparisonChart' => $facultyComparisonChart,
+        $totalRespondenProdi = $this->countRespondenByProdi($this->createDocument['prodi_id']);
+        $tahunAkademik = $this->createDocument['tahun_akademik'];
+        $tanggalKegiatan = $this->createDocument['tanggal'];
+
+        $pdfMerger = PDFMerger::init();
+
+        $cover = PDF::loadView('pdf.cover', [
             'survei' => $this->survei,
-            'totalRespoondenProdi' => $this->countRespondenByProdi($this->createDocument['prodi_id']),
-            'prodi' => $this->selectedProdi,
-            'fakultas' => $this->fakultas,
-            'tahunAkademik' => $this->createDocument['tahun_akademik'],
+            'tahunAkademik' => $tahunAkademik,
+        ])->setPaper('a4', 'potrait')->output();
+        $pdfMerger->addString($cover);
+
+        $kata = PDF::loadView('pdf.kata_pengantar', [])->setPaper('a4', 'potrait')->output();
+        $pdfMerger->addString($kata);
+
+        $daftar = PDF::loadView('pdf.daftar_isi', [])->setPaper('a4', 'potrait')->output();
+        $pdfMerger->addString($daftar);
+
+        $bab1 = PDF::loadView('pdf.bab1', [])->setPaper('a4', 'potrait')->output();
+        $pdfMerger->addString($bab1);
+
+        $bab2 = PDF::loadView('pdf.bab2', [
+            'fakultas' => Fakultas::where('code', '!=', '0')->get(),
+            'prodi' => Prodi::where('code', '!=', '0')->get(),
+        ])->setPaper('a4', 'potrait')->output();
+        $pdfMerger->addString($bab2);
+
+        $bab3 = PDF::loadView('pdf.bab3', [
+            'facultyComparisonChart' => $facultyComparisonChart,
+            'detail_rekapitulasi' => $this->detail_rekapitulasi,
+            'detail_rekapitulasi_aspek' => $this->detail_rekapitulasi_aspek,
             'tanggalKegiatan' => $this->createDocument['tanggal'],
             'selectedProdi' => $this->selectedProdi,
-            'detail_rekapitulasi' => $this->detail_rekapitulasi,
-            'detail_rekapitulasi_aspek' => $this->detail_rekapitulasi_aspek
-        ]);
+            'totalRespoondenProdi' => $this->countRespondenByProdi($this->selectedProdi->id),
+            'survei' => $this->survei,
+        ])->setPaper('a4', 'potrait')->output();
+        $pdfMerger->addString($bab3);
 
-        
-        return response()->streamDownload(function () use ($pdf) {
-            echo $pdf->stream();
-        }, 'laporan.pdf');
+        $bab4 = PDF::loadView('pdf.bab4', [
+            'facultyComparisonChart' => $facultyComparisonChart,
+            'detail_rekapitulasi' => $this->detail_rekapitulasi,
+            'detail_rekapitulasi_aspek' => $this->detail_rekapitulasi_aspek,
+            'tanggalKegiatan' => $this->createDocument['tanggal'],
+            'selectedProdi' => $this->selectedProdi,
+            'totalRespoondenProdi' => $this->countRespondenByProdi($this->selectedProdi->id),
+            'survei' => $this->survei,
+            'tahunAkademik' => $tahunAkademik,
+
+        ])->setPaper('a4', 'potrait')->output();
+        $pdfMerger->addString($bab4);
+
+        $pdfMerger->merge();
+        $pdfMerger->setFileName('Laporan SURVEI ' . $this->survei->name . '.pdf');
+
+        return $pdfMerger->stream();
+        // // Build charts
+        // $pdf = PDF::loadView('pdf.bab4', [
+        //     'facultyComparisonChart' => $facultyComparisonChart,
+        //     'survei' => $this->survei,
+        //     'totalRespoondenProdi' => ,
+        //     'prodi' => $this->selectedProdi,
+        //     'fakultas' => $this->fakultas,
+        //     'tahunAkademik' => $this->createDocument['tahun_akademik'],
+        //     'tanggalKegiatan' => $this->createDocument['tanggal'],
+        //     'selectedProdi' => $this->selectedProdi,
+        //     'detail_rekapitulasi' => $this->detail_rekapitulasi,
+        //     'detail_rekapitulasi_aspek' => $this->detail_rekapitulasi_aspek
+        // ]);
+
+
+        // return response()->streamDownload(function () use ($pdf) {
+        //     echo $pdf->stream();
+        // }, 'laporan.pdf');
     }
 
     private function calculateFacultySatisfactionDistribution($aspekId)

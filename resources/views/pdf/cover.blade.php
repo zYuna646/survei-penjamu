@@ -54,9 +54,9 @@
 <body>
     <div class="container" style="display: flex; justify-content: space-between; height: 100%;">
         <div class="title-wrapper">
-            <div class="title">LAPORAN SURVEI KEPUASAN DOSEN</div>
+            <div class="title">LAPORAN {{$survei->name}}</div>
             <div class="title">UNIVERSITAS NEGERI GORONTALO</div>
-            <div class="title">Tahun 2023</div>
+            <div class="title">Tahun {{$tahunAkademik}}</div>
         </div>
         <img src="{{ public_path('logo/ung.png') }}" alt="Logo Universitas">
         <div class="subtitle-wrapper">
@@ -70,7 +70,7 @@
                 UNIVERSITAS NEGERI GORONTALO
             </div>
             <div class="subtitle">
-                2023
+                {{$tahunAkademik}}
             </div>
         </div>
     </div>

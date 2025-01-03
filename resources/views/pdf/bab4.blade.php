@@ -121,13 +121,16 @@
 
 <body>
     <h5 class="heading-1">
-        BAB II <br> <br>
+        BAB IV <br> <br>
         KESIMPULAN DAN TINDAK LANJUT
     </h5>
     <p class="paragraf">
-        Berdasarkan analisis hasil pengukuran indeks kepuasan tenaga kependidikan pada periode XXX masuk ke dalam
-        kategori mutu layanan XXX artinya kinerja pelayanan masuk ke dalam kategori BAIK.
-        Selanjutnya, urutan indeks kepuasan mahasiswa untuk setiap butir/aitem pernyataan disajikan pada tabel di bawah
+        Berdasarkan analisis hasil pengukuran {{ $survei->name }} pada
+        periode {{ $tahunAkademik }} masuk ke dalam kategori {{ $survei->target->name }} artinya
+        {{ $survei->target->name }} masuk
+        ke dalam kategori BAIK
+        Selanjutnya, urutan indeks kepuasan {{ $survei->name }} untuk setiap butir/aitem pernyataan disajikan pada tabel
+        di bawah
         ini:
     </p>
     <table>
@@ -139,35 +142,101 @@
             </tr>
         </thead>
         <tbody>
-            {{-- @foreach ($survei->aspek as $index => $item)
-            <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $item->name }}</td>
-                <td>{{ $detail_rekapitulasi_aspek[$item->id]['ikm'] }}</td>
-                <td>{{ $detail_rekapitulasi_aspek[$item->id]['kinerja_unit'] }}</td>
-            </tr>
-            @endforeach --}}
+            @foreach ($survei->aspek as $index => $item)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $item->name }}</td>
+                    <td>{{ $detail_rekapitulasi_aspek[$item->id]['ikm'] }}</td>
+                    <td>{{ $detail_rekapitulasi_aspek[$item->id]['kinerja_unit'] }}</td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
-    <p class="paragraf">
-        Dapat diamati dari tabel di atas, lima (5) aitem atau butir pernyataan yang memiliki nilai yang paling rendah yaitu:
+    @php
+        // Initialize an array to store all indicator values and their names
+        $indicatorValues = [];
+
+        // Loop through the indicators to capture their 'nilai_butir' and indicator name
+        foreach ($survei->aspek as $item) {
+            foreach ($item->indicator as $indi) {
+                $indicatorValues[] = [
+                    'id' => $indi->id,
+                    'name' => $indi->name,
+                    'nilai_butir' => $detail_rekapitulasi[$item->id][$indi->id]['nilai_butir'],
+                ];
+            }
+        }
+
+        // Sort the array by 'nilai_butir' in ascending order
+        usort($indicatorValues, function ($a, $b) {
+            return $a['nilai_butir'] <=> $b['nilai_butir'];
+        });
+
+        // Get the top 5 lowest values (if there are at least 5 values)
+        $lowestIndicators = array_slice($indicatorValues, 0, 5);
+    @endphp
+
+    <p>
+        Dapat diamati dari tabel di atas, lima (5) item atau butir pernyataan yang memiliki
+        nilai yang paling rendah yaitu:
     </p>
-    <ol>
-        <li>sample</li>
-    </ol>
-    <p class="paragraf">
-        Faktor-faktor atau akar permasalahan yang menyebabkan indeks kepuasan mahasiswa masih rendah yaitu:
+    <ul class="list-decimal list-inside">
+        @foreach ($lowestIndicators as $key => $indicator)
+            <li>
+                {{ $indicator['name'] }} ({{ $indicator['nilai_butir'] }})
+            </li>
+        @endforeach
+    </ul>
+
+    <p>
+        Faktor-faktor atau akar permasalahan yang menyebabkan indeks kepuasan
+        mahasiswa masih rendah yaitu:
     </p>
-    <ol>
-        <li>sample</li>
-    </ol>
-    <p class="paragraf">
-        Rencana tindak lanjutnya yaitu
+    <ul class="list-decimal list-inside">
+        @foreach ($lowestIndicators as $indicator)
+            @php
+                // Fetch temuan related to the current indicator using its ID and prodi_id
+                $temuanCollection = App\Models\Temuan::where('indikator_id', $indicator['id'])
+                    ->where('prodi_id', $selectedProdi->id)
+                    ->get();
+            @endphp
+
+            @if ($temuanCollection->count() > 0)
+                <li>
+                    @foreach ($temuanCollection as $temuan)
+                        {{ $temuan->temuan . ', ' }}
+                    @endforeach
+                </li>
+            @else
+                <li>Belum ada temuan untuk indikator ini.</li>
+            @endif
+        @endforeach
+    </ul>
+
+    <p>
+        Rencana tindak lanjutnya yaitu:
     </p>
-    <ol>
-        <li>sample</li>
-    </ol>
-    
+    <ul class="list-decimal list-inside">
+        @foreach ($lowestIndicators as $indicator)
+            @php
+                // Fetch temuan related to the current indicator using its ID and prodi_id
+                $temuanCollection = App\Models\Temuan::where('indikator_id', $indicator['id'])
+                    ->where('prodi_id', $selectedProdi->id)
+                    ->get();
+            @endphp
+
+            @if ($temuanCollection->count() > 0)
+                <li>
+                    @foreach ($temuanCollection as $temuan)
+                        {{ $temuan->solusi . ', ' }}
+                    @endforeach
+                </li>
+            @else
+                <li>Belum ada solusi untuk indikator ini.</li>
+            @endif
+        @endforeach
+    </ul>
+
 </body>
 
 </html>

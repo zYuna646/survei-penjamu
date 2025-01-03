@@ -128,11 +128,12 @@
         A. Ruang Lingkup
     </h6>
     <p class="paragraf">
-        Universitas Negeri Gorontalo memiliki 13 fakultas yaitu Fakultas Ilmu Pendidikan (FIP), Fakultas Matematika dan
-        Ilmu Pengetahuan Alam (FMIPA), Fakultas Sastra dan Budaya (FSB), Fakultas Ilmu Sosial (FIS), Fakultas Olahraga
-        dan Kesehatan (FOK), Fakultas Teknik (FT), Fakultas Pertanian (FAPERTA), Fakultas Ekonomi (FE), Fakultas Hukum
-        (FH), Fakultas Kelautan dan Teknologi Perikanan (FKTP), Fakultas Kedokteran (FK), Program Pascasarjana, dan
-        Sekolah Vokasi. Sedangkan jumlah program studi terdapat 93 program studi.
+        Universitas Negeri Gorontalo memiliki {{ $fakultas->count() }} fakultas yaitu
+        @foreach ($fakultas as $item)
+            {{ $item->name }} ({{ $item->code }}) ,
+        @endforeach
+        Sedangkan jumlah program studi terdapat {{ $prodi->count() }} program
+        studi.
     </p>
     <h6>
         B. Operasional Variabel

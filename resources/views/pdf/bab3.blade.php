@@ -117,6 +117,7 @@
             font-weight: bold;
         }
     </style>
+ 
 </head>
 
 <body>
@@ -125,14 +126,17 @@
         HASIL KEGIATAN
     </h5>
     <p class="paragraf">
-        Teknik pengambilan data pada survei indeks kepuasan dilakukan secara online di laman XXX yang dilakukan pada
-        XXX. Jumlah responden yang mengisi survei kepuasan di prodi XXX sebanyak XXX.
+        Teknik pengambilan data pada survei indeks kepuasan dilakukan secara online di
+        laman survei.penjamu.ung.ac.id yang dilakukan pada {{ $tanggalKegiatan }}. Jumlah responden yang
+        mengisi survei kepuasan di
+        {{ $selectedProdi->name }} sebanyak {{ $totalRespoondenProdi }} responden.
     </p>
     <h6>
         A. Analisis Tingkat Kepuasan
     </h6>
     <p class="paragraf">
-        Berdasarkan hasil pengolaha data, tingkat kepuasan mahasiswa di Prodi XXX disajikan pada gambar di bawah ini:
+        Berdasarkan hasil pengolaha data, tingkat kepuasan mahasiswa di Prodi {{ $selectedProdi->name }} disajikan pada
+        gambar di bawah ini:
     </p>
     <div class="w-[4rem]" style="width: 42rem">
         {!! $facultyComparisonChart->container() !!}
@@ -150,50 +154,94 @@
             </tr>
         </thead>
         <tbody>
-            {{-- @foreach ($survei->aspek as $index => $item)
-            <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $item->name }}</td>
-                <td>{{ $detail_rekapitulasi_aspek[$item->id]['ikm'] }}</td>
-                <td>{{ $detail_rekapitulasi_aspek[$item->id]['kinerja_unit'] }}</td>
-            </tr>
-            @endforeach --}}
+            @foreach ($survei->aspek as $index => $item)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $item->name }}</td>
+                    <td>{{ $detail_rekapitulasi_aspek[$item->id]['ikm'] }}</td>
+                    <td>{{ $detail_rekapitulasi_aspek[$item->id]['kinerja_unit'] }}</td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
     <ul style="list-style: circle">
-        <li>
-            a. Aspek Tangible (Bukti Fisik)
-            <p class="paragraf">
-                Pada dimensi Tangible (Bukti Fisik) terdiri dari 12 aitem/pernyataan yang terdistribusi pada 2 indikator
-                yaitu bukti fisik dan peralatan. Setiap indikator terdiri dari beberapa aitem yaitu:
-                Pada aspek tangible ini, diukur tingkat kepuasan untuk setiap aitem/pernyataan, hasilnya disajikan pada
-                tabel berikut:
+        @foreach ($survei->aspek as $item)
+            <li>
+                {{ $item->name }}
+                <p class="paragraf">
+                    Pada dimensi {{ $item->name }} terdiri dari {{ $item->indicator->count() }} item/pernyataan
+                    yang terdistribusi
+                    pada {{ $item->indicator->count() }} indikator. Setiap indikator terdiri dari beberapa aitem
+                    yaitu:
+                    Pada aspek tangible ini, diukur tingkat kepuasan untuk setiap aitem/pernyataan, hasilnya disajikan
+                    pada
+                    tabel berikut:
 
-            </p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Pernyataan</th>
-                        <th>IKM</th>
-                        <th>Mutu layanan</th>
-                        <th>Unit Kinerja Pelayanan</th>
-                    </tr>
-                </thead>
-            </table>
-            <p class="paragraf">
-                Pada dimensi Tangible (Bukti Fisik) terdiri dari 12 aitem/pernyataan yang terdistribusi pada 2 indikator
-                yaitu bukti fisik dan peralatan. Setiap indikator terdiri dari beberapa aitem yaitu:
-                Pada aspek tangible ini, diukur tingkat kepuasan untuk setiap aitem/pernyataan, hasilnya disajikan pada
-                tabel berikut:
-            </p>
-        </li>
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Pernyataan</th>
+                            <th>IKM</th>
+                            <th>Mutu layanan</th>
+                            <th>Unit Kinerja Pelayanan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            // Initialize variables to hold the lowest and highest IKM values and their corresponding indicators.
+                            $lowestIKM = null;
+                            $highestIKM = null;
+                            $lowestIndi = null;
+                            $highestIndi = null;
+                        @endphp
+                        @foreach ($item->indicator as $index => $indi)
+                            <tr>
+                                <th class="p-2 border border-gray-600">{{ $index + 1 }}</th>
+                                <th class="p-2 border border-gray-600">{{ $indi->name }}</th>
+                                <th class="p-2 border border-gray-600">
+                                    {{ $detail_rekapitulasi[$item->id][$indi->id]['ikm'] }}</th>
+                                <th class="p-2 border border-gray-600">
+                                    {{ $detail_rekapitulasi[$item->id][$indi->id]['mutu_layanan'] }}</th>
+                                <th class="p-2 border border-gray-600">
+                                    {{ $detail_rekapitulasi[$item->id][$indi->id]['kinerja_unit'] }}</th>
+                            </tr>
+
+                            @php
+                                // Capture the IKM values and track the lowest and highest.
+                                $ikmValue = $detail_rekapitulasi[$item->id][$indi->id]['ikm'];
+
+                                // Check if it's the first iteration or if it's the lowest/highest value found so far.
+                                if (is_null($lowestIKM) || $ikmValue < $lowestIKM) {
+                                    $lowestIKM = $ikmValue;
+                                    $lowestIndi = $indi->name;
+                                }
+                                if (is_null($highestIKM) || $ikmValue > $highestIKM) {
+                                    $highestIKM = $ikmValue;
+                                    $highestIndi = $indi->name;
+                                }
+                            @endphp
+                        @endforeach
+                    </tbody>
+                </table>
+                <p class="paragraf">
+                    Dapat diamati pada tabel diatas bahwa seluruh butir pernyataan pada aspek
+                    Keandalan semua kinerja layanan masuk ke dalam kategori BAIK. Dari
+                    {{ $item->indicator->count() }} butir
+                    pernyataan, nilai IKM yang paling rendah adalah <strong>{{ $lowestIKM }}</strong>
+                    ({{ $lowestIndi }}).
+                    Sedangkan indikator yang memiliki
+                    nilai IKM paling tinggi adalah pernyataan tentang <strong>{{ $highestIndi }}</strong>
+                    ({{ $highestIKM }}).
+                </p>
+            </li>
+        @endforeach
     </ul>
-</body>
-
-@push('scripts')
     <script src="{{ $facultyComparisonChart->cdn() }}"></script>
     {{ $facultyComparisonChart->script() }}
-@endpush
+</body>
+
+
 
 </html>
