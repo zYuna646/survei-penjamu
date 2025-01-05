@@ -144,7 +144,7 @@
         diberikan oleh Universitas Negeri Gorontalo.
     </p>
     <h6>
-        B. Manfaat Kegiatan
+        C. Manfaat Kegiatan
     </h6>
     <p class="paragraf">
         Manfaat kegiatan ini adalah

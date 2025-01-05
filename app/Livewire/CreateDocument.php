@@ -144,11 +144,16 @@ class CreateDocument extends Component
 
         ])->setPaper('a4', 'potrait')->output();
         $pdfMerger->addString($bab4);
-
+        $filePath = storage_path('app/public/Laporan_SURVEI_' . $this->survei->name . '.pdf');
         $pdfMerger->merge();
-        $pdfMerger->setFileName('Laporan SURVEI ' . $this->survei->name . '.pdf');
-
-        return $pdfMerger->stream();
+        $pdfMerger->save($filePath);
+        
+        // Cek apakah file berhasil dibuat
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            return response()->json(['error' => 'Failed to generate PDF'], 500);
+        }
         // // Build charts
         // $pdf = PDF::loadView('pdf.bab4', [
         //     'facultyComparisonChart' => $facultyComparisonChart,

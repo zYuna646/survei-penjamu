@@ -198,14 +198,14 @@
                         @endphp
                         @foreach ($item->indicator as $index => $indi)
                             <tr>
-                                <th class="p-2 border border-gray-600">{{ $index + 1 }}</th>
-                                <th class="p-2 border border-gray-600">{{ $indi->name }}</th>
-                                <th class="p-2 border border-gray-600">
-                                    {{ $detail_rekapitulasi[$item->id][$indi->id]['ikm'] }}</th>
-                                <th class="p-2 border border-gray-600">
-                                    {{ $detail_rekapitulasi[$item->id][$indi->id]['mutu_layanan'] }}</th>
-                                <th class="p-2 border border-gray-600">
-                                    {{ $detail_rekapitulasi[$item->id][$indi->id]['kinerja_unit'] }}</th>
+                                <td class="p-2 border border-gray-600">{{ $index + 1 }}</td>
+                                <td class="p-2 border border-gray-600">{{ $indi->name }}</td>
+                                <td class="p-2 border border-gray-600">
+                                    {{ $detail_rekapitulasi[$item->id][$indi->id]['ikm'] }}</td>
+                                <td class="p-2 border border-gray-600">
+                                    {{ $detail_rekapitulasi[$item->id][$indi->id]['mutu_layanan'] }}</td>
+                                <td class="p-2 border border-gray-600">
+                                    {{ $detail_rekapitulasi[$item->id][$indi->id]['kinerja_unit'] }}</td>
                             </tr>
 
                             @php

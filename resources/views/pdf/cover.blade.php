@@ -48,6 +48,15 @@
             font-weight: 700;
             color: #333;
         }
+
+        .subtitle-wrapper {
+            margin-top: 120px;
+        }
+        img{
+            width: 6rem;
+            margin-top: 120px
+            
+        }
     </style>
 </head>
 
@@ -58,7 +67,7 @@
             <div class="title">UNIVERSITAS NEGERI GORONTALO</div>
             <div class="title">Tahun {{$tahunAkademik}}</div>
         </div>
-        <img src="{{ public_path('logo/ung.png') }}" alt="Logo Universitas">
+        <img class="logo" src="{{ public_path('logo/ung.png') }}" alt="Logo Universitas">
         <div class="subtitle-wrapper">
             <div class="subtitle">
                 LEMBAGA PENJAMINAN MUTU

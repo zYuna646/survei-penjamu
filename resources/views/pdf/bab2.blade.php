@@ -174,16 +174,16 @@
             <tr>
                 <td rowspan="2">1</td>
                 <td rowspan="2">Tangible</td>
-                <td>Indikator 1</td>
-                <td>Item 1</td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td>Indikator 2</td>
-                <td>Item 2</td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -192,16 +192,16 @@
             <tr>
                 <td rowspan="2">2</td>
                 <td rowspan="2">Reliability</td>
-                <td>Indikator 1</td>
-                <td>Item 1</td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td>Indikator 2</td>
-                <td>Item 2</td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -210,16 +210,52 @@
             <tr>
                 <td rowspan="2">3</td>
                 <td rowspan="2">Responsiveness</td>
-                <td>Indikator 1</td>
-                <td>Item 1</td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td>Indikator 2</td>
-                <td>Item 2</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td rowspan="2">4</td>
+                <td rowspan="2">Assurance</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td rowspan="2">5</td>
+                <td rowspan="2">Empathy</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>

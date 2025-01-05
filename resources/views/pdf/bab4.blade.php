@@ -139,6 +139,7 @@
                 <th>No</th>
                 <th>Aitem Pernyataan</th>
                 <th>Indeks</th>
+                {{-- <th>Predikat</th> --}}
             </tr>
         </thead>
         <tbody>
@@ -147,7 +148,7 @@
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $item->name }}</td>
                     <td>{{ $detail_rekapitulasi_aspek[$item->id]['ikm'] }}</td>
-                    <td>{{ $detail_rekapitulasi_aspek[$item->id]['kinerja_unit'] }}</td>
+                    {{-- <td>{{ $detail_rekapitulasi_aspek[$item->id]['kinerja_unit'] }}</td> --}}
                 </tr>
             @endforeach
         </tbody>
