@@ -164,7 +164,7 @@
             @endforeach
         </tbody>
     </table>
-    <ul style="list-style: circle">
+    <ul style="list-style: disc">
         @foreach ($survei->aspek as $item)
             <li>
                 {{ $item->name }}

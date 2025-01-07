@@ -10,6 +10,7 @@ use App\Models\Survey;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
 
 class CreateDocument extends Component
@@ -22,6 +23,7 @@ class CreateDocument extends Component
     public $dataFakultas = [];
     public $dataProdi = [];
     public $dataSurvei = [];
+    public $user;
 
     public $survei;
     public $selectedProdi;
@@ -35,6 +37,10 @@ class CreateDocument extends Component
         'createDocument.tanggal' => 'required|date',
         'createDocument.fakultas_id' => 'required',
         'createDocument.prodi_id' => 'required',
+        'createDocument.nama_mengetahui' => 'required',
+        'createDocument.nip_mengetahui' => 'required',
+        'createDocument.nama_penanggung_jawab' => 'required',
+        'createDocument.nip_penanggung_jawab' => 'required',
     ];
 
     public function mount($id)
@@ -65,6 +71,7 @@ class CreateDocument extends Component
         $this->selectedProdi = Prodi::find($this->createDocument['prodi_id']);
         $this->prodi = Prodi::where('code', '!=', 0)->get();
         $this->fakultas = Fakultas::where('code', '!=', '0')->get();
+        $this->user = Auth::user();
         $pdfMerger = PDFMerger::init();
 
         $facultyNames = [];
@@ -96,6 +103,10 @@ class CreateDocument extends Component
 
         $totalRespondenProdi = $this->countRespondenByProdi($this->createDocument['prodi_id']);
         $tahunAkademik = $this->createDocument['tahun_akademik'];
+        $nama_mengetahui = $this->createDocument['nama_mengetahui'];
+        $nip_mengetahui = $this->createDocument['nip_mengetahui'];
+        $nama_penanggung_jawab = $this->createDocument['nama_penanggung_jawab'];
+        $nip_penanggung_jawab = $this->createDocument['nip_penanggung_jawab'];
         $tanggalKegiatan = $this->createDocument['tanggal'];
 
         $pdfMerger = PDFMerger::init();
@@ -103,10 +114,16 @@ class CreateDocument extends Component
         $cover = PDF::loadView('pdf.cover', [
             'survei' => $this->survei,
             'tahunAkademik' => $tahunAkademik,
+            'user' => $this->user,
         ])->setPaper('a4', 'potrait')->output();
         $pdfMerger->addString($cover);
 
-        $kata = PDF::loadView('pdf.kata_pengantar', [])->setPaper('a4', 'potrait')->output();
+        $kata = PDF::loadView('pdf.kata_pengantar', [
+            'nama_mengetahui' => $nama_mengetahui,
+            'nip_mengetahui' => $nip_mengetahui,
+            'nama_penanggung_jawab' => $nama_penanggung_jawab,
+            'nip_penanggung_jawab' => $nip_penanggung_jawab,
+        ])->setPaper('a4', 'potrait')->output();
         $pdfMerger->addString($kata);
 
         $daftar = PDF::loadView('pdf.daftar_isi', [])->setPaper('a4', 'potrait')->output();
@@ -147,7 +164,7 @@ class CreateDocument extends Component
         $filePath = storage_path('app/public/Laporan_SURVEI_' . $this->survei->name . '.pdf');
         $pdfMerger->merge();
         $pdfMerger->save($filePath);
-        
+
         // Cek apakah file berhasil dibuat
         if (file_exists($filePath)) {
             return response()->download($filePath);

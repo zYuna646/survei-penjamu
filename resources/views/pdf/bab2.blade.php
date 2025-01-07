@@ -142,14 +142,14 @@
         Tingkat kepuasan terhadap layanan diukur dengan model SERVQUAL (Service Quality) yang terdiri dari lima dimensi
         yaitu Tangible, Reliability, Responsiveness, Assurance dan Empathy. Berikut dijelaskan definisi dari setiap
         dimensi kepuasan pada model SERVQUAL:
-    <ol>
-        <li>Tangibles: Dimensi yang tampak, misalnya fasilitas fisik, sarana prasarana, perlengkapan, penampilan
+    <ol class="paragraf">
+        <li class="paragraf">Tangibles: Dimensi yang tampak, misalnya fasilitas fisik, sarana prasarana, perlengkapan, penampilan
             pegawai dan dosen. </li>
-        <li>Reliability: Dimensi mengenai kemauan dalam memberikan tanggapan pelayanan dengan cepat dan tanggap. </li>
-        <li>Responsiveness: Dimensi mengenai kemauan dalam memberikan tanggapan pelayanan dengan cepat dan tanggap.
+        <li class="paragraf">Reliability: Dimensi mengenai kemauan dalam memberikan tanggapan pelayanan dengan cepat dan tanggap. </li>
+        <li class="paragraf">Responsiveness: Dimensi mengenai kemauan dalam memberikan tanggapan pelayanan dengan cepat dan tanggap.
         </li>
-        <li>Assurance: Dimensi mengenai kemampuan atas pengetahuan, kualitas keramahtamahan, perhatian dan sikap. </li>
-        <li>Emphaty: Dimensi mengenai kemampuan untuk berkomunikasi dan usaha organisasi untuk memahami keinginan dan
+        <li class="paragraf">Assurance: Dimensi mengenai kemampuan atas pengetahuan, kualitas keramahtamahan, perhatian dan sikap. </li>
+        <li class="paragraf">Emphaty: Dimensi mengenai kemampuan untuk berkomunikasi dan usaha organisasi untuk memahami keinginan dan
             kebutuhan pelangganya.</li>
     </ol>
     </p>
@@ -314,7 +314,7 @@
                 <td>2</td>
                 <td>1,76 – 2,50</td>
                 <td>43,76 – 62,50</td>
-                <td>c</td>
+                <td>C</td>
                 <td>Kurang Baik</td>
             </tr>
             <tr>

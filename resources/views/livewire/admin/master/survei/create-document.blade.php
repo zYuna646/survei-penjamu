@@ -17,7 +17,8 @@
             <form wire:submit.prevent="downloadDocument" class="grid grid-cols-12">
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="tahun" class="text-sm">Tahun Akademik :</label>
-                    <input type="number" min="2000" max="3000" id="tahun" name="tahun" wire:model="createDocument.tahun_akademik"
+                    <input type="number" min="2000" max="3000" id="tahun" name="tahun"
+                        wire:model="createDocument.tahun_akademik"
                         placeholder="Masukan Tahun Akademik {{ $master }}"
                         class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                     @error('createDocument.tahun_akademik')
@@ -57,6 +58,46 @@
                         @endforeach
                     </select>
                     @error('createDocument.prodi_id')
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                    <label for="nama_mengetahui" class="text-sm">Nama Mengetahui :</label>
+                    <input type="text" id="nama_mengetahui" name="nama_mengetahui"
+                        wire:model="createDocument.nama_mengetahui"
+                        placeholder="Masukan Nama Mengetahui {{ $master }}"
+                        class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                    @error('createDocument.nama_mengetahui')
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                    <label for="nip_mengetahui" class="text-sm">NIP Mengetahui :</label>
+                    <input type="number" id="nip_mengetahui" name="nip_mengetahui"
+                        wire:model="createDocument.nip_mengetahui"
+                        placeholder="Masukan NIP Mengetahui {{ $master }}"
+                        class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                    @error('createDocument.nip_mengetahui')
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                    <label for="nama_penanggung_jawab" class="text-sm">Nama Penanggung Jawab :</label>
+                    <input type="text" id="nama_penanggung_jawab" name="nama_penanggung_jawab"
+                        wire:model="createDocument.nama_penanggung_jawab"
+                        placeholder="Masukan Nama Penanggung Jawab {{ $master }}"
+                        class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                    @error('createDocument.nama_penanggung_jawab')
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                    <label for="nip_penanggung_jawab" class="text-sm">NIP Penanggung Jawab :</label>
+                    <input type="number" id="nip_penanggung_jawab" name="nip_penanggung_jawab"
+                        wire:model="createDocument.nip_penanggung_jawab"
+                        placeholder="Masukan NIP Penanggung Jawab {{ $master }}"
+                        class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                    @error('createDocument.nip_penanggung_jawab')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>

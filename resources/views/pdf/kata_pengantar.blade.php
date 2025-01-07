@@ -97,8 +97,6 @@
             width: 33.33%;
             text-align: center;
         }
-
-        
     </style>
 </head>
 
@@ -131,7 +129,7 @@
         <tbody>
             <tr style="width: 50%;">
                 <td style="width: 50%;">Mengetahui</td>
-                <td style="width: 50%;"></td>
+                <td style="width: 50%;">Penanggung Jawab</td>
             </tr>
             <tr style="width: 50%;">
                 <td style="padding: 3rem 0; width: 50%;"></td>
@@ -140,6 +138,14 @@
             <tr style="width: 50%;">
                 <td style="width: 50%;">Kepala LPMPP UNG</td>
                 <td style="width: 50%;">Kepala Pusat SIM dan Survei SPMI</td>
+            </tr>
+            <tr style="width: 50%;">
+                <td style="width: 50%;">{{ $nama_mengetahui }}</td>
+                <td style="width: 50%;">{{ $nama_penanggung_jawab }}</td>
+            </tr>
+            <tr style="width: 50%;">
+                <td style="width: 50%;">{{ $nip_mengetahui }}</td>
+                <td style="width: 50%;">{{ $nip_penanggung_jawab }}</td>
             </tr>
         </tbody>
     </table>

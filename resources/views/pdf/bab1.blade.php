@@ -148,10 +148,10 @@
     </h6>
     <p class="paragraf">
         Manfaat kegiatan ini adalah
-        <ul style="list-style: circle">
-            <li>Menjadi tolok ukur untuk menilai tingkat kualitas pelayanan yang sudah diberikan oleh Universitas Negeri
+        <ul class="paragraf" style="list-style: disc">
+            <li class="paragraf">Menjadi tolok ukur untuk menilai tingkat kualitas pelayanan yang sudah diberikan oleh Universitas Negeri
                 Gorontalo. </li>
-            <li>Menjadi bahan penilaian terhadap unsur pelayanan yang masih perlu dilakukan perbaikan dan menjadi
+            <li class="paragraf" style="margin-top: 12px">Menjadi bahan penilaian terhadap unsur pelayanan yang masih perlu dilakukan perbaikan dan menjadi
                 pendorong setiap unit penyelenggara pelayanan untuk meningkatkan kualitas pelayanannya. </li>
         </ul>
     </p>

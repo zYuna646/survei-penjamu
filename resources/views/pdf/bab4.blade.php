@@ -181,9 +181,9 @@
         Dapat diamati dari tabel di atas, lima (5) item atau butir pernyataan yang memiliki
         nilai yang paling rendah yaitu:
     </p>
-    <ul class="list-decimal list-inside">
+    <ul class="list-decimal list-inside paragraf">
         @foreach ($lowestIndicators as $key => $indicator)
-            <li>
+            <li class="paragraf">
                 {{ $indicator['name'] }} ({{ $indicator['nilai_butir'] }})
             </li>
         @endforeach
@@ -193,7 +193,7 @@
         Faktor-faktor atau akar permasalahan yang menyebabkan indeks kepuasan
         mahasiswa masih rendah yaitu:
     </p>
-    <ul class="list-decimal list-inside">
+    <ul class="list-decimal list-inside paragraf">
         @foreach ($lowestIndicators as $indicator)
             @php
                 // Fetch temuan related to the current indicator using its ID and prodi_id
@@ -203,13 +203,13 @@
             @endphp
 
             @if ($temuanCollection->count() > 0)
-                <li>
+                <li class="pargraf">
                     @foreach ($temuanCollection as $temuan)
                         {{ $temuan->temuan . ', ' }}
                     @endforeach
                 </li>
             @else
-                <li>Belum ada temuan untuk indikator ini.</li>
+                <li class="paragraf">Belum ada temuan untuk indikator ini.</li>
             @endif
         @endforeach
     </ul>
@@ -217,7 +217,7 @@
     <p>
         Rencana tindak lanjutnya yaitu:
     </p>
-    <ul class="list-decimal list-inside">
+    <ul class="list-decimal list-inside paragraf">
         @foreach ($lowestIndicators as $indicator)
             @php
                 // Fetch temuan related to the current indicator using its ID and prodi_id
@@ -227,13 +227,13 @@
             @endphp
 
             @if ($temuanCollection->count() > 0)
-                <li>
+                <li class="paragraf">
                     @foreach ($temuanCollection as $temuan)
                         {{ $temuan->solusi . ', ' }}
                     @endforeach
                 </li>
             @else
-                <li>Belum ada solusi untuk indikator ini.</li>
+                <li class="paragraf">Belum ada solusi untuk indikator ini.</li>
             @endif
         @endforeach
     </ul>
