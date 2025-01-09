@@ -176,7 +176,6 @@
         // Get the top 5 lowest values (if there are at least 5 values)
         $lowestIndicators = array_slice($indicatorValues, 0, 5);
     @endphp
-
     <p>
         Dapat diamati dari tabel di atas, lima (5) item atau butir pernyataan yang memiliki
         nilai yang paling rendah yaitu:
@@ -197,9 +196,24 @@
         @foreach ($lowestIndicators as $indicator)
             @php
                 // Fetch temuan related to the current indicator using its ID and prodi_id
-                $temuanCollection = App\Models\Temuan::where('indikator_id', $indicator['id'])
-                    ->where('prodi_id', $selectedProdi->id)
+              
+                if (Auth::user()->role->slug == 'prodi') {
+                    $temuanCollection = App\Models\Temuan::where('indikator_id', $indicator['id'])
+                    ->where('prodi_id', Auth::user()->prodi_id)
                     ->get();
+
+                } elseif (Auth::user()->role->slug == 'fakultas') {
+                    $prodiIds = App\Models\Prodi::where('fakultas_id', Auth::user()->fakultas_id)->pluck('id');
+                    $temuanCollection = App\Models\Temuan::where('indikator_id', $indicator['id'])
+                    ->whereIn('prodi_id', $prodiIds)
+                    ->get();
+
+                }
+                else {
+                    $temuanCollection = App\Models\Temuan::where('indikator_id', $indicator['id'])
+                    ->get();
+                }
+
             @endphp
 
             @if ($temuanCollection->count() > 0)
@@ -220,10 +234,22 @@
     <ul class="list-decimal list-inside paragraf">
         @foreach ($lowestIndicators as $indicator)
             @php
-                // Fetch temuan related to the current indicator using its ID and prodi_id
-                $temuanCollection = App\Models\Temuan::where('indikator_id', $indicator['id'])
-                    ->where('prodi_id', $selectedProdi->id)
+                if (Auth::user()->role->slug == 'prodi') {
+                    $temuanCollection = App\Models\Temuan::where('indikator_id', $indicator['id'])
+                    ->where('prodi_id', Auth::user()->prodi_id)
                     ->get();
+
+                } elseif (Auth::user()->role->slug == 'fakultas') {
+                    $prodiIds = App\Models\Prodi::where('fakultas_id', Auth::user()->fakultas_id)->pluck('id');
+                    $temuanCollection = App\Models\Temuan::where('indikator_id', $indicator['id'])
+                    ->whereIn('prodi_id', $prodiIds)
+                    ->get();
+
+                }
+                else {
+                    $temuanCollection = App\Models\Temuan::where('indikator_id', $indicator['id'])
+                    ->get();
+                }
             @endphp
 
             @if ($temuanCollection->count() > 0)
