@@ -46,7 +46,7 @@ class DetailSurvei extends Component
         $this->dataJurusan = Jurusan::all();
         $this->dataProdi = Prodi::all();
         $this->user = Auth::user();
-       
+
         // Load the survey data
         $this->survei = Survey::findOrFail($id);
         switch ($this->user->role->slug) {
@@ -75,16 +75,13 @@ class DetailSurvei extends Component
         $detail_rekapitulasi_aspek = [];
 
         // Initialize the query
-        $table = $this->survei->id; // Assuming the table name is based on survey id
-        $query = DB::table($table);
+        $table = $this->survei->id; // Assuming the table name is based on survey ID
+        $query = DB::table($table)->get();
 
-        // Apply filters only if selections are made
+        // Apply filters based on selections
         if ($this->selectedProdi) {
-            // Filter by selected Prodi
             $query->where('prodi_id', $this->selectedProdi);
-
         } elseif ($this->selectedFakultas) {
-            // Filter by selected Fakultas
             $prodiIds = Prodi::where('fakultas_id', $this->selectedFakultas)->pluck('id');
             $query->whereIn('prodi_id', $prodiIds);
         }
@@ -98,20 +95,18 @@ class DetailSurvei extends Component
 
             // Loop through each Indikator in the Aspek
             foreach ($aspek->indicator as $indicator) {
-                // Clone the base query for each indicator
-                $indicatorQuery = clone $query;
-
                 // Initialize counts for TM, CM, M, SM
-                $tm = $indicatorQuery->where($indicator->id, 1)->count();
-                $cm = $indicatorQuery->where($indicator->id, 2)->count();
-                $m = $indicatorQuery->where($indicator->id, 3)->count();
-                $sm = $indicatorQuery->where($indicator->id, 4)->count();
-                // Calculate averages and totals
+                $tm = $query->where($indicator->id, 1)->count();
+                $cm = $query->where($indicator->id, 2)->count();
+                $m = $query->where($indicator->id, 3)->count();
+                $sm = $query->where($indicator->id, 4)->count();
+                // Store the counts for averaging
                 $avg_tm[] = $tm;
                 $avg_cm[] = $cm;
                 $avg_m[] = $m;
                 $avg_sm[] = $sm;
 
+                // Calculate totals and avoid division by zero
                 $total = $tm + $cm + $m + $sm;
                 if ($total > 0) {
                     $nilai_butir = ($tm * 1 + 2 * $cm + 3 * $m + 4 * $sm) / $total;
@@ -136,6 +131,7 @@ class DetailSurvei extends Component
                         'predikat_kepuasan' => $predikat_kepuasan
                     ];
                 } else {
+                    // Handle case where no responses are available
                     $detail_rekapitulasi[$aspek->id][$indicator->id] = [
                         1 => $tm,
                         2 => $cm,
@@ -156,21 +152,23 @@ class DetailSurvei extends Component
             $detail_rekapitulasi_aspek[$aspek->id] = $this->calculateAverageRekapitulasi($avg_tm, $avg_cm, $avg_m, $avg_sm);
         }
 
+        // Store results for later use
         $this->detail_rekapitulasi = $detail_rekapitulasi;
         $this->detail_rekapitulasi_aspek = $detail_rekapitulasi_aspek;
     }
+
 
     private function getLowest()
     {
         // Initialize an array to hold all indicators with their 'nilai_butir' values
         $allIndicators = [];
-    
+
         // Iterate through aspects and indicators
         foreach ($this->survei->aspek as $aspek) {
             foreach ($aspek->indicator as $indicator) {
                 // Ensure 'nilai_butir' is set and valid
                 $nilaiButir = $this->detail_rekapitulasi[$aspek->id][$indicator->id]['nilai_butir'] ?? null;
-    
+
                 if ($nilaiButir !== null) {
                     // Add indicator details to the array
                     $allIndicators[] = [
@@ -184,18 +182,18 @@ class DetailSurvei extends Component
                 }
             }
         }
-    
+
         // Sort the indicators by 'nilai_butir' in ascending order
         usort($allIndicators, function ($a, $b) {
             return $a['nilai_butir'] <=> $b['nilai_butir'];
         });
-    
+
         // Limit to the 5 lowest values
         $lowestIndicators = array_slice($allIndicators, 0, 5);
-    
+
         // Return the results
         $this->lowestIndicator = $lowestIndicators;
-    }    
+    }
 
     private function getMutuLayanan($nilai_butir)
     {
@@ -356,7 +354,7 @@ class DetailSurvei extends Component
             foreach ($aspek->indicator as $indicator) {
                 $query = DB::table($this->survei->id)
                     ->whereIn('prodi_id', $prodiIds)
-                    ->where($indicator->id, '!=', null);
+                    ->where($indicator->id, '!=', null)->get( );
 
                 // Sum up TM, CM, M, SM for this indicator
                 $totalTM += $query->where($indicator->id, 1)->count();
@@ -389,7 +387,7 @@ class DetailSurvei extends Component
             foreach ($aspek->indicator as $indicator) {
                 $query = DB::table($this->survei->id)
                     ->where('prodi_id', $prodiId)
-                    ->where($indicator->id, '!=', null);
+                    ->where($indicator->id, '!=', null)->get();
 
                 // Sum up TM, CM, M, SM for this indicator
                 $totalTM += $query->where($indicator->id, 1)->count();

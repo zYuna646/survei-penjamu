@@ -35,8 +35,8 @@ class CreateDocument extends Component
     protected $rules = [
         'createDocument.tahun_akademik' => 'required|numeric|min:2000|max:3000',
         'createDocument.tanggal' => 'required|date',
-        'createDocument.fakultas_id' => 'required',
-        'createDocument.prodi_id' => 'required',
+        // 'createDocument.fakultas_id' => 'required',
+        // 'createDocument.prodi_id' => 'required',
         'createDocument.nama_mengetahui' => 'required',
         'createDocument.jabatan_mengetahui' => 'required',
         'createDocument.nip_mengetahui' => 'required',
@@ -70,7 +70,7 @@ class CreateDocument extends Component
         $this->validate();
         // Render PDF using the updated data
         $this->getDetailSurvey();
-        $this->selectedProdi = Prodi::find($this->createDocument['prodi_id']);
+        // $this->selectedProdi = Prodi::find($this->createDocument['prodi_id']);
         $this->prodi = Prodi::where('code', '!=', 0)->get();
         $this->fakultas = Fakultas::where('code', '!=', '0')->get();
         $this->user = Auth::user();
@@ -103,7 +103,7 @@ class CreateDocument extends Component
             $facultySM[] = $facultyData['sm'];
         }
 
-        $totalRespondenProdi = $this->countRespondenByProdi($this->createDocument['prodi_id']);
+        $totalRespondenProdi = $this->countRespondenByProdi();
         $tahunAkademik = $this->createDocument['tahun_akademik'];
         $nama_mengetahui = $this->createDocument['nama_mengetahui'];
         $jabatan_mengetahui = $this->createDocument['jabatan_mengetahui'];
@@ -150,7 +150,8 @@ class CreateDocument extends Component
             'detail_rekapitulasi_aspek' => $this->detail_rekapitulasi_aspek,
             'tanggalKegiatan' => $this->createDocument['tanggal'],
             'selectedProdi' => $this->selectedProdi,
-            'totalRespoondenProdi' => $this->countRespondenByProdi($this->selectedProdi->id),
+            'tingkat' => (Auth::user()->role->slug == 'prodi') ? Auth::user()->prodi->name : ((Auth::user()->role->slug == 'fakultas') ? Auth::user()->fakultas->name : 'Universitas Negeri Gorontalo'),
+            'totalRespoondenProdi' => $this->countRespondenByProdi(),
             'survei' => $this->survei,
         ])->setPaper('a4', 'potrait')->output();
         $pdfMerger->addString($bab3);
@@ -161,7 +162,7 @@ class CreateDocument extends Component
             'detail_rekapitulasi_aspek' => $this->detail_rekapitulasi_aspek,
             'tanggalKegiatan' => $this->createDocument['tanggal'],
             'selectedProdi' => $this->selectedProdi,
-            'totalRespoondenProdi' => $this->countRespondenByProdi($this->selectedProdi->id),
+            'totalRespoondenProdi' => $this->countRespondenByProdi(),
             'survei' => $this->survei,
             'tahunAkademik' => $tahunAkademik,
 
@@ -209,8 +210,8 @@ class CreateDocument extends Component
 
         foreach ($aspek->indicator as $indicator) {
             $query = DB::table($this->survei->id)
-                ->where('prodi_id', $this->selectedProdi->id)
-                ->where($indicator->id, '!=', null);
+                ->where('prodi_id', 0)
+                ->where($indicator->id, '!=', null)->get();
 
             // Sum up TM, CM, M, SM for this indicator
             $totalTM += $query->where($indicator->id, 1)->count();
@@ -234,14 +235,14 @@ class CreateDocument extends Component
 
         // Initialize the query
         $table = $this->survei->id; // Assuming the table name is based on survey id
-        $query = DB::table($table);
+        $query = DB::table($table)->get();
         // Apply filters only if selections are made
-        if ($this->selectedProdi) {
+        if (Auth::user()->role->slug == 'prodi') {
             // Filter by selected Prodi
-            $query->where('prodi_id', $this->selectedProdi->id);
-        } elseif ($this->selectedFakultas) {
+            $query->where('prodi_id', Auth::user()->prodi_id);
+        } elseif (Auth::user()->role->slug == 'fakultas') {
             // Filter by selected Fakultas
-            $prodiIds = Prodi::where('fakultas_id', $this->selectedFakultas)->pluck('id');
+            $prodiIds = Prodi::where('fakultas_id', Auth::user()->fakultas_id)->pluck('id');
             $query->whereIn('prodi_id', $prodiIds);
         }
 
@@ -394,8 +395,21 @@ class CreateDocument extends Component
             'predikat_kepuasan' => $this->getPredikatKepuasan($this->getTingkatKepuasan($tm, $cm, $m, $sm, $total))
         ];
     }
-    public function countRespondenByProdi($prodi_id)
+    public function countRespondenByProdi()
     {
-        return DB::table($this->survei->id)->where('prodi_id', $prodi_id)->count();
+        $table = $this->survei->id; // Assuming the table name is based on survey id
+
+        $query = DB::table($table)->get();
+        // Apply filters only if selections are made
+        if (Auth::user()->role->slug == 'prodi') {
+            // Filter by selected Prodi
+            $query->where('prodi_id', Auth::user()->prodi_id);
+        } elseif (Auth::user()->role->slug == 'fakultas') {
+            // Filter by selected Fakultas
+            $prodiIds = Prodi::where('fakultas_id', Auth::user()->fakultas_id)->pluck('id');
+            $query->whereIn('prodi_id', $prodiIds);
+        }
+
+        return $query->count();
     }
 }

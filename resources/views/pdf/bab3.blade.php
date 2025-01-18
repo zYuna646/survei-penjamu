@@ -129,13 +129,13 @@
         Teknik pengambilan data pada survei indeks kepuasan dilakukan secara online di
         laman survei.penjamu.ung.ac.id yang dilakukan pada {{ $tanggalKegiatan }}. Jumlah responden yang
         mengisi survei kepuasan di
-        {{ $selectedProdi->name }} sebanyak {{ $totalRespoondenProdi }} responden.
+        {{ $tingkat }} sebanyak {{ $totalRespoondenProdi }} responden.
     </p>
     <h6>
         A. Analisis Tingkat Kepuasan
     </h6>
     <p class="paragraf">
-        Berdasarkan hasil pengolaha data, tingkat kepuasan mahasiswa di Prodi {{ $selectedProdi->name }} disajikan pada
+        Berdasarkan hasil pengolaha data, tingkat kepuasan mahasiswa di {{ $tingkat  }} disajikan pada
         gambar di bawah ini:
     </p>
     <div class="w-[4rem]" style="width: 42rem">

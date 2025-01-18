@@ -66,7 +66,7 @@
         <div class="title-wrapper">
             <div class="title">LAPORAN {{ $survei->name }}</div>
             @if ($user->role->slug === 'fakultas')
-                <div class="title">FAKULTAS {{ $user->fakultas->name}}</div>
+                <div class="title">{{ $user->fakultas->name}}</div>
             @endif
             @if ($user->role->slug === 'prodi')
                 <div class="title">FAKULTAS {{ $user->fakultas->name}}</div>

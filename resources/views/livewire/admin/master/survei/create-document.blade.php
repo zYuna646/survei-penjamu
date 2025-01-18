@@ -34,7 +34,7 @@
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                {{-- <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="fakultas" class="text-sm">Fakultas :</label>
                     <select id="fakultas" name="fakultas" wire:model="createDocument.fakultas_id"
                         wire:change="getProdiByFakultas"
@@ -60,7 +60,7 @@
                     @error('createDocument.prodi_id')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
-                </div>
+                </div> --}}
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="nama_mengetahui" class="text-sm">Nama Mengetahui :</label>
                     <input type="text" id="nama_mengetahui" name="nama_mengetahui"
