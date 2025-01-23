@@ -125,7 +125,11 @@
                             <th>Kode</th>
                             <th>Nama</th>
                             <th>Target</th>
+                            @if ($userRole === 'universitas')
+
                             <th>Status</th>
+                            @endif
+
                             @if ($userRole === 'universitas')
                                 <th>Perubahan</th>
                             @endif
@@ -139,6 +143,8 @@
                                 <td>{{ $survei['code'] }}</td>
                                 <td>{{ $survei['name'] }}</td>
                                 <td>{{ $survei['target']->name }}</td>
+                            @if ($userRole === 'universitas')
+
                                 <td>
                                     <div class="inline-flex gap-x-2 items-center">
                                         @if ($survei['isAktif'])
@@ -162,6 +168,7 @@
                                         </button>
                                     </div>
                                 </td>
+                                @endif
 
                                 @if ($userRole === 'universitas')
                                     <td>

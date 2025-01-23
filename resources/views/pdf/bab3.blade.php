@@ -127,7 +127,7 @@
     </h5>
     <p class="paragraf">
         Teknik pengambilan data pada survei indeks kepuasan dilakukan secara online di
-        laman survei.penjamu.ung.ac.id yang dilakukan pada {{ $tanggalKegiatan }}. Jumlah responden yang
+        laman survei.penjamu.ung.ac.id yang dilakukan pada {{ $tanggalKegiatanMulai }} sampai {{$tanggalKegiatanSelesai}}. Jumlah responden yang
         mengisi survei kepuasan di
         {{ $tingkat }} sebanyak {{ $totalRespoondenProdi }} responden.
     </p>

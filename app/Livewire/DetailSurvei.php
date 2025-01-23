@@ -76,7 +76,7 @@ class DetailSurvei extends Component
 
         // Initialize the query
         $table = $this->survei->id; // Assuming the table name is based on survey ID
-        $query = DB::table($table)->get();
+        $query = DB::table($table);
 
         // Apply filters based on selections
         if ($this->selectedProdi) {
@@ -95,11 +95,13 @@ class DetailSurvei extends Component
 
             // Loop through each Indikator in the Aspek
             foreach ($aspek->indicator as $indicator) {
+                $indicatorQuery = $query->get();
+
                 // Initialize counts for TM, CM, M, SM
-                $tm = $query->where($indicator->id, 1)->count();
-                $cm = $query->where($indicator->id, 2)->count();
-                $m = $query->where($indicator->id, 3)->count();
-                $sm = $query->where($indicator->id, 4)->count();
+                $tm = $indicatorQuery->where($indicator->id, 1)->count();
+                $cm = $indicatorQuery->where($indicator->id, 2)->count();
+                $m = $indicatorQuery->where($indicator->id, 3)->count();
+                $sm = $indicatorQuery->where($indicator->id, 4)->count();
                 // Store the counts for averaging
                 $avg_tm[] = $tm;
                 $avg_cm[] = $cm;
@@ -313,7 +315,6 @@ class DetailSurvei extends Component
             $facultyM[] = $facultyData['m'];
             $facultySM[] = $facultyData['sm'];
         }
-
         // Gather data for Prodis
         foreach ($this->dataProdi as $prodi) {
             $prodiNames[] = $prodi->name;
@@ -363,7 +364,6 @@ class DetailSurvei extends Component
                 $totalSM += $query->where($indicator->id, 4)->count();
             }
         }
-
         return [
             'tm' => $totalTM,
             'cm' => $totalCM,

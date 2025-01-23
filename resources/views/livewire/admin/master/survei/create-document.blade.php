@@ -26,8 +26,18 @@
                     @enderror
                 </div>
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                    <label for="tanggal" class="text-sm">Tanggal Kegiatan :</label>
-                    <input type="date" id="tanggal" name="tanggal" wire:model="createDocument.tanggal"
+                    <label for="tanggal" class="text-sm">Tanggal Kegiatan Mulai :</label>
+                    <input type="date" id="tanggal" name="tanggal" wire:model="createDocument.tanggal-mulai"
+                        placeholder="Masukan Tanggal Kegiatan {{ $master }}"
+                        class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                    @error('createDocument.tanggal')
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                    <label for="tanggal" class="text-sm">Tanggal Kegiatan Selesai :</label>
+                    <input type="date" id="tanggal" name="tanggal" wire:model="createDocument.tanggal-selesai"
                         placeholder="Masukan Tanggal Kegiatan {{ $master }}"
                         class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                     @error('createDocument.tanggal')

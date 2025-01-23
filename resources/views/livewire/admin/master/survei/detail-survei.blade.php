@@ -89,6 +89,7 @@
             </div>
         </div>
         <div class="col-span-12 lg:col-span-8 w-full flex flex-col gap-y-4 h-fit">
+            @if (Auth::user()->role->slug != 'prodi')
             <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm ">
                 <div class="mb-4">
                     <p class="text-lg font-bold">Filter Data</p>
@@ -119,6 +120,8 @@
 
 
             </div>
+            @endif
+           
             <div x-show="activeMenu === 'grafik'" x-cloak>
                 <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
                     <div class="mb-4">
