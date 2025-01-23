@@ -65,12 +65,14 @@
     <div class="container" style="display: flex; justify-content: space-between; height: 100%;">
         <div class="title-wrapper">
             <div class="title">LAPORAN {{ $survei->name }}</div>
-            @if ($user->role->slug === 'fakultas')
-                <div class="title">{{ $user->fakultas->name}}</div>
+            @if ($fakultas)
+                @if (!$prodi)
+                    <div class="title">{{ $fakultas->name }}</div>
+                @endif
             @endif
-            @if ($user->role->slug === 'prodi')
-                <div class="title">FAKULTAS {{ $user->prodi->fakultas->name}}</div>
-                <div class="title">PRODI {{ $user->prodi->name}}</div>
+            @if ($prodi)
+                <div class="title"> {{ $prodi->fakultas->name }}</div>
+                <div class="title">PRODI {{ $prodi->name }}</div>
             @endif
             <div class="title">UNIVERSITAS NEGERI GORONTALO</div>
             <div class="title">Tahun {{ $tahunAkademik }}</div>

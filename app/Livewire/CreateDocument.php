@@ -81,6 +81,8 @@ class CreateDocument extends Component
         $this->prodi = Prodi::where('code', '!=', 0)->get();
         $this->fakultas = Fakultas::where('code', '!=', '0')->get();
         $this->user = Auth::user();
+        $this->selectedFakultas = isset($this->createDocument['fakultas_id'])? Fakultas::find($this->createDocument['fakultas_id']) : null;
+        $this->selectedProdi = isset($this->createDocument['prodi_id'])? Prodi::find($this->createDocument['prodi_id']) : null;
         $pdfMerger = PDFMerger::init();
 
         $facultyNames = [];
@@ -250,12 +252,12 @@ class CreateDocument extends Component
         $query = DB::table($table); // Start with the query builder
 
         // Apply filters only if selections are made
-        if (Auth::user()->role->slug == 'prodi') {
+        if ($this->selectedProdi) {
             // Filter by selected Prodi
-            $query->where('prodi_id', Auth::user()->prodi->id);
-        } elseif (Auth::user()->role->slug == 'fakultas') {
+            $query->where('prodi_id', $this->selectedProdi->id);
+        } elseif ($this->selectedFakultas) {
             // Filter by selected Fakultas
-            $prodiIds = Prodi::where('fakultas_id', Auth::user()->fakultas_id)->pluck('id');
+            $prodiIds = Prodi::where('fakultas_id', $this->selectedFakultas->id)->pluck('id');
             $query->whereIn('prodi_id', $prodiIds);
         }
 
@@ -421,12 +423,12 @@ class CreateDocument extends Component
         $query = DB::table($table);
 
         // Apply filters only if selections are made
-        if (Auth::user()->role->slug == 'prodi') {
+        if ($this->selectedProdi) {
             // Filter by selected Prodi
-            $query->where('prodi_id', Auth::user()->prodi_id);
-        } elseif (Auth::user()->role->slug == 'fakultas') {
+            $query->where('prodi_id', $this->selectedProdi->id);
+        } elseif ($this->selectedFakultas) {
             // Filter by selected Fakultas
-            $prodiIds = Prodi::where('fakultas_id', Auth::user()->fakultas_id)->pluck('id');
+            $prodiIds = Prodi::where('fakultas_id', $this->selectedFakultas->id)->pluck('id');
             $query->whereIn('prodi_id', $prodiIds);
         }
 

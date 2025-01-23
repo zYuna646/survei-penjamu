@@ -151,6 +151,36 @@
                                         <th>Total Responden</th>
                                     </tr>
                                 </thead>
+                                <tbody>
+                                    @foreach ($dataFakultas as $fakultas)
+                                        <tr>
+                                            <td>
+                                                {{ $loop->iteration }}
+                                            </td>
+                                            <td>
+                                                {{ $fakultas->name }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelFakultas[$fakultas->id]['tm'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelFakultas[$fakultas->id]['cm'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelFakultas[$fakultas->id]['m'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelFakultas[$fakultas->id]['sm'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelFakultas[$fakultas->id]['tm'] +
+                                                    $tabelFakultas[$fakultas->id]['cm'] +
+                                                    $tabelFakultas[$fakultas->id]['m'] +
+                                                    $tabelFakultas[$fakultas->id]['sm'] }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -181,6 +211,36 @@
                                         <th>Total Responden</th>
                                     </tr>
                                 </thead>
+                                <tbody>
+                                    @foreach ($dataProdi as $fakultas)
+                                        <tr>
+                                            <td>
+                                                {{ $loop->iteration }}
+                                            </td>
+                                            <td>
+                                                {{ $fakultas->name }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelProdi[$fakultas->id]['tm'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelProdi[$fakultas->id]['cm'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelProdi[$fakultas->id]['m'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelProdi[$fakultas->id]['sm'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelProdi[$fakultas->id]['tm'] +
+                                                    $tabelProdi[$fakultas->id]['cm'] +
+                                                    $tabelProdi[$fakultas->id]['m'] +
+                                                    $tabelProdi[$fakultas->id]['sm'] }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -214,6 +274,36 @@
                                         <th>Total Responden</th>
                                     </tr>
                                 </thead>
+                                <tbody>
+                                    @foreach ($dataFakultas as $fakultas)
+                                        <tr>
+                                            <td>
+                                                {{ $loop->iteration }}
+                                            </td>
+                                            <td>
+                                                {{ $fakultas->name }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelFakultas[$fakultas->id]['tm'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelFakultas[$fakultas->id]['cm'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelFakultas[$fakultas->id]['m'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelFakultas[$fakultas->id]['sm'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelFakultas[$fakultas->id]['tm'] +
+                                                    $tabelFakultas[$fakultas->id]['cm'] +
+                                                    $tabelFakultas[$fakultas->id]['m'] +
+                                                    $tabelFakultas[$fakultas->id]['sm'] }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -247,7 +337,38 @@
                                         <th>Total Responden</th>
                                     </tr>
                                 </thead>
+                                <tbody>
+                                    @foreach ($dataProdi as $fakultas)
+                                        <tr>
+                                            <td>
+                                                {{ $loop->iteration }}
+                                            </td>
+                                            <td>
+                                                {{ $fakultas->name }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelProdi[$fakultas->id]['tm'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelProdi[$fakultas->id]['cm'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelProdi[$fakultas->id]['m'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelProdi[$fakultas->id]['sm'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelProdi[$fakultas->id]['tm'] +
+                                                    $tabelProdi[$fakultas->id]['cm'] +
+                                                    $tabelProdi[$fakultas->id]['m'] +
+                                                    $tabelProdi[$fakultas->id]['sm'] }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
+
                         </div>
                     </div>
                 @endif

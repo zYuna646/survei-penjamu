@@ -39,6 +39,9 @@ class DetailSurvei extends Component
     public $selectedProdi;
     public $lowestIndicator;
 
+    public $tabelFakultas;
+    public $tabelProdi;
+
     public function mount($id)
     {
         // Load all Fakultas, Jurusan, and Prodi data for filtering options
@@ -64,7 +67,7 @@ class DetailSurvei extends Component
         }
         $this->getDetailSurvey();
         $this->getLowest();
-
+        $this->calculateTabel();
         // Initialize rekapitulasi arrays
 
     }
@@ -157,6 +160,7 @@ class DetailSurvei extends Component
         // Store results for later use
         $this->detail_rekapitulasi = $detail_rekapitulasi;
         $this->detail_rekapitulasi_aspek = $detail_rekapitulasi_aspek;
+        $this->calculateTabel();
     }
 
 
@@ -256,6 +260,7 @@ class DetailSurvei extends Component
             $this->selectedProdi = null;
             $this->getDetailSurvey();
         }
+        $this->calculateTabel();
     }
 
 
@@ -326,6 +331,7 @@ class DetailSurvei extends Component
             $prodiSM[] = $prodiData['sm'];
         }
 
+
         // Build charts
         $facultyComparisonChart = $satisfactionChart->buildFacultyComparisonChart($facultyNames, $facultyTM, $facultyCM, $facultyM, $facultySM);
         $prodiComparisonChart = $satisfactionChart->buildProdiComparisonChart($prodiNames, $prodiTM, $prodiCM, $prodiM, $prodiSM);
@@ -336,6 +342,38 @@ class DetailSurvei extends Component
         ])
             ->layout('components.layouts.app', ['showNavbar' => $this->showNavbar, 'showFooter' => $this->showFooter])
             ->title('UNG Survey - Detil ' . $this->survei['name']);
+    }
+
+    public function calculateTabel()
+    {
+        $fakultasTabel = [];
+        $prodiTabel = [];
+
+        // Ottieni tutti i dati necessari da una singola query (se possibile)
+
+        foreach ($this->dataFakultas as $fakultas) {
+            $fakultasTabel[$fakultas->id] = [
+                'tm' => $this->calculateFacultySatisfactionDistribution($fakultas->id)['tm'],
+                'cm' => $this->calculateFacultySatisfactionDistribution($fakultas->id)['cm'],
+                'm' => $this->calculateFacultySatisfactionDistribution($fakultas->id)['m'],
+                'sm' => $this->calculateFacultySatisfactionDistribution($fakultas->id)['sm'],
+            ];
+        }
+
+        foreach ($this->dataProdi as $prodi) {
+            $prodiTabel[$prodi->id] = [
+                'tm' => $this->calculateProdiSatisfactionDistribution($prodi->id)['tm'],
+                'cm' => $this->calculateProdiSatisfactionDistribution($prodi->id)['cm'],
+                'm' => $this->calculateProdiSatisfactionDistribution($prodi->id)['m'],
+                'sm' => $this->calculateProdiSatisfactionDistribution($prodi->id)['sm'],
+            ];
+        }
+
+        // dd($fakultasTabel);
+        // dd($prodiTabel);
+
+        $this->tabelFakultas = $fakultasTabel;
+        $this->tabelProdi = $prodiTabel;
     }
 
     private function calculateFacultySatisfactionDistribution($facultyId)
@@ -355,7 +393,7 @@ class DetailSurvei extends Component
             foreach ($aspek->indicator as $indicator) {
                 $query = DB::table($this->survei->id)
                     ->whereIn('prodi_id', $prodiIds)
-                    ->where($indicator->id, '!=', null)->get( );
+                    ->where($indicator->id, '!=', null)->get();
 
                 // Sum up TM, CM, M, SM for this indicator
                 $totalTM += $query->where($indicator->id, 1)->count();
