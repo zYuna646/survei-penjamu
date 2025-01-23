@@ -125,6 +125,7 @@
         BAB III <br> <br>
         HASIL KEGIATAN
     </h5>
+
     <p class="paragraf">
         Teknik pengambilan data pada survei indeks kepuasan dilakukan secara online di
         laman survei.penjamu.ung.ac.id yang dilakukan pada {{ $tanggalKegiatanMulai }} sampai
@@ -132,6 +133,34 @@
         mengisi survei kepuasan di
         {{ $tingkat }} sebanyak {{ $totalRespoondenProdi }} responden.
     </p>
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Fakultas</th>
+                <th>Tidak Memuaskan</th>
+                <th>Cukup Memuaskan</th>
+                <th>Memuaskan</th>
+                <th>Sangat Memuaskan</th>
+                <th>Total Responden</th>
+            </tr>
+        </thead>
+
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Prodi</th>
+                <th>Tidak Memuaskan</th>
+                <th>Cukup Memuaskan</th>
+                <th>Memuaskan</th>
+                <th>Sangat Memuaskan</th>
+                <th>Total Responden</th>
+            </tr>
+        </thead>
+
+    </table>
     <h6>
         A. Analisis Tingkat Kepuasan
     </h6>
@@ -139,8 +168,8 @@
         Berdasarkan hasil pengolaha data, tingkat kepuasan mahasiswa di {{ $tingkat }} disajikan pada
         gambar di bawah ini:
     </p>
-    <div class="w-[4rem]" style="width: 42rem">
-        {!! $facultyComparisonChart->container() !!}
+    <div  style="width: 260px; width: 100%; display: flex; align-items: center; justify-content: center">
+        <img src="{{ $chart }}" alt="Chart" style="width: 100%; height: auto;">
     </div>
     <p class="paragraf">
         Hasil pengukuran tingkat kepuasan di dalam setiap aspek diuraikan berikut ini:
@@ -203,7 +232,8 @@
                         @foreach ($item->indicator as $index => $indi)
                             <tr>
                                 <td class="p-2 border border-gray-600">{{ $index + 1 }}</td>
-                                <td class="p-2 border border-gray-600" style="text-transform: capitalize">{{ $indi->name }}</td>
+                                <td class="p-2 border border-gray-600" style="text-transform: capitalize">
+                                    {{ $indi->name }}</td>
                                 <td class="p-2 border border-gray-600" style="text-transform: capitalize">
                                     {{ $detail_rekapitulasi[$item->id][$indi->id]['ikm'] }}</td>
                                 <td class="p-2 border border-gray-600">
@@ -234,9 +264,10 @@
                     Keandalan semua kinerja layanan masuk ke dalam kategori BAIK. Dari
                     {{ $item->indicator->count() }} butir
                     pernyataan, nilai IKM yang paling rendah adalah <strong>{{ $lowestIKM }}</strong>
-                   <span style="text-transform: capitalize">({{ $lowestIndi }})</span> .
+                    <span style="text-transform: capitalize">({{ $lowestIndi }})</span> .
                     Sedangkan indikator yang memiliki
-                    nilai IKM paling tinggi adalah pernyataan tentang <strong style="text-transform: capitalize">{{ $highestIndi }}</strong>
+                    nilai IKM paling tinggi adalah pernyataan tentang <strong
+                        style="text-transform: capitalize">{{ $highestIndi }}</strong>
                     ({{ $highestIKM }}).
                 </p>
             </li>
