@@ -117,7 +117,7 @@
             font-weight: bold;
         }
     </style>
- 
+
 </head>
 
 <body>
@@ -127,7 +127,8 @@
     </h5>
     <p class="paragraf">
         Teknik pengambilan data pada survei indeks kepuasan dilakukan secara online di
-        laman survei.penjamu.ung.ac.id yang dilakukan pada {{ $tanggalKegiatanMulai }} sampai {{$tanggalKegiatanSelesai}}. Jumlah responden yang
+        laman survei.penjamu.ung.ac.id yang dilakukan pada {{ $tanggalKegiatanMulai }} sampai
+        {{ $tanggalKegiatanSelesai }}. Jumlah responden yang
         mengisi survei kepuasan di
         {{ $tingkat }} sebanyak {{ $totalRespoondenProdi }} responden.
     </p>
@@ -135,7 +136,7 @@
         A. Analisis Tingkat Kepuasan
     </h6>
     <p class="paragraf">
-        Berdasarkan hasil pengolaha data, tingkat kepuasan mahasiswa di {{ $tingkat  }} disajikan pada
+        Berdasarkan hasil pengolaha data, tingkat kepuasan mahasiswa di {{ $tingkat }} disajikan pada
         gambar di bawah ini:
     </p>
     <div class="w-[4rem]" style="width: 42rem">
@@ -157,9 +158,10 @@
             @foreach ($survei->aspek as $index => $item)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $item->name }}</td>
-                    <td>{{ $detail_rekapitulasi_aspek[$item->id]['ikm'] }}</td>
-                    <td>{{ $detail_rekapitulasi_aspek[$item->id]['kinerja_unit'] }}</td>
+                    <td style="text-transform: capitalize">{{ $item->name }}</td>
+                    <td style="text-transform: capitalize">{{ $detail_rekapitulasi_aspek[$item->id]['ikm'] }}</td>
+                    <td style="text-transform: capitalize">{{ $detail_rekapitulasi_aspek[$item->id]['kinerja_unit'] }}
+                    </td>
                 </tr>
             @endforeach
         </tbody>
@@ -167,9 +169,11 @@
     <ul style="list-style: disc">
         @foreach ($survei->aspek as $item)
             <li>
-                {{ $item->name }}
+                <span style="text-transform: capitalize"> {{ $item->name }}</span>
+
                 <p class="paragraf">
-                    Pada dimensi {{ $item->name }} terdiri dari {{ $item->indicator->count() }} item/pernyataan
+                    Pada dimensi <span>{{ $item->name }}</span> terdiri dari {{ $item->indicator->count() }}
+                    item/pernyataan
                     yang terdistribusi
                     pada {{ $item->indicator->count() }} indikator. Setiap indikator terdiri dari beberapa aitem
                     yaitu:
@@ -199,8 +203,8 @@
                         @foreach ($item->indicator as $index => $indi)
                             <tr>
                                 <td class="p-2 border border-gray-600">{{ $index + 1 }}</td>
-                                <td class="p-2 border border-gray-600">{{ $indi->name }}</td>
-                                <td class="p-2 border border-gray-600">
+                                <td class="p-2 border border-gray-600" style="text-transform: capitalize">{{ $indi->name }}</td>
+                                <td class="p-2 border border-gray-600" style="text-transform: capitalize">
                                     {{ $detail_rekapitulasi[$item->id][$indi->id]['ikm'] }}</td>
                                 <td class="p-2 border border-gray-600">
                                     {{ $detail_rekapitulasi[$item->id][$indi->id]['mutu_layanan'] }}</td>
@@ -230,9 +234,9 @@
                     Keandalan semua kinerja layanan masuk ke dalam kategori BAIK. Dari
                     {{ $item->indicator->count() }} butir
                     pernyataan, nilai IKM yang paling rendah adalah <strong>{{ $lowestIKM }}</strong>
-                    ({{ $lowestIndi }}).
+                   <span style="text-transform: capitalize">({{ $lowestIndi }})</span> .
                     Sedangkan indikator yang memiliki
-                    nilai IKM paling tinggi adalah pernyataan tentang <strong>{{ $highestIndi }}</strong>
+                    nilai IKM paling tinggi adalah pernyataan tentang <strong style="text-transform: capitalize">{{ $highestIndi }}</strong>
                     ({{ $highestIKM }}).
                 </p>
             </li>

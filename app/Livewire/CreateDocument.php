@@ -133,6 +133,7 @@ class CreateDocument extends Component
         $pdfMerger->addString($cover);
 
         $kata = PDF::loadView('pdf.kata_pengantar', [
+            'survei' => $this->survei,
             'nama_mengetahui' => $nama_mengetahui,
             'nip_mengetahui' => $nip_mengetahui,
             'jabatan_mengetahui' => $jabatan_mengetahui,
