@@ -133,34 +133,98 @@
         mengisi survei kepuasan di
         {{ $tingkat }} sebanyak {{ $totalRespoondenProdi }} responden.
     </p>
-    <table>
-        <thead>
-            <tr>
-                <th>No.</th>
-                <th>Fakultas</th>
-                <th>Tidak Memuaskan</th>
-                <th>Cukup Memuaskan</th>
-                <th>Memuaskan</th>
-                <th>Sangat Memuaskan</th>
-                <th>Total Responden</th>
-            </tr>
-        </thead>
+    @if (!$prodi && !$fakultas)
+        <table>
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Fakultas</th>
+                    <th>Tidak Memuaskan</th>
+                    <th>Cukup Memuaskan</th>
+                    <th>Memuaskan</th>
+                    <th>Sangat Memuaskan</th>
+                    <th>Total Responden</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($dataFakultas as $item)
+                    <tr>
+                        <td>
+                            {{ $loop->iteration }}
+                        </td>
+                        <td>
+                            {{ $item->name }}
+                        </td>
+                        <td>
+                            {{ $tabelFakultas[$item->id]['tm'] }}
+                        </td>
+                        <td>
+                            {{ $tabelFakultas[$item->id]['cm'] }}
+                        </td>
+                        <td>
+                            {{ $tabelFakultas[$item->id]['m'] }}
+                        </td>
+                        <td>
+                            {{ $tabelFakultas[$item->id]['sm'] }}
+                        </td>
+                        <td>
+                            {{ $tabelFakultas[$item->id]['tm'] +
+                                $tabelFakultas[$item->id]['cm'] +
+                                $tabelFakultas[$item->id]['m'] +
+                                $tabelFakultas[$item->id]['sm'] }}
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
+    @if ($fakultas && !$prodi)
+        <table>
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Prodi</th>
+                    <th>Tidak Memuaskan</th>
+                    <th>Cukup Memuaskan</th>
+                    <th>Memuaskan</th>
+                    <th>Sangat Memuaskan</th>
+                    <th>Total Responden</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($fakultas->prodi as $item)
+                    <tr>
+                        <td>
+                            {{ $loop->iteration }}
+                        </td>
+                        <td>
+                            {{ $item->name }}
+                        </td>
+                        <td>
+                            {{ $tabelProdi[$item->id]['tm'] }}
+                        </td>
+                        <td>
+                            {{ $tabelProdi[$item->id]['cm'] }}
+                        </td>
+                        <td>
+                            {{ $tabelProdi[$item->id]['m'] }}
+                        </td>
+                        <td>
+                            {{ $tabelProdi[$item->id]['sm'] }}
+                        </td>
+                        <td>
+                            {{ $tabelProdi[$item->id]['tm'] +
+                                $tabelProdi[$item->id]['cm'] +
+                                $tabelProdi[$item->id]['m'] +
+                                $tabelProdi[$item->id]['sm'] }}
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
 
-    </table>
-    <table>
-        <thead>
-            <tr>
-                <th>No.</th>
-                <th>Prodi</th>
-                <th>Tidak Memuaskan</th>
-                <th>Cukup Memuaskan</th>
-                <th>Memuaskan</th>
-                <th>Sangat Memuaskan</th>
-                <th>Total Responden</th>
-            </tr>
-        </thead>
 
-    </table>
     <h6>
         A. Analisis Tingkat Kepuasan
     </h6>
@@ -168,7 +232,7 @@
         Berdasarkan hasil pengolaha data, tingkat kepuasan mahasiswa di {{ $tingkat }} disajikan pada
         gambar di bawah ini:
     </p>
-    <div  style="width: 260px; width: 100%; display: flex; align-items: center; justify-content: center">
+    <div style="width: 260px; width: 100%; display: flex; align-items: center; justify-content: center">
         <img src="{{ $chart }}" alt="Chart" style="width: 100%; height: auto;">
     </div>
     <p class="paragraf">

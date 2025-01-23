@@ -34,6 +34,11 @@ class CreateDocument extends Component
     public $detail_rekapitulasi_aspek;
     public $prodi;
     public $fakultas;
+    public $tabelFakultas = [];
+    public $tabelProdi = [];
+
+    public $chartData;
+
     protected $rules = [
         'createDocument.tahun_akademik' => 'required|numeric|min:2000|max:3000',
         'createDocument.tanggal-mulai' => 'required|date',
@@ -78,12 +83,13 @@ class CreateDocument extends Component
         $this->validate();
         // Render PDF using the updated data
         $this->getDetailSurvey();
+        $this->calculateTabel();
         // $this->selectedProdi = Prodi::find($this->createDocument['prodi_id']);
         $this->prodi = Prodi::where('code', '!=', 0)->get();
         $this->fakultas = Fakultas::where('code', '!=', '0')->get();
         $this->user = Auth::user();
-        $this->selectedFakultas = isset($this->createDocument['fakultas_id'])? Fakultas::find($this->createDocument['fakultas_id']) : null;
-        $this->selectedProdi = isset($this->createDocument['prodi_id'])? Prodi::find($this->createDocument['prodi_id']) : null;
+        $this->selectedFakultas = isset($this->createDocument['fakultas_id']) ? Fakultas::find($this->createDocument['fakultas_id']) : null;
+        $this->selectedProdi = isset($this->createDocument['prodi_id']) ? Prodi::find($this->createDocument['prodi_id']) : null;
         $pdfMerger = PDFMerger::init();
 
         $facultyNames = [];
@@ -124,23 +130,59 @@ class CreateDocument extends Component
         $tanggalKegiatanMulai = $this->createDocument['tanggal-mulai'];
         $tanggalKegiatanSelesai = $this->createDocument['tanggal-selesai'];
 
+        $labels = [];
+        $lb = [];
+        foreach ($this->survei->aspek as $key => $aspek) {
+            $labels[] = $aspek->name;
+            foreach ($aspek->indicator as $key => $indicator) {
+                $lb[] = $indicator->name;
+            }
+        }
+
+        // dd($lb);
+
+
         $chart = Http::get('https://quickchart.io/chart', [
             'c' => json_encode([
                 'type' => 'bar',
                 'data' => [
-                    'labels' => ['January', 'February', 'March', 'April', 'May'],
+                    'labels' => $labels, // Aspek sebagai label sumbu X
                     'datasets' => [
                         [
-                            'label' => 'indikator',
-                            'data' => [120, 150, 180, 200, 170]
+                            'label' => 'Total Tiap Aspek', // Label untuk legend
+                            'data' => $this->chartData, // Total tiap aspek sebagai nilai di sumbu Y
+                            'backgroundColor' => 'rgba(75, 192, 192, 0.6)', // Warna batang lebih solid
+                            'borderColor' => 'rgba(75, 192, 192, 1)', // Warna garis batang
+                            'borderWidth' => 1,
+                            'barPercentage' => 0.6, // Mengatur lebar batang
+                            'categoryPercentage' => 0.8 // Mengatur jarak antar batang
+                        ]
+                    ]
+                ],
+                'options' => [
+                    'responsive' => false, // Mencegah ukuran berubah
+                    'maintainAspectRatio' => false, // Memastikan tidak terdistorsi
+                    'scales' => [
+                        'x' => [
+                            'ticks' => [
+                                'maxRotation' => 45, // Memiringkan teks agar tidak bertumpuk
+                                'minRotation' => 45
+                            ]
+                        ],
+                        'y' => [
+                            'beginAtZero' => true // Mulai dari 0 di sumbu Y
                         ]
                     ]
                 ]
             ]),
             'format' => 'png',
-            'bkg' => 'transparent'
+            'bkg' => 'transparent',
+            'width' => 800, // Lebar chart
+            'height' => 500 // Tinggi chart
         ]);
-
+        
+        
+        
         $chartBase64 = base64_encode($chart->body());
         $chartUrl = 'data:image/png;base64,' . $chartBase64;
 
@@ -187,6 +229,12 @@ class CreateDocument extends Component
             'tanggalKegiatanMulai' => $this->createDocument['tanggal-mulai'],
             'tanggalKegiatanSelesai' => $this->createDocument['tanggal-selesai'],
             'selectedProdi' => $this->selectedProdi,
+            'prodi' => $this->selectedProdi,
+            'dataFakultas' => Fakultas::where('code', '!=', '0')->get(),
+            'dataProdi' => Prodi::where('code', '!=', '0')->get(),
+            'fakultas' => $this->selectedFakultas,
+            'tabelFakultas' => $this->tabelFakultas,
+            'tabelProdi' => $this->tabelProdi,
             'tingkat' => (Auth::user()->role->slug == 'prodi') ? Auth::user()->prodi->name : ((Auth::user()->role->slug == 'fakultas') ? Auth::user()->fakultas->name : 'Universitas Negeri Gorontalo'),
             'totalRespoondenProdi' => $this->countRespondenByProdi(),
             'survei' => $this->survei,
@@ -235,28 +283,32 @@ class CreateDocument extends Component
         // }, 'laporan.pdf');
     }
 
-    private function calculateFacultySatisfactionDistribution($aspekId)
+    private function calculateFacultySatisfactionDistribution($facultyId)
     {
+        $fakultasIds = Fakultas::where('id', $facultyId)->pluck('id');
+        $prodiIds = Prodi::whereIn('fakultas_id', $fakultasIds)->pluck('id');
 
         // Initialize totals
         $totalTM = 0;
         $totalCM = 0;
         $totalM = 0;
         $totalSM = 0;
-        $aspek = Aspek::find($aspekId);
 
-        foreach ($aspek->indicator as $indicator) {
-            $query = DB::table($this->survei->id)
-                ->where('prodi_id', 0)
-                ->where($indicator->id, '!=', null)->get();
+        // Loop through each aspect of the survey
+        foreach ($this->survei->aspek as $aspek) {
+            // Loop through each indicator within the aspect
+            foreach ($aspek->indicator as $indicator) {
+                $query = DB::table($this->survei->id)
+                    ->whereIn('prodi_id', $prodiIds)
+                    ->where($indicator->id, '!=', null)->get();
 
-            // Sum up TM, CM, M, SM for this indicator
-            $totalTM += $query->where($indicator->id, 1)->count();
-            $totalCM += $query->where($indicator->id, 2)->count();
-            $totalM += $query->where($indicator->id, 3)->count();
-            $totalSM += $query->where($indicator->id, 4)->count();
+                // Sum up TM, CM, M, SM for this indicator
+                $totalTM += $query->where($indicator->id, 1)->count();
+                $totalCM += $query->where($indicator->id, 2)->count();
+                $totalM += $query->where($indicator->id, 3)->count();
+                $totalSM += $query->where($indicator->id, 4)->count();
+            }
         }
-
         return [
             'tm' => $totalTM,
             'cm' => $totalCM,
@@ -438,6 +490,174 @@ class CreateDocument extends Component
             'predikat_kepuasan' => $this->getPredikatKepuasan($this->getTingkatKepuasan($tm, $cm, $m, $sm, $total))
         ];
     }
+
+    public function calculateTabel()
+    {
+        $fakultasTabel = [];
+        $prodiTabel = [];
+        $chartData = [];
+        // Ottieni tutti i dati necessari da una singola query (se possibile)
+        if (isset($this->createDocument['fakultas_id'])) {
+            foreach ($this->dataFakultas as $fakultas) {
+                $fakultasTabel[$fakultas->id] = [
+                    'tm' => $this->calculateFacultySatisfactionDistribution($fakultas->id)['tm'],
+                    'cm' => $this->calculateFacultySatisfactionDistribution($fakultas->id)['cm'],
+                    'm' => $this->calculateFacultySatisfactionDistribution($fakultas->id)['m'],
+                    'sm' => $this->calculateFacultySatisfactionDistribution($fakultas->id)['sm'],
+                ];
+            }
+        }
+
+        if (isset($this->createDocument['prodi_id'])) {
+            foreach ($this->dataProdi as $prodi) {
+                $prodiTabel[$prodi->id] = [
+                    'tm' => $this->calculateProdiSatisfactionDistribution($prodi->id)['tm'],
+                    'cm' => $this->calculateProdiSatisfactionDistribution($prodi->id)['cm'],
+                    'm' => $this->calculateProdiSatisfactionDistribution($prodi->id)['m'],
+                    'sm' => $this->calculateProdiSatisfactionDistribution($prodi->id)['sm'],
+                ];
+            }
+        }
+
+        if (!isset($this->createDocument['fakultas_id']) && !isset($this->createDocument['prodi_id'])) {
+            $item = Fakultas::where('code', '!=', '0')->get();
+            foreach ($item as $key => $v) {
+                $fakultasTabel[$v->id] = [
+                    'tm' => $this->calculateFacultySatisfactionDistribution($v->id)['tm'],
+                    'cm' => $this->calculateFacultySatisfactionDistribution($v->id)['cm'],
+                    'm' => $this->calculateFacultySatisfactionDistribution($v->id)['m'],
+                    'sm' => $this->calculateFacultySatisfactionDistribution($v->id)['sm'],
+                ];
+            }
+        }
+
+
+
+
+        foreach ($this->survei->aspek as $key => $value) {
+            if (isset($this->createDocument['prodi_id'])) {
+                $chartData[] = $this->calculateAspekProdi($this->selectedProdi->id, $value->id);
+            } else {
+                if (isset($this->createDocument['fakultas_id'])) {
+                    $chartData[] = $this->calculateAspekFaculty($this->selectedFakultas->id, $value->id);
+                } else {
+                    $totalTM = 0;
+                    $totalCM = 0;
+                    $totalM = 0;
+                    $totalSM = 0;
+                    foreach (Aspek::find($value->id)->indicator as $indicator) {
+                        $query = DB::table($this->survei->id)->get();
+
+                        // Sum up TM, CM, M, SM for this indicator
+                        $totalTM += $query->where($indicator->id, 1)->count();
+                        $totalCM += $query->where($indicator->id, 2)->count();
+                        $totalM += $query->where($indicator->id, 3)->count();
+                        $totalSM += $query->where($indicator->id, 4)->count();
+                    }
+                    $chartData[] = $totalTM + $totalCM + $totalM + $totalSM;
+                }
+            }
+        }
+
+
+        // dd($fakultasTabel);
+        // dd($prodiTabel);
+        // dd($chartData);
+        $this->chartData = $chartData;
+        $this->tabelFakultas = $fakultasTabel;
+        $this->tabelProdi = $prodiTabel;
+    }
+
+
+
+
+
+    private function calculateProdiSatisfactionDistribution($prodiId)
+    {
+        // Initialize totals
+        $totalTM = 0;
+        $totalCM = 0;
+        $totalM = 0;
+        $totalSM = 0;
+
+        // Loop through each aspect of the survey
+        foreach ($this->survei->aspek as $aspek) {
+            // Loop through each indicator within the aspect
+            foreach ($aspek->indicator as $indicator) {
+                $query = DB::table($this->survei->id)
+                    ->where('prodi_id', $prodiId)
+                    ->where($indicator->id, '!=', null)->get();
+
+                // Sum up TM, CM, M, SM for this indicator
+                $totalTM += $query->where($indicator->id, 1)->count();
+                $totalCM += $query->where($indicator->id, 2)->count();
+                $totalM += $query->where($indicator->id, 3)->count();
+                $totalSM += $query->where($indicator->id, 4)->count();
+            }
+        }
+
+        return [
+            'tm' => $totalTM,
+            'cm' => $totalCM,
+            'm' => $totalM,
+            'sm' => $totalSM,
+        ];
+    }
+
+    private function calculateAspekFaculty($facultyId, $aspek_id)
+    {
+        $fakultasIds = Fakultas::where('id', $facultyId)->pluck('id');
+        $prodiIds = Prodi::whereIn('fakultas_id', $fakultasIds)->pluck('id');
+
+        // Initialize totals
+        $totalTM = 0;
+        $totalCM = 0;
+        $totalM = 0;
+        $totalSM = 0;
+
+        // Loop through each aspect of the survey
+        // Loop through each indicator within the aspect
+        foreach (Aspek::find($aspek_id)->indicator as $indicator) {
+            $query = DB::table($this->survei->id)
+                ->whereIn('prodi_id', $prodiIds)
+                ->where($indicator->id, '!=', null)->get();
+
+            // Sum up TM, CM, M, SM for this indicator
+            $totalTM += $query->where($indicator->id, 1)->count();
+            $totalCM += $query->where($indicator->id, 2)->count();
+            $totalM += $query->where($indicator->id, 3)->count();
+            $totalSM += $query->where($indicator->id, 4)->count();
+        }
+        return $totalTM + $totalCM + $totalM + $totalSM;
+
+    }
+
+
+    private function calculateAspekProdi($prodiId, $aspek_id)
+    {
+        // Initialize totals
+        $totalTM = 0;
+        $totalCM = 0;
+        $totalM = 0;
+        $totalSM = 0;
+
+        // Loop through each aspect of the survey
+        // Loop through each indicator within the aspect
+        foreach (Aspek::find($aspek_id)->indicator as $indicator) {
+            $query = DB::table($this->survei->id)
+                ->where('prodi_id', $prodiId)
+                ->where($indicator->id, '!=', null)->get();
+
+            // Sum up TM, CM, M, SM for this indicator
+            $totalTM += $query->where($indicator->id, 1)->count();
+            $totalCM += $query->where($indicator->id, 2)->count();
+            $totalM += $query->where($indicator->id, 3)->count();
+            $totalSM += $query->where($indicator->id, 4)->count();
+        }
+
+        return $totalTM + $totalCM + $totalM + $totalSM;
+    }
+
     public function countRespondenByProdi()
     {
         $table = $this->survei->id; // Assuming the table name is based on survey id
