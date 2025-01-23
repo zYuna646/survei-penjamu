@@ -133,41 +133,43 @@
         mengisi survei kepuasan di
         {{ $tingkat }} sebanyak {{ $totalRespoondenProdi }} responden.
     </p>
-    @if (!$prodi && !$fakultas)
-        <table>
-            <thead>
+
+    @if ($prodi === null && $fakultas === null)
+    
+        <table >
+            <thead >
                 <tr>
-                    <th>No.</th>
-                    <th>Fakultas</th>
-                    <th>Tidak Memuaskan</th>
-                    <th>Cukup Memuaskan</th>
-                    <th>Memuaskan</th>
-                    <th>Sangat Memuaskan</th>
-                    <th>Total Responden</th>
+                    <th style="font-size: 10">No.</th>
+                    <th style="font-size: 10">Fakultas</th>
+                    <th style="font-size: 10">Tidak Memuaskan</th>
+                    <th style="font-size: 10">Cukup Memuaskan</th>
+                    <th style="font-size: 10">Memuaskan</th>
+                    <th style="font-size: 10">Sangat Memuaskan</th>
+                    <th style="font-size: 10">Total Responden</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($dataFakultas as $item)
                     <tr>
-                        <td>
+                        <td style="font-size: 10">
                             {{ $loop->iteration }}
                         </td>
-                        <td>
+                        <td style="font-size: 10">
                             {{ $item->name }}
                         </td>
-                        <td>
+                        <td style="font-size: 10">
                             {{ $tabelFakultas[$item->id]['tm'] }}
                         </td>
-                        <td>
+                        <td style="font-size: 10">
                             {{ $tabelFakultas[$item->id]['cm'] }}
                         </td>
-                        <td>
+                        <td style="font-size: 10">
                             {{ $tabelFakultas[$item->id]['m'] }}
                         </td>
-                        <td>
+                        <td style="font-size: 10">
                             {{ $tabelFakultas[$item->id]['sm'] }}
                         </td>
-                        <td>
+                        <td style="font-size: 10">
                             {{ $tabelFakultas[$item->id]['tm'] +
                                 $tabelFakultas[$item->id]['cm'] +
                                 $tabelFakultas[$item->id]['m'] +
@@ -178,7 +180,7 @@
             </tbody>
         </table>
     @endif
-    @if ($fakultas && !$prodi)
+    @if ($fakultas && $prodi === null)
         <table>
             <thead>
                 <tr>
