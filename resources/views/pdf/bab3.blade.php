@@ -168,7 +168,7 @@
         Berdasarkan hasil pengolaha data, tingkat kepuasan mahasiswa di {{ $tingkat }} disajikan pada
         gambar di bawah ini:
     </p>
-    <div  style="width: 260px; width: 100%; display: flex; align-items: center; justify-content: center">
+    <div style="width: 260px; width: 100%; display: flex; align-items: center; justify-content: center">
         <img src="{{ $chart }}" alt="Chart" style="width: 100%; height: auto;">
     </div>
     <p class="paragraf">
@@ -188,7 +188,9 @@
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td style="text-transform: capitalize">{{ $item->name }}</td>
-                    <td style="text-transform: capitalize">{{ $detail_rekapitulasi_aspek[$item->id]['ikm'] }}</td>
+                    <td style="text-transform: capitalize">
+                        {{ number_format($detail_rekapitulasi_aspek[$item->id]['ikm'], 2) }}
+                    </td>
                     <td style="text-transform: capitalize">{{ $detail_rekapitulasi_aspek[$item->id]['kinerja_unit'] }}
                     </td>
                 </tr>
