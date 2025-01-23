@@ -313,7 +313,6 @@ class DetailSurvei extends Component
             $facultyM[] = $facultyData['m'];
             $facultySM[] = $facultyData['sm'];
         }
-
         // Gather data for Prodis
         foreach ($this->dataProdi as $prodi) {
             $prodiNames[] = $prodi->name;
@@ -363,7 +362,6 @@ class DetailSurvei extends Component
                 $totalSM += $query->where($indicator->id, 4)->count();
             }
         }
-
         return [
             'tm' => $totalTM,
             'cm' => $totalCM,
