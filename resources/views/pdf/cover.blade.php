@@ -69,7 +69,7 @@
                 <div class="title">{{ $user->fakultas->name}}</div>
             @endif
             @if ($user->role->slug === 'prodi')
-                <div class="title">FAKULTAS {{ $user->fakultas->name}}</div>
+                <div class="title">FAKULTAS {{ $user->prodi->fakultas->name}}</div>
                 <div class="title">PRODI {{ $user->prodi->name}}</div>
             @endif
             <div class="title">UNIVERSITAS NEGERI GORONTALO</div>

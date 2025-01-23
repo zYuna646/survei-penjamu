@@ -34,7 +34,8 @@ class CreateDocument extends Component
     public $fakultas;
     protected $rules = [
         'createDocument.tahun_akademik' => 'required|numeric|min:2000|max:3000',
-        'createDocument.tanggal' => 'required|date',
+        'createDocument.tanggal-mulai' => 'required|date',
+        'createDocument.tanggal-selesai' => 'required|date',
         // 'createDocument.fakultas_id' => 'required',
         // 'createDocument.prodi_id' => 'required',
         'createDocument.nama_mengetahui' => 'required',
@@ -111,7 +112,8 @@ class CreateDocument extends Component
         $nama_penanggung_jawab = $this->createDocument['nama_penanggung_jawab'];
         $jabatan_penanggung_jawab = $this->createDocument['jabatan_penanggung_jawab'];
         $nip_penanggung_jawab = $this->createDocument['nip_penanggung_jawab'];
-        $tanggalKegiatan = $this->createDocument['tanggal'];
+        $tanggalKegiatanMulai = $this->createDocument['tanggal-mulai'];
+        $tanggalKegiatanSelesai = $this->createDocument['tanggal-selesai'];
 
         $pdfMerger = PDFMerger::init();
 
@@ -119,6 +121,8 @@ class CreateDocument extends Component
             'survei' => $this->survei,
             'tahunAkademik' => $tahunAkademik,
             'user' => $this->user,
+            'prodi' => $this->selectedProdi,
+            'fakultas' => $this->selectedFakultas,
         ])->setPaper('a4', 'potrait')->output();
         $pdfMerger->addString($cover);
 
@@ -148,7 +152,8 @@ class CreateDocument extends Component
             'facultyComparisonChart' => $facultyComparisonChart,
             'detail_rekapitulasi' => $this->detail_rekapitulasi,
             'detail_rekapitulasi_aspek' => $this->detail_rekapitulasi_aspek,
-            'tanggalKegiatan' => $this->createDocument['tanggal'],
+            'tanggalKegiatanMulai' => $this->createDocument['tanggal-mulai'],
+            'tanggalKegiatanSelesai' => $this->createDocument['tanggal-selesai'],
             'selectedProdi' => $this->selectedProdi,
             'tingkat' => (Auth::user()->role->slug == 'prodi') ? Auth::user()->prodi->name : ((Auth::user()->role->slug == 'fakultas') ? Auth::user()->fakultas->name : 'Universitas Negeri Gorontalo'),
             'totalRespoondenProdi' => $this->countRespondenByProdi(),
@@ -160,7 +165,7 @@ class CreateDocument extends Component
             'facultyComparisonChart' => $facultyComparisonChart,
             'detail_rekapitulasi' => $this->detail_rekapitulasi,
             'detail_rekapitulasi_aspek' => $this->detail_rekapitulasi_aspek,
-            'tanggalKegiatan' => $this->createDocument['tanggal'],
+            // 'tanggalKegiatan' => $this->createDocument['tanggal'],
             'selectedProdi' => $this->selectedProdi,
             'totalRespoondenProdi' => $this->countRespondenByProdi(),
             'survei' => $this->survei,
@@ -232,20 +237,26 @@ class CreateDocument extends Component
     {
         $detail_rekapitulasi = [];
         $detail_rekapitulasi_aspek = [];
-
+        
         // Initialize the query
         $table = $this->survei->id; // Assuming the table name is based on survey id
-        $query = DB::table($table)->get();
+        $query = DB::table($table); // Start with the query builder
+        
         // Apply filters only if selections are made
         if (Auth::user()->role->slug == 'prodi') {
             // Filter by selected Prodi
-            $query->where('prodi_id', Auth::user()->prodi_id);
+            $query->where('prodi_id', Auth::user()->prodi->id);
         } elseif (Auth::user()->role->slug == 'fakultas') {
             // Filter by selected Fakultas
             $prodiIds = Prodi::where('fakultas_id', Auth::user()->fakultas_id)->pluck('id');
             $query->whereIn('prodi_id', $prodiIds);
         }
-
+        
+        // Execute the query
+        // $queryResults = $query->get(); // Fetch the results after applying the filters
+        // dd($queryResults);
+        // Continue with your logic using $queryResults
+        
         // Loop through each Aspek in the survey
         foreach ($this->survei->aspek as $aspek) {
             $avg_tm = [];
@@ -256,7 +267,7 @@ class CreateDocument extends Component
             // Loop through each Indikator in the Aspek
             foreach ($aspek->indicator as $indicator) {
                 // Clone the base query for each indicator
-                $indicatorQuery = clone $query;
+                $indicatorQuery = $query->get();
 
                 // Initialize counts for TM, CM, M, SM
                 $tm = $indicatorQuery->where($indicator->id, 1)->count();
@@ -399,7 +410,9 @@ class CreateDocument extends Component
     {
         $table = $this->survei->id; // Assuming the table name is based on survey id
 
-        $query = DB::table($table)->get();
+        // Start the query without executing it
+        $query = DB::table($table);
+        
         // Apply filters only if selections are made
         if (Auth::user()->role->slug == 'prodi') {
             // Filter by selected Prodi
@@ -409,7 +422,12 @@ class CreateDocument extends Component
             $prodiIds = Prodi::where('fakultas_id', Auth::user()->fakultas_id)->pluck('id');
             $query->whereIn('prodi_id', $prodiIds);
         }
-
-        return $query->count();
+        
+        // Execute the query after applying filters
+        $queryResult = $query->get();
+        
+        // Return the count of results
+        return $queryResult->count();
+        
     }
 }
