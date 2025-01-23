@@ -61,50 +61,49 @@ class ManipulationSurvei extends Component
         $aspekCollection = $this->dataSurvei->aspek;
         $data = [];
         $record = [];
-    
+
         if ($this->selectedProdi) {
-            // Fetch the base query result for the selected prodi
             $baseQuery = DB::table($this->dataSurvei->id)->where('prodi_id', $this->selectedProdi);
             $this->jumlah = $baseQuery->count();
-    
+
             foreach ($aspekCollection as $aspek) {
                 $data[$aspek->id][0] = $aspek;
                 $data[$aspek->id][1] = $aspek->indicator;
                 foreach ($aspek->indicator as $indicator) {
-                    // Get the counts for each indicator value (1-4)
-                    $tmp = [
-                        1 => $baseQuery->where($indicator->id, 1)->count(),
-                        2 => $baseQuery->where($indicator->id, 2)->count(),
-                        3 => $baseQuery->where($indicator->id, 3)->count(),
-                        4 => $baseQuery->where($indicator->id, 4)->count(),
+                    $tm = DB::table($this->dataSurvei->id)->where('prodi_id', $this->selectedProdi)->where($indicator->id, 1)->count();
+                    $cm =  DB::table($this->dataSurvei->id)->where('prodi_id', $this->selectedProdi)->where($indicator->id, 2)->count();
+                    $m =  DB::table($this->dataSurvei->id)->where('prodi_id', $this->selectedProdi)->where($indicator->id, 3)->count();
+                    $sm =  DB::table($this->dataSurvei->id)->where('prodi_id', $this->selectedProdi)->where($indicator->id, 4)->count();
+                    $record[$indicator->id] = [
+                        1 => $tm,
+                        2 => $cm,
+                        3 => $m,
+                        4 => $sm,
                     ];
-                    $record[$indicator->id] = $tmp;
                 }
             }
         } else {
             foreach ($aspekCollection as $aspek) {
                 $data[$aspek->id][0] = $aspek;
                 $data[$aspek->id][1] = $aspek->indicator;
+
                 foreach ($aspek->indicator as $indicator) {
-                    // Default counts to zero
-                    $tmp = [
+                    $record[$indicator->id] = [
                         1 => 0,
                         2 => 0,
                         3 => 0,
                         4 => 0,
                     ];
-                    $record[$indicator->id] = $tmp;
                 }
             }
             $this->jumlah = 0;
         }
-    
+
         $this->record = $record;
         $this->data = $data;
-    
+
         $this->calculateSisa();
     }
-    
 
     public function updated($field)
     {
@@ -134,25 +133,35 @@ class ManipulationSurvei extends Component
         // Debugging: Print the current record
         // Get the table name from the survei data
         $table = $this->dataSurvei->id;
+        // dd($this->record);
 
         // Delete all existing records for the selected prodi
         DB::table($table)->where('prodi_id', $this->selectedProdi)->delete();
         // Prepare data for insertion
+        // dd($this->record);
         for ($i = 0; $i < $this->jumlah; $i++) {
             $dataToInsert = [];
-            foreach ($this->record as $key => $value) {
-                for ($j = 1; $j <= 4; $j++) {
-                    if ($value[$j] != 0) {
 
-                        $dataToInsert[$key] = $j;
-                        $value[$j] = $value[$j] - 1; // Adjust the value
+            foreach ($this->record as $key => $value) {
+                $foundIndex = null;
+
+                for ($j = 1; $j <= 4; $j++) {
+                    if ((int) $value[$j] > 0) {
+                        $foundIndex = $j;
+                        $this->record[$key][$j]--;
                         break;
                     }
                 }
+
+                if ($foundIndex !== null) {
+                    $dataToInsert[$key] = $foundIndex;
+                }
             }
-            $dataToInsert['prodi_id'] = $this->selectedProdi;
-            // Insert the data into the table
-            DB::table($table)->insert($dataToInsert);
+
+            if (!empty($dataToInsert)) {
+                $dataToInsert['prodi_id'] = $this->selectedProdi;
+                DB::table($table)->insert($dataToInsert);
+            }
         }
 
         return redirect('/detail_survei/' . $this->dataSurvei->id);
