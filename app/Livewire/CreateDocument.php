@@ -536,10 +536,10 @@ class CreateDocument extends Component
 
         foreach ($this->survei->aspek as $key => $value) {
             if (isset($this->createDocument['prodi_id'])) {
-                $chartData[] = $this->calculateAspekProdi($this->selectedProdi->id, $value->id);
+                $chartData[] = $this->calculateAspekProdi($this->createDocument['prodi_id'], $value->id);
             } else {
                 if (isset($this->createDocument['fakultas_id'])) {
-                    $chartData[] = $this->calculateAspekFaculty($this->selectedFakultas->id, $value->id);
+                    $chartData[] = $this->calculateAspekFaculty($this->createDocument['fakultas_id'], $value->id);
                 } else {
                     $totalTM = 0;
                     $totalCM = 0;
