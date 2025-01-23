@@ -24,6 +24,7 @@ class CreateDocument extends Component
     public $dataProdi = [];
     public $dataSurvei = [];
     public $user;
+    public $userRole;
 
     public $survei;
     public $selectedProdi;
@@ -51,6 +52,11 @@ class CreateDocument extends Component
         $this->dataSurvei = Survey::findOrFail($id);
         $this->survei = Survey::findOrFail($id);
         $this->dataFakultas = Fakultas::all();
+        $user = Auth::user();
+        $this->userRole = $user->role->slug;
+        if($this->userRole === 'fakultas'){
+            $this->dataProdi = Prodi::where('fakultas_id', $user->fakultas_id)->get();
+        }
     }
 
     public function render()
@@ -237,11 +243,11 @@ class CreateDocument extends Component
     {
         $detail_rekapitulasi = [];
         $detail_rekapitulasi_aspek = [];
-        
+
         // Initialize the query
         $table = $this->survei->id; // Assuming the table name is based on survey id
         $query = DB::table($table); // Start with the query builder
-        
+
         // Apply filters only if selections are made
         if (Auth::user()->role->slug == 'prodi') {
             // Filter by selected Prodi
@@ -251,12 +257,12 @@ class CreateDocument extends Component
             $prodiIds = Prodi::where('fakultas_id', Auth::user()->fakultas_id)->pluck('id');
             $query->whereIn('prodi_id', $prodiIds);
         }
-        
+
         // Execute the query
         // $queryResults = $query->get(); // Fetch the results after applying the filters
         // dd($queryResults);
         // Continue with your logic using $queryResults
-        
+
         // Loop through each Aspek in the survey
         foreach ($this->survei->aspek as $aspek) {
             $avg_tm = [];
@@ -412,7 +418,7 @@ class CreateDocument extends Component
 
         // Start the query without executing it
         $query = DB::table($table);
-        
+
         // Apply filters only if selections are made
         if (Auth::user()->role->slug == 'prodi') {
             // Filter by selected Prodi
@@ -422,12 +428,11 @@ class CreateDocument extends Component
             $prodiIds = Prodi::where('fakultas_id', Auth::user()->fakultas_id)->pluck('id');
             $query->whereIn('prodi_id', $prodiIds);
         }
-        
+
         // Execute the query after applying filters
         $queryResult = $query->get();
-        
+
         // Return the count of results
         return $queryResult->count();
-        
     }
 }

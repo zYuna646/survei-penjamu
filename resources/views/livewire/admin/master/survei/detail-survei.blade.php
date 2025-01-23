@@ -90,57 +90,170 @@
         </div>
         <div class="col-span-12 lg:col-span-8 w-full flex flex-col gap-y-4 h-fit">
             @if (Auth::user()->role->slug != 'prodi')
-            <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm ">
-                <div class="mb-4">
-                    <p class="text-lg font-bold">Filter Data</p>
-                </div>
-                <form action="" class="flex gap-x-2 gap-4 w-full">
-                    @if ($user->role->slug === 'universitas')
-                        <template x-if="userRole === 'universitas'">
-                            <select wire:model="selectedFakultas" wire:change="getProdiByFakultas"
+                <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm ">
+                    <div class="mb-4">
+                        <p class="text-lg font-bold">Filter Data</p>
+                    </div>
+                    <form action="" class="flex gap-x-2 gap-4 w-full">
+                        @if ($user->role->slug === 'universitas')
+                            <template x-if="userRole === 'universitas'">
+                                <select wire:model="selectedFakultas" wire:change="getProdiByFakultas"
+                                    class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                    <option value="">Semua Fakultas</option>
+                                    @foreach ($dataFakultas as $fakultas)
+                                        <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
+                                    @endforeach
+                                </select>
+                            </template>
+                        @endif
+
+                        <template x-if="userRole === 'universitas' || userRole === 'fakultas' || userRole === 'prodi'">
+                            <select wire:model="selectedProdi" wire:change="getDetailSurvey"
                                 class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                <option value="">Semua Fakultas</option>
-                                @foreach ($dataFakultas as $fakultas)
-                                    <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
+                                <option value="">Semua Prodi</option>
+                                @foreach ($dataProdi as $prodi)
+                                    <option value="{{ $prodi->id }}">{{ $prodi->name }}</option>
                                 @endforeach
                             </select>
                         </template>
-                    @endif
-
-                    <template x-if="userRole === 'universitas' || userRole === 'fakultas' || userRole === 'prodi'">
-                        <select wire:model="selectedProdi" wire:change="getDetailSurvey"
-                            class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                            <option value="">Semua Prodi</option>
-                            @foreach ($dataProdi as $prodi)
-                                <option value="{{ $prodi->id }}">{{ $prodi->name }}</option>
-                            @endforeach
-                        </select>
-                    </template>
-                </form>
+                    </form>
 
 
-            </div>
+                </div>
             @endif
-           
+
             <div x-show="activeMenu === 'grafik'" x-cloak>
-                <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
-                    <div class="mb-4">
-                        <p class="text-lg font-bold">Perbandingan Respon Perfakultas</p>
+                @if ($user->role->slug === 'universitas')
+                    <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                        <div class="mb-4">
+                            <p class="text-lg font-bold">Perbandingan Respon Perfakultas</p>
+                        </div>
+                        <hr>
+                        <div class="px-2 py-6 bg-white">
+                            {!! $facultyComparisonChart->container() !!}
+                        </div>
                     </div>
-                    <hr>
-                    <div class="px-2 py-6 bg-white">
-                        {!! $facultyComparisonChart->container() !!}
+                    <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                        <div class="mb-4">
+                            <p class="text-lg font-bold">Perbandingan Respon Perfakultas</p>
+                        </div>
+                        <hr>
+                        <div class="px-2 py-6 bg-white text-xs">
+                            <table class="w-full">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Fakultas</th>
+                                        <th>Tidak Memuaskan</th>
+                                        <th>Cukup Memuaskan</th>
+                                        <th>Memuaskan</th>
+                                        <th>Sangat Memuaskan</th>
+                                        <th>Total Responden</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
-                    <div class="mb-4">
-                        <p class="text-lg font-bold">Perbandingan Respon PerProdi</p>
+                    <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                        <div class="mb-4">
+                            <p class="text-lg font-bold">Perbandingan Respon Perprodi</p>
+                        </div>
+                        <hr>
+                        <div class="px-2 py-6 bg-white">
+                            {!! $prodiComparisonChart->container() !!}
+                        </div>
                     </div>
-                    <hr>
-                    <div class="px-2 py-6 bg-white">
-                        {!! $prodiComparisonChart->container() !!}
+                    <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                        <div class="mb-4">
+                            <p class="text-lg font-bold">Perbandingan Respon Perprodi</p>
+                        </div>
+                        <hr>
+                        <div class="px-2 py-6 bg-white text-xs">
+                            <table class="w-full">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Prodi</th>
+                                        <th>Tidak Memuaskan</th>
+                                        <th>Cukup Memuaskan</th>
+                                        <th>Memuaskan</th>
+                                        <th>Sangat Memuaskan</th>
+                                        <th>Total Responden</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                @endif
+
+                @if ($user->role->slug === 'fakultas')
+                    <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                        <div class="mb-4">
+                            <p class="text-lg font-bold">Perbandingan Respon Perfakultas</p>
+                        </div>
+                        <hr>
+                        <div class="px-2 py-6 bg-white">
+                            {!! $facultyComparisonChart->container() !!}
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                        <div class="mb-4">
+                            <p class="text-lg font-bold">Perbandingan Respon Perfakultas</p>
+                        </div>
+                        <hr>
+                        <div class="px-2 py-6 bg-white text-xs">
+                            <table class="w-full">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Fakultas</th>
+                                        <th>Tidak Memuaskan</th>
+                                        <th>Cukup Memuaskan</th>
+                                        <th>Memuaskan</th>
+                                        <th>Sangat Memuaskan</th>
+                                        <th>Total Responden</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                @endif
+
+                @if ($user->role->slug === 'prodi')
+                    <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                        <div class="mb-4">
+                            <p class="text-lg font-bold">Perbandingan Respon PerProdi</p>
+                        </div>
+                        <hr>
+                        <div class="px-2 py-6 bg-white">
+                            {!! $prodiComparisonChart->container() !!}
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                        <div class="mb-4">
+                            <p class="text-lg font-bold">Perbandingan Respon Perprodi </p>
+                        </div>
+                        <hr>
+                        <div class="px-2 py-6 bg-white text-xs">
+                            <table class="w-full">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Prodi</th>
+                                        <th>Tidak Memuaskan</th>
+                                        <th>Cukup Memuaskan</th>
+                                        <th>Memuaskan</th>
+                                        <th>Sangat Memuaskan</th>
+                                        <th>Total Responden</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                @endif
+
+
+
             </div>
             <div x-show="activeMenu === 'tabel'" x-cloak>
                 @foreach ($survei->aspek as $aspek)
