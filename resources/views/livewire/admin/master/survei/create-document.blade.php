@@ -44,33 +44,51 @@
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
-                {{-- <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                    <label for="fakultas" class="text-sm">Fakultas :</label>
-                    <select id="fakultas" name="fakultas" wire:model="createDocument.fakultas_id"
-                        wire:change="getProdiByFakultas"
-                        class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                        <option value="">Pilih Fakultas</option>
-                        @foreach ($dataFakultas as $fakultas)
-                            <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('createDocument.fakultas_id')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                    <label for="prodi" class="text-sm">Prodi :</label>
-                    <select id="prodi" name="prodi" wire:model="createDocument.prodi_id"
-                        class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                        <option value="">Pilih Prodi</option>
-                        @foreach ($dataProdi as $prodi)
-                            <option value="{{ $prodi->id }}">{{ $prodi->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('createDocument.prodi_id')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                    @enderror
-                </div> --}}
+                @if ($userRole === 'universitas')
+                    <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                        <label for="fakultas" class="text-sm">Fakultas :</label>
+                        <select id="fakultas" name="fakultas" wire:model="createDocument.fakultas_id"
+                            wire:change="getProdiByFakultas"
+                            class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                            <option value="">Pilih Fakultas</option>
+                            @foreach ($dataFakultas as $fakultas)
+                                <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('createDocument.fakultas_id')
+                            <span class="text-red-500 text-xs">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                        <label for="prodi" class="text-sm">Prodi :</label>
+                        <select id="prodi" name="prodi" wire:model="createDocument.prodi_id"
+                            class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                            <option value="">Pilih Prodi</option>
+                            @foreach ($dataProdi as $prodi)
+                                <option value="{{ $prodi->id }}">{{ $prodi->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('createDocument.prodi_id')
+                            <span class="text-red-500 text-xs">{{ $message }}</span>
+                        @enderror
+                    </div>
+                @endif
+                @if ($userRole === 'fakultas')
+                    <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                        <label for="prodi" class="text-sm">Prodi :</label>
+                        <select id="prodi" name="prodi" wire:model="createDocument.prodi_id"
+                            class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                            <option value="">Pilih Prodi</option>
+                            @foreach ($dataProdi as $prodi)
+                                <option value="{{ $prodi->id }}">{{ $prodi->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('createDocument.prodi_id')
+                            <span class="text-red-500 text-xs">{{ $message }}</span>
+                        @enderror
+                    </div>
+                @endif
+
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="nama_mengetahui" class="text-sm">Nama Mengetahui :</label>
                     <input type="text" id="nama_mengetahui" name="nama_mengetahui"
