@@ -252,7 +252,9 @@
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td style="text-transform: capitalize">{{ $item->name }}</td>
-                    <td style="text-transform: capitalize">{{ $detail_rekapitulasi_aspek[$item->id]['ikm'] }}</td>
+                    <td style="text-transform: capitalize">
+                        {{ number_format($detail_rekapitulasi_aspek[$item->id]['ikm'], 2) }}
+                    </td>
                     <td style="text-transform: capitalize">{{ $detail_rekapitulasi_aspek[$item->id]['kinerja_unit'] }}
                     </td>
                 </tr>
