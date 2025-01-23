@@ -109,7 +109,7 @@
     </p>
     <p class="paragraf">
         Segala puji dan syukur senantiasa dipanjatkan kehadirat Allah SWT., karena berkat rahmat dan hidayahNya maka
-        LAPORAN SURVEI KEPUASAN DOSEN dapat diselesaikan.
+        <span style="text-transform: capitalize">{{$survei->name}}</span> dapat diselesaikan.
     </p>
     <p class="paragraf">
         Salah satu kata kunci kesuksesan pengelolaan lembaga atau organisasi adalah satisfaction (kepuasan) para

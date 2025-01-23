@@ -146,7 +146,7 @@
             @foreach ($survei->aspek as $index => $item)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $item->name }}</td>
+                    <td style="text-transform: capitalize">{{ $item->name }}</td>
                     <td>{{ $detail_rekapitulasi_aspek[$item->id]['ikm'] }}</td>
                     {{-- <td>{{ $detail_rekapitulasi_aspek[$item->id]['kinerja_unit'] }}</td> --}}
                 </tr>
@@ -182,7 +182,7 @@
     </p>
     <ul class="list-decimal list-inside paragraf">
         @foreach ($lowestIndicators as $key => $indicator)
-            <li class="paragraf">
+            <li class="paragraf" style="text-transform: capitalize">
                 {{ $indicator['name'] }} ({{ $indicator['nilai_butir'] }})
             </li>
         @endforeach
