@@ -72,6 +72,16 @@
                     @enderror
                 </div>
                 <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                    <label for="jabatan_mengetahui" class="text-sm">Jabatan Mengetahui :</label>
+                    <input type="text" id="jabatan_mengetahui" name="jabatan_mengetahui"
+                        wire:model="createDocument.jabatan_mengetahui"
+                        placeholder="Masukan Nama Mengetahui {{ $master }}"
+                        class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                    @error('createDocument.jabatan_mengetahui')
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                     <label for="nip_mengetahui" class="text-sm">NIP Mengetahui :</label>
                     <input type="number" id="nip_mengetahui" name="nip_mengetahui"
                         wire:model="createDocument.nip_mengetahui"
@@ -88,6 +98,16 @@
                         placeholder="Masukan Nama Penanggung Jawab {{ $master }}"
                         class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                     @error('createDocument.nama_penanggung_jawab')
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                    <label for="jabatan_penanggung_jawab" class="text-sm">Jabatan Penanggung Jawab :</label>
+                    <input type="text" id="jabatan_penanggung_jawab" name="jabatan_penanggung_jawab"
+                        wire:model="createDocument.jabatan_penanggung_jawab"
+                        placeholder="Masukan Nama Penanggung Jawab {{ $master }}"
+                        class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                    @error('createDocument.jabatan_penanggung_jawab')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>

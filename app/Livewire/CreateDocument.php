@@ -38,8 +38,10 @@ class CreateDocument extends Component
         // 'createDocument.fakultas_id' => 'required',
         // 'createDocument.prodi_id' => 'required',
         'createDocument.nama_mengetahui' => 'required',
+        'createDocument.jabatan_mengetahui' => 'required',
         'createDocument.nip_mengetahui' => 'required',
         'createDocument.nama_penanggung_jawab' => 'required',
+        'createDocument.jabatan_penanggung_jawab' => 'required',
         'createDocument.nip_penanggung_jawab' => 'required',
     ];
 
@@ -104,8 +106,10 @@ class CreateDocument extends Component
         $totalRespondenProdi = $this->countRespondenByProdi();
         $tahunAkademik = $this->createDocument['tahun_akademik'];
         $nama_mengetahui = $this->createDocument['nama_mengetahui'];
+        $jabatan_mengetahui = $this->createDocument['jabatan_mengetahui'];
         $nip_mengetahui = $this->createDocument['nip_mengetahui'];
         $nama_penanggung_jawab = $this->createDocument['nama_penanggung_jawab'];
+        $jabatan_penanggung_jawab = $this->createDocument['jabatan_penanggung_jawab'];
         $nip_penanggung_jawab = $this->createDocument['nip_penanggung_jawab'];
         $tanggalKegiatan = $this->createDocument['tanggal'];
 
@@ -121,7 +125,9 @@ class CreateDocument extends Component
         $kata = PDF::loadView('pdf.kata_pengantar', [
             'nama_mengetahui' => $nama_mengetahui,
             'nip_mengetahui' => $nip_mengetahui,
+            'jabatan_mengetahui' => $jabatan_mengetahui,
             'nama_penanggung_jawab' => $nama_penanggung_jawab,
+            'jabatan_penanggung_jawab' => $jabatan_penanggung_jawab,
             'nip_penanggung_jawab' => $nip_penanggung_jawab,
         ])->setPaper('a4', 'potrait')->output();
         $pdfMerger->addString($kata);
