@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
 
 class CreateDocument extends Component
@@ -54,7 +55,7 @@ class CreateDocument extends Component
         $this->dataFakultas = Fakultas::all();
         $user = Auth::user();
         $this->userRole = $user->role->slug;
-        if($this->userRole === 'fakultas'){
+        if ($this->userRole === 'fakultas') {
             $this->dataProdi = Prodi::where('fakultas_id', $user->fakultas_id)->get();
         }
     }
@@ -123,6 +124,27 @@ class CreateDocument extends Component
         $tanggalKegiatanMulai = $this->createDocument['tanggal-mulai'];
         $tanggalKegiatanSelesai = $this->createDocument['tanggal-selesai'];
 
+        $chart = Http::get('https://quickchart.io/chart', [
+            'c' => json_encode([
+                'type' => 'bar',
+                'data' => [
+                    'labels' => ['January', 'February', 'March', 'April', 'May'],
+                    'datasets' => [
+                        [
+                            'label' => 'indikator',
+                            'data' => [120, 150, 180, 200, 170]
+                        ]
+                    ]
+                ]
+            ]),
+            'format' => 'png',
+            'bkg' => 'transparent'
+        ]);
+
+        $chartBase64 = base64_encode($chart->body());
+        $chartUrl = 'data:image/png;base64,' . $chartBase64;
+
+
         $pdfMerger = PDFMerger::init();
 
         $cover = PDF::loadView('pdf.cover', [
@@ -158,6 +180,7 @@ class CreateDocument extends Component
         $pdfMerger->addString($bab2);
 
         $bab3 = PDF::loadView('pdf.bab3', [
+            'chart' => $chartUrl,
             'facultyComparisonChart' => $facultyComparisonChart,
             'detail_rekapitulasi' => $this->detail_rekapitulasi,
             'detail_rekapitulasi_aspek' => $this->detail_rekapitulasi_aspek,
