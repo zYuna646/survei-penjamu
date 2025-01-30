@@ -173,10 +173,7 @@
                                                 {{ $tabelFakultas[$fakultas->id]['sm'] }}
                                             </td>
                                             <td>
-                                                {{ $tabelFakultas[$fakultas->id]['tm'] +
-                                                    $tabelFakultas[$fakultas->id]['cm'] +
-                                                    $tabelFakultas[$fakultas->id]['m'] +
-                                                    $tabelFakultas[$fakultas->id]['sm'] }}
+                                                {{ $tabelFakultas[$fakultas->id]['total']}}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -233,10 +230,7 @@
                                                 {{ $tabelProdi[$fakultas->id]['sm'] }}
                                             </td>
                                             <td>
-                                                {{ $tabelProdi[$fakultas->id]['tm'] +
-                                                    $tabelProdi[$fakultas->id]['cm'] +
-                                                    $tabelProdi[$fakultas->id]['m'] +
-                                                    $tabelProdi[$fakultas->id]['sm'] }}
+                                                {{ $tabelProdi[$fakultas->id]['total']  }}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -305,6 +299,68 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                        <div class="mb-4">
+                            <p class="text-lg font-bold">Perbandingan Respon PerProdi</p>
+                        </div>
+                        <hr>
+                        <div class="px-2 py-6 bg-white">
+                            {!! $prodiComparisonChart->container() !!}
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                        <div class="mb-4">
+                            <p class="text-lg font-bold">Perbandingan Respon Perprodi </p>
+                        </div>
+                        <hr>
+                        <div class="px-2 py-6 bg-white text-xs">
+                            <table class="w-full">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Prodi</th>
+                                        <th>Tidak Memuaskan</th>
+                                        <th>Cukup Memuaskan</th>
+                                        <th>Memuaskan</th>
+                                        <th>Sangat Memuaskan</th>
+                                        <th>Total Responden</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($dataProdi as $fakultas)
+                                        <tr>
+                                            <td>
+                                                {{ $loop->iteration }}
+                                            </td>
+                                            <td>
+                                                {{ $fakultas->name }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelProdi[$fakultas->id]['tm'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelProdi[$fakultas->id]['cm'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelProdi[$fakultas->id]['m'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelProdi[$fakultas->id]['sm'] }}
+                                            </td>
+                                            <td>
+                                                {{ $tabelProdi[$fakultas->id]['tm'] +
+                                                    $tabelProdi[$fakultas->id]['cm'] +
+                                                    $tabelProdi[$fakultas->id]['m'] +
+                                                    $tabelProdi[$fakultas->id]['sm'] }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
                         </div>
                     </div>
                 @endif

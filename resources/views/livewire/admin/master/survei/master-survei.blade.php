@@ -140,7 +140,12 @@
                         @foreach ($dataSurvei as $survei)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $survei['code'] }}</td>
+                                <td >
+                                    <a href="{{ route('run_survei', $survei['code']) }}" class="text-blue-600">
+                                        {{ $survei['code'] }}
+                                    </a>
+                                </td>
+                                
                                 <td>{{ $survei['name'] }}</td>
                                 <td>{{ $survei['target']->name }}</td>
                             @if ($userRole === 'universitas')

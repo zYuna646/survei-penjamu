@@ -90,6 +90,23 @@ class CreateDocument extends Component
         $this->user = Auth::user();
         $this->selectedFakultas = isset($this->createDocument['fakultas_id']) ? Fakultas::find($this->createDocument['fakultas_id']) : null;
         $this->selectedProdi = isset($this->createDocument['prodi_id']) ? Prodi::find($this->createDocument['prodi_id']) : null;
+        $this->user = Auth::user();
+
+        // Load the survey data
+        switch ($this->user->role->slug) {
+            case 'fakultas':
+                # code...
+                $this->selectedFakultas = Fakultas::find($this->user->fakultas_id);
+
+                break;
+            case 'prodi':
+                $this->selectedProdi = Prodi::find($this->user->prodi_id);
+                break;
+            default:
+                # code...
+                break;
+        }
+
         $pdfMerger = PDFMerger::init();
 
         $facultyNames = [];
@@ -133,9 +150,9 @@ class CreateDocument extends Component
         $labels = [];
         $lb = [];
         foreach ($this->survei->aspek as $key => $aspek) {
-            $labels[] = $aspek->name;
+            $labels[] = $aspek->id;
             foreach ($aspek->indicator as $key => $indicator) {
-                $lb[] = $indicator->name;
+                $lb[] = $indicator->id;
             }
         }
 
@@ -180,9 +197,9 @@ class CreateDocument extends Component
             'width' => 800, // Lebar chart
             'height' => 500 // Tinggi chart
         ]);
-        
-        
-        
+
+
+
         $chartBase64 = base64_encode($chart->body());
         $chartUrl = 'data:image/png;base64,' . $chartBase64;
 
@@ -314,6 +331,8 @@ class CreateDocument extends Component
             'cm' => $totalCM,
             'm' => $totalM,
             'sm' => $totalSM,
+            'total' => $query->count()
+
         ];
     }
 
@@ -499,37 +518,29 @@ class CreateDocument extends Component
         // Ottieni tutti i dati necessari da una singola query (se possibile)
         if (isset($this->createDocument['fakultas_id'])) {
             foreach ($this->dataFakultas as $fakultas) {
-                $fakultasTabel[$fakultas->id] = [
-                    'tm' => $this->calculateFacultySatisfactionDistribution($fakultas->id)['tm'],
-                    'cm' => $this->calculateFacultySatisfactionDistribution($fakultas->id)['cm'],
-                    'm' => $this->calculateFacultySatisfactionDistribution($fakultas->id)['m'],
-                    'sm' => $this->calculateFacultySatisfactionDistribution($fakultas->id)['sm'],
-                ];
+                $tmp = $this->calculateFacultySatisfactionDistribution($fakultas->id);
+
+                $fakultasTabel[$fakultas->id] = $tmp;
             }
         }
 
         if (isset($this->createDocument['prodi_id'])) {
             foreach ($this->dataProdi as $prodi) {
-                $prodiTabel[$prodi->id] = [
-                    'tm' => $this->calculateProdiSatisfactionDistribution($prodi->id)['tm'],
-                    'cm' => $this->calculateProdiSatisfactionDistribution($prodi->id)['cm'],
-                    'm' => $this->calculateProdiSatisfactionDistribution($prodi->id)['m'],
-                    'sm' => $this->calculateProdiSatisfactionDistribution($prodi->id)['sm'],
-                ];
+                $tmp = $this->calculateProdiSatisfactionDistribution($prodi->id);
+
+                $prodiTabel[$prodi->id] = $tmp;
             }
         }
 
         if (!isset($this->createDocument['fakultas_id']) && !isset($this->createDocument['prodi_id'])) {
             $item = Fakultas::where('code', '!=', '0')->get();
+
             foreach ($item as $key => $v) {
-                $fakultasTabel[$v->id] = [
-                    'tm' => $this->calculateFacultySatisfactionDistribution($v->id)['tm'],
-                    'cm' => $this->calculateFacultySatisfactionDistribution($v->id)['cm'],
-                    'm' => $this->calculateFacultySatisfactionDistribution($v->id)['m'],
-                    'sm' => $this->calculateFacultySatisfactionDistribution($v->id)['sm'],
-                ];
+                $tmp = $this->calculateFacultySatisfactionDistribution($v->id);
+                $fakultasTabel[$v->id] = $tmp;
             }
         }
+        
 
 
 
@@ -601,6 +612,7 @@ class CreateDocument extends Component
             'cm' => $totalCM,
             'm' => $totalM,
             'sm' => $totalSM,
+            'total' => $query->count()
         ];
     }
 

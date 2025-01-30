@@ -56,10 +56,14 @@ class DetailSurvei extends Component
             case 'fakultas':
                 # code...
                 $this->selectedFakultas = $this->user->fakultas_id;
+                $this->dataFakultas = Fakultas::where('id', $this->user->fakultas_id)->get();
+
+                $this->dataProdi = Prodi::where('fakultas_id', $this->user->fakultas_id)->get();
                 $this->getProdiByFakultas();
                 break;
             case 'prodi':
                 $this->selectedProdi = $this->user->prodi_id;
+                $this->dataProdi = Prodi::where('id', $this->user->prodi_id)->get();
                 break;
             default:
                 # code...
@@ -352,21 +356,13 @@ class DetailSurvei extends Component
         // Ottieni tutti i dati necessari da una singola query (se possibile)
 
         foreach ($this->dataFakultas as $fakultas) {
-            $fakultasTabel[$fakultas->id] = [
-                'tm' => $this->calculateFacultySatisfactionDistribution($fakultas->id)['tm'],
-                'cm' => $this->calculateFacultySatisfactionDistribution($fakultas->id)['cm'],
-                'm' => $this->calculateFacultySatisfactionDistribution($fakultas->id)['m'],
-                'sm' => $this->calculateFacultySatisfactionDistribution($fakultas->id)['sm'],
-            ];
+            $tmp = $this->calculateFacultySatisfactionDistribution($fakultas->id);
+            $fakultasTabel[$fakultas->id] = $tmp;
         }
 
         foreach ($this->dataProdi as $prodi) {
-            $prodiTabel[$prodi->id] = [
-                'tm' => $this->calculateProdiSatisfactionDistribution($prodi->id)['tm'],
-                'cm' => $this->calculateProdiSatisfactionDistribution($prodi->id)['cm'],
-                'm' => $this->calculateProdiSatisfactionDistribution($prodi->id)['m'],
-                'sm' => $this->calculateProdiSatisfactionDistribution($prodi->id)['sm'],
-            ];
+            $tmp = $this->calculateProdiSatisfactionDistribution($prodi->id);
+            $prodiTabel[$prodi->id] = $tmp;
         }
 
         // dd($fakultasTabel);
@@ -407,6 +403,7 @@ class DetailSurvei extends Component
             'cm' => $totalCM,
             'm' => $totalM,
             'sm' => $totalSM,
+            'total' => $query->count()
         ];
     }
 
@@ -440,6 +437,7 @@ class DetailSurvei extends Component
             'cm' => $totalCM,
             'm' => $totalM,
             'sm' => $totalSM,
+            'total' => $query->count()
         ];
     }
 

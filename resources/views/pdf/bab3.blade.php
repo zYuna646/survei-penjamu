@@ -135,16 +135,16 @@
     </p>
 
     @if ($prodi === null && $fakultas === null)
-    
-        <table >
-            <thead >
+
+        <table>
+            <thead>
                 <tr>
                     <th style="font-size: 10">No.</th>
                     <th style="font-size: 10">Fakultas</th>
-                    <th style="font-size: 10">Tidak Memuaskan</th>
+                    {{-- <th style="font-size: 10">Tidak Memuaskan</th>
                     <th style="font-size: 10">Cukup Memuaskan</th>
                     <th style="font-size: 10">Memuaskan</th>
-                    <th style="font-size: 10">Sangat Memuaskan</th>
+                    <th style="font-size: 10">Sangat Memuaskan</th> --}}
                     <th style="font-size: 10">Total Responden</th>
                 </tr>
             </thead>
@@ -157,7 +157,7 @@
                         <td style="font-size: 10">
                             {{ $item->name }}
                         </td>
-                        <td style="font-size: 10">
+                        {{-- <td style="font-size: 10">
                             {{ $tabelFakultas[$item->id]['tm'] }}
                         </td>
                         <td style="font-size: 10">
@@ -168,12 +168,10 @@
                         </td>
                         <td style="font-size: 10">
                             {{ $tabelFakultas[$item->id]['sm'] }}
-                        </td>
+                        </td> --}}
                         <td style="font-size: 10">
-                            {{ $tabelFakultas[$item->id]['tm'] +
-                                $tabelFakultas[$item->id]['cm'] +
-                                $tabelFakultas[$item->id]['m'] +
-                                $tabelFakultas[$item->id]['sm'] }}
+                            {{ $tabelFakultas[$item->id]['total']}}
+
                         </td>
                     </tr>
                 @endforeach
@@ -186,10 +184,10 @@
                 <tr>
                     <th>No.</th>
                     <th>Prodi</th>
-                    <th>Tidak Memuaskan</th>
+                    {{-- <th>Tidak Memuaskan</th>
                     <th>Cukup Memuaskan</th>
                     <th>Memuaskan</th>
-                    <th>Sangat Memuaskan</th>
+                    <th>Sangat Memuaskan</th> --}}
                     <th>Total Responden</th>
                 </tr>
             </thead>
@@ -202,7 +200,7 @@
                         <td>
                             {{ $item->name }}
                         </td>
-                        <td>
+                        {{-- <td>
                             {{ $tabelProdi[$item->id]['tm'] }}
                         </td>
                         <td>
@@ -213,12 +211,10 @@
                         </td>
                         <td>
                             {{ $tabelProdi[$item->id]['sm'] }}
-                        </td>
+                        </td> --}}
                         <td>
-                            {{ $tabelProdi[$item->id]['tm'] +
-                                $tabelProdi[$item->id]['cm'] +
-                                $tabelProdi[$item->id]['m'] +
-                                $tabelProdi[$item->id]['sm'] }}
+                            {{ $tabelProdi[$item->id]['total']  }}
+
                         </td>
                     </tr>
                 @endforeach
@@ -243,7 +239,7 @@
     <table>
         <thead>
             <tr>
-                <th>No</th>
+                <th>Kode</th>
                 <th>Instrumen</th>
                 <th>IKM</th>
                 <th>Kinerja Unit Pelayanan</th>
@@ -252,12 +248,13 @@
         <tbody>
             @foreach ($survei->aspek as $index => $item)
                 <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td style="text-transform: capitalize">{{ $item->name }}</td>
-                    <td style="text-transform: capitalize">
-                        {{ number_format($detail_rekapitulasi_aspek[$item->id]['ikm'], 2) }}
+                    <td>{{ $item->id }}</td>
+                    <td>{{ ucwords(strtolower($item->name)) }}</td>
+                    <td>
+                        {{ number_format($detail_rekapitulasi_aspek[$item->id]['ikm'] ?? 0, 2) }}
                     </td>
-                    <td style="text-transform: capitalize">{{ $detail_rekapitulasi_aspek[$item->id]['kinerja_unit'] }}
+                    <td>
+                        {{ ucwords(strtolower($detail_rekapitulasi_aspek[$item->id]['kinerja_unit'] ?? 'N/A')) }}
                     </td>
                 </tr>
             @endforeach
@@ -266,10 +263,10 @@
     <ul style="list-style: disc">
         @foreach ($survei->aspek as $item)
             <li>
-                <span style="text-transform: capitalize"> {{ $item->name }}</span>
+                <span> {{ucwords(strtolower($item->name)) }}</span>
 
                 <p class="paragraf">
-                    Pada dimensi <span>{{ $item->name }}</span> terdiri dari {{ $item->indicator->count() }}
+                    Pada dimensi <span>{{ucwords(strtolower($item->name))}}</span> terdiri dari {{ $item->indicator->count() }}
                     item/pernyataan
                     yang terdistribusi
                     pada {{ $item->indicator->count() }} indikator. Setiap indikator terdiri dari beberapa aitem
@@ -300,10 +297,10 @@
                         @foreach ($item->indicator as $index => $indi)
                             <tr>
                                 <td class="p-2 border border-gray-600">{{ $index + 1 }}</td>
+                                <td class="p-2 border border-gray-600">
+                                    {{ ucwords(strtolower($item->name)) }}</td>
                                 <td class="p-2 border border-gray-600" style="text-transform: capitalize">
-                                    {{ $indi->name }}</td>
-                                <td class="p-2 border border-gray-600" style="text-transform: capitalize">
-                                    {{ $detail_rekapitulasi[$item->id][$indi->id]['ikm'] }}</td>
+                                    {{ number_format($detail_rekapitulasi[$item->id][$indi->id]['ikm'] ?? 0, 2) }}</td>
                                 <td class="p-2 border border-gray-600">
                                     {{ $detail_rekapitulasi[$item->id][$indi->id]['mutu_layanan'] }}</td>
                                 <td class="p-2 border border-gray-600">
