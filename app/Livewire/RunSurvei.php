@@ -34,11 +34,11 @@ class RunSurvei extends Component
     public function mount($code)
     {
         $this->dataSurvei = Survey::where('code', $code)->first();
-        $this->dataProdi = Prodi::all();
+        $this->dataProdi = Prodi::where('code', '!=', '0')->get();
         $this->dataJurusan = Jurusan::all();
         $this->dataFakultas = Fakultas::all();
-        
-        
+
+
         $aspekCollection = $this->dataSurvei->aspek;
         $data = [];
         foreach ($aspekCollection as $aspek) {
@@ -75,12 +75,10 @@ class RunSurvei extends Component
 
     public function sendSurveiRespon()
     {
-        $this->validate([
-            'prodi' => 'required',
-        ]);
-        
-
-        try {            
+        // $this->validate([
+        //     'prodi' => 'required',
+        // ]);
+        try {
             DB::beginTransaction();
 
             $table = [];
@@ -89,16 +87,35 @@ class RunSurvei extends Component
                     $table[$key] = $value;
                 }
             }
-            $table['prodi_id'] = $this->prodi;
+
+            if (!$this->prodi && $this->dataSurvei->jenis->name !== 'Tenaga Kependidikan') {
+
+                session()->flash('toastMessage', 'Terjadi kesalahan: Prodi Harus DIsi');
+            }
+
+            if ($this->dataSurvei->target->name === 'Tenaga Kependidikan') {
+
+                if (!$this->selectedFakultas) {
+
+                    session()->flash('toastMessage', 'Terjadi kesalahan: Fakultas Harus Di isi');
+
+                }
+                $prodi = Prodi::where('fakultas_id', $this->selectedFakultas)->where('code', '0')->first();
+                $table['prodi_id'] = $prodi->id;
+
+            } else {
+                $table['prodi_id'] = $this->prodi;
+
+            }
             DB::table($this->dataSurvei->id)->insert($table);
-            
+
             $this->isComplete = true;
 
             DB::commit();
 
         } catch (\Exception $e) {
             DB::rollBack();
-
+            dd($e->getMessage());
             \Log::error('Survey Error: ' . $e->getMessage());
 
             session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());

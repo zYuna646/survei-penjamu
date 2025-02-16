@@ -571,7 +571,6 @@ class CreateDocument extends Component
         }
 
 
-        // dd($fakultasTabel);
         // dd($prodiTabel);
         // dd($chartData);
         $this->chartData = $chartData;

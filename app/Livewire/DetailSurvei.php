@@ -47,7 +47,7 @@ class DetailSurvei extends Component
         // Load all Fakultas, Jurusan, and Prodi data for filtering options
         $this->dataFakultas = Fakultas::all();
         $this->dataJurusan = Jurusan::all();
-        $this->dataProdi = Prodi::all();
+        $this->dataProdi = Prodi::where('code', '!=', '0')->get();
         $this->user = Auth::user();
 
         // Load the survey data
