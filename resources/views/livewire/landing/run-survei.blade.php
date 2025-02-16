@@ -1,15 +1,12 @@
-<main class="bg-[#f9fafc] min-h-screen"
-    x-data="{ showToast: {{ session()->has('toastMessage') ? 'true' : 'false' }}, toastMessage: '{{ session('toastMessage') }}', toastType: '{{ session('toastType') }}' }"
-    x-init="
-    if (showToast) {
-        setTimeout(() => showToast = false, 5000);
-    }
-">
+<main class="bg-[#f9fafc] min-h-screen" x-data="{ showToast: {{ session()->has('toastMessage') ? 'true' : 'false' }}, toastMessage: '{{ session('toastMessage') }}', toastType: '{{ session('toastType') }}' }" x-init="if (showToast) {
+    setTimeout(() => showToast = false, 5000);
+}">
     <!-- Toast -->
     <div x-show="showToast" x-transition
         :class="toastType === 'success' ? 'text-color-success-500' : 'text-color-danger-500'"
         class="fixed top-24 right-5 z-50 flex items-center w-full max-w-xs p-4 rounded-lg shadow bg-white" role="alert">
-        <div :class="toastType === 'success' ? 'text-color-success-500 bg-color-success-100' : 'text-color-danger-500 bg-color-danger-100'"
+        <div :class="toastType === 'success' ? 'text-color-success-500 bg-color-success-100' :
+            'text-color-danger-500 bg-color-danger-100'"
             class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg">
             <span>
                 <i :class="toastType === 'success' ? 'fas fa-check' : 'fas fa-exclamation'"></i>
@@ -22,6 +19,7 @@
             <span><i class="fas fa-times"></i></span>
         </button>
     </div>
+
     <section class="max-w-screen-xl w-full mx-auto px-4 pt-24 grid grid-cols-12 gap-4 pb-12">
         <div
             class="p-8 col-span-12 lg:col-span-4 h-fit bg-white flex flex-col lg:flex-row  gap-y-2 gap-x-4 rounded-lg border border-slate-100 shadow-sm">
@@ -79,23 +77,27 @@
                             <select wire:change="getProdiByFakultas" wire:model="selectedFakultas"
                                 class="p-3 text-sm w-full rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
                                 <option value="">Semua Fakultas</option>
-                                @foreach($dataFakultas as $fakultas)
-                                <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
+                                @foreach ($dataFakultas as $fakultas)
+                                    <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                            <label for="nama" class="text-sm ">Prodi :</label>
-                            <select name="prodi_id" wire:model="prodi"
-                                class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                <option value="">Pilih Prodi</option>
-                                @foreach($dataProdi as $prodi)
-                                <option value="{{ $prodi->id }}">{{ $prodi->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('prodi') <span class="text-red-500 text-xs">{{ $message }}</span>
-                            @enderror
-                        </div>
+                        @if (!($dataSurvei->target->name === 'Tenaga Kependidikan'))
+                            <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                                <label for="nama" class="text-sm ">Prodi :</label>
+                                <select name="prodi_id" wire:model="prodi"
+                                    class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                    <option value="">Pilih Prodi</option>
+                                    @foreach ($dataProdi as $prodi)
+                                        <option value="{{ $prodi->id }}">{{ $prodi->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('prodi')
+                                    <span class="text-red-500 text-xs">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        @endif
+
                         {{-- <div class="flex flex-col gap-y-2 col-span-12 mb-4">
                             <label for="nim" class="text-sm ">NIM :</label>
                             <input type="text" name="nim" wire:model="nim" placeholder="Masukan NIM"
@@ -163,71 +165,83 @@
                         </div>
                     </div>
                 </div>
-                @foreach($data as $index => $item)
-                <div class="p-4 lg:p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
-                    <div class="mb-4">
-                        <p class="text-lg font-bold">{{ $item[0]->name }}</p>
-                    </div>
-
-                    @foreach($item[1] as $indicatorIndex => $indicator)
-                    <fieldset class="grid grid-cols-12 divide-x-2 mb-4 border p-2 rounded-lg items-center">
-                        <p class="text-xs lg:text-sm font-semibold col-span-6 lg:col-span-8 p-2 lg:p-4">{{
-                            $indicator->name
-                            }}</p>
-                        <div class="flex items-center justify-between p-2 lg:p-4 col-span-6 lg:col-span-4 text-sm">
-                            <div class="flex flex-col gap-y-1 items-center justify-center">
-                                <label for="responses[{{ $item[0]->id }}][{{ $indicator->id }}]_1"
-                                    class="text-color-danger-500 font-bold text-xs">
-                                    TM
-                                </label>
-                                <div class="rounded-full bg-color-danger-500 p-1 flex items-center justify-center">
-                                    <input type="radio" id="responses[{{ $item[0]->id }}][{{ $indicator->id }}]_1"
-                                        name="responses[{{ $item[0]->id }}][{{ $indicator->id }}]" value="1"
-                                        wire:model="responses.{{ $item[0]->id  }}.{{ $indicator->id }}"
-                                        class="w-4 h-4 hover:cursor-pointer">
-                                </div>
-                            </div>
-                            <div class="flex flex-col gap-y-1 items-center justify-center">
-                                <label for="responses[{{ $item[0]->id }}][{{ $indicator->id }}]_2"
-                                    class="text-color-warning-500 font-bold text-xs">
-                                    CM
-                                </label>
-                                <div class="rounded-full bg-color-warning-500 p-1 flex items-center justify-center">
-                                    <input type="radio" id="responses[{{ $item[0]->id }}][{{ $indicator->id }}]_2"
-                                        name="responses[{{ $item[0]->id }}][{{ $indicator->id }}]" value="2"
-                                        wire:model="responses.{{ $item[0]->id }}.{{ $indicator->id }}"
-                                        class="w-4 h-4 hover:cursor-pointer">
-                                </div>
-                            </div>
-                            <div class="flex flex-col gap-y-1 items-center justify-center">
-                                <label for="responses[{{ $item[0]->id }}][{{ $indicator->id }}]_3"
-                                    class="text-color-success-500 font-bold text-xs">
-                                    M
-                                </label>
-                                <div class="rounded-full bg-color-success-500 p-1 flex items-center justify-center">
-                                    <input type="radio" id="responses[{{ $item[0]->id }}][{{ $indicator->id }}]_3"
-                                        name="responses[{{ $item[0]->id }}][{{ $indicator->id }}]" value="3"
-                                        wire:model="responses.{{ $item[0]->id }}.{{ $indicator->id}}"
-                                        class="w-4 h-4 hover:cursor-pointer">
-                                </div>
-                            </div>
-                            <div class="flex flex-col gap-y-1 items-center justify-center">
-                                <label for="responses[{{ $item[0]->id }}][{{ $indicator->id }}]_4"
-                                    class="text-color-info-500 font-bold text-xs">
-                                    SM
-                                </label>
-                                <div class="rounded-full bg-color-info-500 p-1 flex items-center justify-center">
-                                    <input type="radio" id="responses[{{ $item[0]->id }}][{{ $indicator->id }}]_4"
-                                        name="responses[{{ $item[0]->id }}][{{ $indicator->id }}]" value="4"
-                                        wire:model="responses.{{ $item[0]->ids }}.{{$indicator->id }}"
-                                        class="w-4 h-4 hover:cursor-pointer">
-                                </div>
-                            </div>
-
+                @foreach ($data as $index => $item)
+                    <div class="p-4 lg:p-6 bg-white rounded-lg border-slate-100 shadow-sm flex flex-col">
+                        <div class="mb-4">
+                            <p class="text-lg font-bold">{{ $item[0]->name }}</p>
                         </div>
-                    </fieldset>
-                    @endforeach
-                </div>
+
+                        @foreach ($item[1] as $indicatorIndex => $indicator)
+                            <fieldset class="grid grid-cols-12 divide-x-2 mb-4 border p-2 rounded-lg items-center">
+                                <p class="text-xs lg:text-sm font-semibold col-span-6 lg:col-span-8 p-2 lg:p-4">
+                                    {{ $indicator->name }}</p>
+                                <div
+                                    class="flex items-center justify-between p-2 lg:p-4 col-span-6 lg:col-span-4 text-sm">
+                                    <div class="flex flex-col gap-y-1 items-center justify-center">
+                                        <label for="responses[{{ $item[0]->id }}][{{ $indicator->id }}]_1"
+                                            class="text-color-danger-500 font-bold text-xs">
+                                            TM
+                                        </label>
+                                        <div
+                                            class="rounded-full bg-color-danger-500 p-1 flex items-center justify-center">
+                                            <input type="radio"
+                                                id="responses[{{ $item[0]->id }}][{{ $indicator->id }}]_1"
+                                                name="responses[{{ $item[0]->id }}][{{ $indicator->id }}]"
+                                                value="1"
+                                                wire:model="responses.{{ $item[0]->id }}.{{ $indicator->id }}"
+                                                class="w-4 h-4 hover:cursor-pointer">
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col gap-y-1 items-center justify-center">
+                                        <label for="responses[{{ $item[0]->id }}][{{ $indicator->id }}]_2"
+                                            class="text-color-warning-500 font-bold text-xs">
+                                            CM
+                                        </label>
+                                        <div
+                                            class="rounded-full bg-color-warning-500 p-1 flex items-center justify-center">
+                                            <input type="radio"
+                                                id="responses[{{ $item[0]->id }}][{{ $indicator->id }}]_2"
+                                                name="responses[{{ $item[0]->id }}][{{ $indicator->id }}]"
+                                                value="2"
+                                                wire:model="responses.{{ $item[0]->id }}.{{ $indicator->id }}"
+                                                class="w-4 h-4 hover:cursor-pointer">
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col gap-y-1 items-center justify-center">
+                                        <label for="responses[{{ $item[0]->id }}][{{ $indicator->id }}]_3"
+                                            class="text-color-success-500 font-bold text-xs">
+                                            M
+                                        </label>
+                                        <div
+                                            class="rounded-full bg-color-success-500 p-1 flex items-center justify-center">
+                                            <input type="radio"
+                                                id="responses[{{ $item[0]->id }}][{{ $indicator->id }}]_3"
+                                                name="responses[{{ $item[0]->id }}][{{ $indicator->id }}]"
+                                                value="3"
+                                                wire:model="responses.{{ $item[0]->id }}.{{ $indicator->id }}"
+                                                class="w-4 h-4 hover:cursor-pointer">
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col gap-y-1 items-center justify-center">
+                                        <label for="responses[{{ $item[0]->id }}][{{ $indicator->id }}]_4"
+                                            class="text-color-info-500 font-bold text-xs">
+                                            SM
+                                        </label>
+                                        <div
+                                            class="rounded-full bg-color-info-500 p-1 flex items-center justify-center">
+                                            <input type="radio"
+                                                id="responses[{{ $item[0]->id }}][{{ $indicator->id }}]_4"
+                                                name="responses[{{ $item[0]->id }}][{{ $indicator->id }}]"
+                                                value="4"
+                                                wire:model="responses.{{ $item[0]->ids }}.{{ $indicator->id }}"
+                                                class="w-4 h-4 hover:cursor-pointer">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </fieldset>
+                        @endforeach
+                    </div>
                 @endforeach
 
 

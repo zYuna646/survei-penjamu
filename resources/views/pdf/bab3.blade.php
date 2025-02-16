@@ -213,7 +213,7 @@
                             {{ $tabelProdi[$item->id]['sm'] }}
                         </td> --}}
                         <td>
-                            {{ $tabelProdi[$item->id]['total']  }}
+                            {{ $tabelFakultas[$item->id]['total']  }}
 
                         </td>
                     </tr>
