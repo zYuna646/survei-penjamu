@@ -517,20 +517,23 @@ class CreateDocument extends Component
         $chartData = [];
         // Ottieni tutti i dati necessari da una singola query (se possibile)
         if (isset($this->createDocument['fakultas_id'])) {
-            foreach ($this->dataFakultas as $fakultas) {
-                $tmp = $this->calculateFacultySatisfactionDistribution($fakultas->id);
-
-                $fakultasTabel[$fakultas->id] = $tmp;
-            }
-        }
-
-        if (isset($this->createDocument['prodi_id'])) {
+        dd($this->createDocument['fakultas_id']);
             foreach ($this->dataProdi as $prodi) {
                 $tmp = $this->calculateProdiSatisfactionDistribution($prodi->id);
 
                 $prodiTabel[$prodi->id] = $tmp;
             }
         }
+
+        dd($prodiTabel);
+
+        // if (isset($this->createDocument['prodi_id'])) {
+        //     foreach ($this->dataProdi as $prodi) {
+        //         $tmp = $this->calculateProdiSatisfactionDistribution($prodi->id);
+
+        //         $prodiTabel[$prodi->id] = $tmp;
+        //     }
+        // }
 
         if (!isset($this->createDocument['fakultas_id']) && !isset($this->createDocument['prodi_id'])) {
             $item = Fakultas::where('code', '!=', '0')->get();
@@ -540,7 +543,7 @@ class CreateDocument extends Component
                 $fakultasTabel[$v->id] = $tmp;
             }
         }
-        
+
 
 
 
