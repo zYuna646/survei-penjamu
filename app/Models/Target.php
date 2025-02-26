@@ -12,4 +12,9 @@ class Target extends Model
         'name',
     ];
 
+    public function survey ()
+    {
+        return $this->hasMany(Survey::class);
+    }
+
 }

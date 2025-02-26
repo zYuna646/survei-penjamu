@@ -1,0 +1,1710 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Laravel OpenAPI Example",
+        "description": "Swagger documentation for Laravel API",
+        "contact": {
+            "email": "support@example.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/target": {
+            "get": {
+                "tags": [
+                    "Target"
+                ],
+                "summary": "Get list of targets with related surveys",
+                "description": "Retrieve all target data along with related surveys",
+                "operationId": "getTarget",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data target berhasil diambil"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Mahasiswa"
+                                                    },
+                                                    "survey": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "integer",
+                                                                    "example": 10
+                                                                },
+                                                                "title": {
+                                                                    "type": "string",
+                                                                    "example": "Survey Kepuasan Mahasiswa"
+                                                                },
+                                                                "description": {
+                                                                    "type": "string",
+                                                                    "example": "Survey untuk mengukur kepuasan mahasiswa terhadap layanan akademik"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Terjadi kesalahan"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Exception error message"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/fakultas": {
+            "get": {
+                "tags": [
+                    "Fakultas"
+                ],
+                "summary": "Get list of fakultas with prodi",
+                "description": "Retrieve all fakultas along with their associated prodi",
+                "operationId": "getFakultas",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data fakultas berhasil diambil"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Fakultas Teknik"
+                                                    },
+                                                    "code": {
+                                                        "type": "string",
+                                                        "example": "FT"
+                                                    },
+                                                    "prodi": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "integer",
+                                                                    "example": 1
+                                                                },
+                                                                "name": {
+                                                                    "type": "string",
+                                                                    "example": "Teknik Informatika"
+                                                                },
+                                                                "code": {
+                                                                    "type": "string",
+                                                                    "example": "TI"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Terjadi kesalahan"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Exception error message"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/fakultas/{id}": {
+            "get": {
+                "tags": [
+                    "Fakultas"
+                ],
+                "summary": "Get fakultas by ID",
+                "description": "Retrieve a specific fakultas along with its associated prodi by ID",
+                "operationId": "getFakultasById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of fakultas",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data fakultas berhasil diambil"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Fakultas Teknik"
+                                                },
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "FT"
+                                                },
+                                                "prodi": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Teknik Informatika"
+                                                            },
+                                                            "code": {
+                                                                "type": "string",
+                                                                "example": "TI"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Fakultas not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Fakultas tidak ditemukan"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Terjadi kesalahan"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Exception error message"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/prodi": {
+            "get": {
+                "tags": [
+                    "Prodi"
+                ],
+                "summary": "Get list of all prodi",
+                "description": "Retrieve all prodi along with their associated fakultas",
+                "operationId": "getProdi",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data prodi berhasil diambil"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Teknik Informatika"
+                                                    },
+                                                    "code": {
+                                                        "type": "string",
+                                                        "example": "TI"
+                                                    },
+                                                    "fakultas": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Fakultas Teknik"
+                                                            },
+                                                            "code": {
+                                                                "type": "string",
+                                                                "example": "FT"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Terjadi kesalahan"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Exception error message"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/prodi/{id}": {
+            "get": {
+                "tags": [
+                    "Prodi"
+                ],
+                "summary": "Get prodi by ID",
+                "description": "Retrieve a specific prodi along with its associated fakultas by ID",
+                "operationId": "getProdiById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of prodi",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data prodi berhasil diambil"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Teknik Informatika"
+                                                },
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "TI"
+                                                },
+                                                "fakultas": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Fakultas Teknik"
+                                                        },
+                                                        "code": {
+                                                            "type": "string",
+                                                            "example": "FT"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Prodi not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Prodi tidak ditemukan"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Terjadi kesalahan"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Exception error message"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/survey": {
+            "get": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Get list of all surveys",
+                "description": "Retrieve all surveys along with their related target, jenis, and multiple aspek",
+                "operationId": "getSurvey",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data survey berhasil diambil"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "Survey Kepuasan Mahasiswa"
+                                                    },
+                                                    "target": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Mahasiswa"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "jenis": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 2
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Kepuasan"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "aspek": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "integer",
+                                                                    "example": 3
+                                                                },
+                                                                "name": {
+                                                                    "type": "string",
+                                                                    "example": "Pelayanan Akademik"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Terjadi kesalahan"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Exception error message"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/survey/{id}": {
+            "get": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Get survey by ID",
+                "description": "Retrieve a specific survey along with its related target, jenis, and multiple aspek by ID",
+                "operationId": "getSurveyById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of survey",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data survey berhasil diambil"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "Survey Kepuasan Mahasiswa"
+                                                },
+                                                "target": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Mahasiswa"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "jenis": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 2
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Kepuasan"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "aspek": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 3
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Pelayanan Akademik"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Survey not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Survey tidak ditemukan"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Terjadi kesalahan"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Exception error message"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/aspek/{id}": {
+            "get": {
+                "tags": [
+                    "Aspek"
+                ],
+                "summary": "Get aspek by ID with related indicators",
+                "description": "Retrieve a specific aspek along with its indicators",
+                "operationId": "getAspekById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of aspek",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data aspek berhasil diambil"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Pelayanan Akademik"
+                                                },
+                                                "indicator": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Waktu Respons Dosen"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Aspek not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Aspek tidak ditemukan"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Terjadi kesalahan"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Exception error message"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/indikator/{id}": {
+            "get": {
+                "tags": [
+                    "Indikator"
+                ],
+                "summary": "Get indikator by ID with related aspek",
+                "description": "Retrieve a specific indikator along with its related aspek",
+                "operationId": "getIndikatorById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of indikator",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data indikator berhasil diambil"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Kualitas Pengajaran"
+                                                },
+                                                "aspek": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 2
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Pelayanan Akademik"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Indikator not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Indikator tidak ditemukan"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Terjadi kesalahan"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Exception error message"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/temuan/universitas/{id}": {
+            "get": {
+                "tags": [
+                    "Temuan"
+                ],
+                "summary": "Get temuan for university level",
+                "description": "Retrieve temuan data that is not associated with any fakultas or prodi based on indikator ID",
+                "operationId": "getTemuanUniv",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Indikator ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data temuan universitas berhasil diambil"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "indikator_id": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "temuan": {
+                                                        "type": "string",
+                                                        "example": "Kekurangan dalam fasilitas akademik"
+                                                    },
+                                                    "solusi": {
+                                                        "type": "string",
+                                                        "example": "Meningkatkan pengadaan peralatan laboratorium"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Terjadi kesalahan"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Exception error message"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/temuan/fakultas/{id}": {
+            "get": {
+                "tags": [
+                    "Temuan"
+                ],
+                "summary": "Get temuan for faculties",
+                "description": "Retrieve temuan data for faculties based on indikator ID",
+                "operationId": "getTemuanFakultas",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Indikator ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data temuan fakultas berhasil diambil"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "indikator_id": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "fakultas_id": {
+                                                        "type": "integer",
+                                                        "example": 3
+                                                    },
+                                                    "temuan": {
+                                                        "type": "string",
+                                                        "example": "Kurangnya pelatihan untuk dosen"
+                                                    },
+                                                    "solusi": {
+                                                        "type": "string",
+                                                        "example": "Mengadakan pelatihan rutin"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/temuan/fakultas/{id}/{fakultas_id}": {
+            "get": {
+                "tags": [
+                    "Temuan"
+                ],
+                "summary": "Get temuan for a specific faculty",
+                "description": "Retrieve temuan data for a specific faculty based on indikator ID",
+                "operationId": "getTemuanFakultasById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Indikator ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "fakultas_id",
+                        "in": "path",
+                        "description": "Fakultas ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data temuan berdasarkan fakultas berhasil diambil"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "indikator_id": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "fakultas_id": {
+                                                        "type": "integer",
+                                                        "example": 3
+                                                    },
+                                                    "temuan": {
+                                                        "type": "string",
+                                                        "example": "Kurangnya sumber daya penelitian"
+                                                    },
+                                                    "solusi": {
+                                                        "type": "string",
+                                                        "example": "Menambah anggaran penelitian"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/temuan/prodi/{id}": {
+            "get": {
+                "tags": [
+                    "Temuan"
+                ],
+                "summary": "Get temuan for programs",
+                "description": "Retrieve temuan data for study programs based on indikator ID",
+                "operationId": "getTemuanProdi",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Indikator ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data temuan program studi berhasil diambil"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "indikator_id": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "prodi_id": {
+                                                        "type": "integer",
+                                                        "example": 4
+                                                    },
+                                                    "temuan": {
+                                                        "type": "string",
+                                                        "example": "Kurangnya laboratorium penelitian"
+                                                    },
+                                                    "solusi": {
+                                                        "type": "string",
+                                                        "example": "Menambah jumlah laboratorium"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Terjadi kesalahan"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Exception error message"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/temuan/prodi/{id}/{prodi_id}": {
+            "get": {
+                "tags": [
+                    "Temuan"
+                ],
+                "summary": "Get temuan for a specific study program",
+                "description": "Retrieve temuan data for a specific study program based on indikator ID",
+                "operationId": "getTemuanProdiById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Indikator ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "prodi_id",
+                        "in": "path",
+                        "description": "Prodi ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 3
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data temuan berdasarkan program studi berhasil diambil"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "indikator_id": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "prodi_id": {
+                                                        "type": "integer",
+                                                        "example": 3
+                                                    },
+                                                    "temuan": {
+                                                        "type": "string",
+                                                        "example": "Kurangnya jumlah dosen tetap"
+                                                    },
+                                                    "solusi": {
+                                                        "type": "string",
+                                                        "example": "Merekrut lebih banyak dosen tetap"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Terjadi kesalahan"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Exception error message"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/survey/{id}/detail": {
+            "get": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Retrieve detailed survey results",
+                "description": "Mengambil detail survey berdasarkan ID, termasuk rekapitulasi hasil per aspek dan indikator. Filter opsional dapat diterapkan menggunakan query parameter prodi_id atau fakultas_id.",
+                "operationId": "5b359e41d28d3545745c3bab67d088b8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID dari survey",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "prodi_id",
+                        "in": "query",
+                        "description": "Filter opsional berdasarkan ID program studi",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    },
+                    {
+                        "name": "fakultas_id",
+                        "in": "query",
+                        "description": "Filter opsional berdasarkan ID fakultas",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 3
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data survey dan rekapitulasi berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data survey berhasil diambil"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "survey": {
+                                                    "description": "Detail survey",
+                                                    "type": "object",
+                                                    "example": {
+                                                        "id": 1,
+                                                        "name": "Survey Kepuasan Mahasiswa",
+                                                        "target": [],
+                                                        "jenis": [],
+                                                        "aspek": []
+                                                    }
+                                                },
+                                                "rekapitulasi": {
+                                                    "description": "Hasil rekapitulasi per aspek dan indikator, diindeks berdasarkan ID aspek dan ID indikator",
+                                                    "type": "object",
+                                                    "example": {
+                                                        "1": {
+                                                            "101": {
+                                                                "tm": 5,
+                                                                "cm": 3,
+                                                                "m": 7,
+                                                                "sm": 2,
+                                                                "total": 17,
+                                                                "nilai_butir": "2.65",
+                                                                "ikm": 66.25,
+                                                                "mutu_layanan": "B",
+                                                                "kinerja_unit": "Baik",
+                                                                "tingkat_kepuasan": "65.00",
+                                                                "predikat_kepuasan": "Puas"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "rekapitulasi_aspek": {
+                                                    "description": "Rata-rata rekapitulasi per aspek, diindeks berdasarkan ID aspek",
+                                                    "type": "object",
+                                                    "example": {
+                                                        "1": {
+                                                            "tm": 5,
+                                                            "cm": 3,
+                                                            "m": 7,
+                                                            "sm": 2,
+                                                            "total": 17,
+                                                            "nilai_butir": "2.65",
+                                                            "ikm": 66.25,
+                                                            "mutu_layanan": "B",
+                                                            "kinerja_unit": "Baik",
+                                                            "tingkat_kepuasan": "65.00",
+                                                            "predikat_kepuasan": "Puas"
+                                                        }
+                                                    }
+                                                },
+                                                "lowestIndicator": {
+                                                    "description": "Lima indikator dengan nilai butir terendah",
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "aspek_id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "indicator_id": {
+                                                                "type": "integer",
+                                                                "example": 101
+                                                            },
+                                                            "nilai_butir": {
+                                                                "type": "number",
+                                                                "format": "float",
+                                                                "example": 2.65
+                                                            },
+                                                            "detail": {
+                                                                "description": "Detail perhitungan indikator",
+                                                                "type": "object",
+                                                                "example": {
+                                                                    "tm": 5,
+                                                                    "cm": 3,
+                                                                    "m": 7,
+                                                                    "sm": 2,
+                                                                    "total": 17,
+                                                                    "nilai_butir": "2.65",
+                                                                    "ikm": 66.25,
+                                                                    "mutu_layanan": "B",
+                                                                    "kinerja_unit": "Baik",
+                                                                    "tingkat_kepuasan": "65.00",
+                                                                    "predikat_kepuasan": "Puas"
+                                                                }
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Survey tidak ditemukan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Survey tidak ditemukan"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Terjadi kesalahan pada server",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Terjadi kesalahan"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Detail error message"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Target",
+            "description": "Target"
+        },
+        {
+            "name": "Fakultas",
+            "description": "Fakultas"
+        },
+        {
+            "name": "Prodi",
+            "description": "Prodi"
+        },
+        {
+            "name": "Survey",
+            "description": "Survey"
+        },
+        {
+            "name": "Aspek",
+            "description": "Aspek"
+        },
+        {
+            "name": "Indikator",
+            "description": "Indikator"
+        },
+        {
+            "name": "Temuan",
+            "description": "Temuan"
+        }
+    ]
+}
