@@ -55,38 +55,41 @@
                     </div>
                     <!-- Modal body -->
                     <div class="p-4 md:p-5 space-y-4">
-                        <form wire:submit.prevent="addProdi" class="grid grid-cols-12 p-2">
+                        <form wire:submit.prevent="addIkm" class="grid grid-cols-12 p-2">
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                                <label for="nama" class="text-sm">Nama {{ $master }} :</label>
-                                <input type="text" id="nama" name="nama" wire:model="prodi.nama"
-                                    placeholder="Masukan Nama {{ $master }}"
+                                <label for="grade" class="text-sm">Grade {{ $master }} :</label>
+                                <input type="text" id="grade" name="grade" wire:model="ikm.grade"
+                                    placeholder="Masukan Grade {{ $master }}"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                @error('prodi.nama')
+                                @error('ikm.grade')
                                     <span class="text-red-500 text-xs">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                                <label for="kode" class="text-sm">Kode {{ $master }} :</label>
-                                <input type="text" id="kode" name="kode" wire:model="prodi.kode"
-                                    placeholder="Masukan Kode {{ $master }}"
+                                <label for="operator" class="text-sm">Operator :</label>
+                                <select name="operator" id="operator" wire:model="ikm.operator"
                                     class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                @error('prodi.kode')
-                                    <span class="text-red-500 text-xs">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="flex flex-col gap-y-2 col-span-12 mb-4">
-                                <label for="fakultas_id" class="text-sm">Fakultas :</label>
-                                <select name="fakultas_id" id="fakultas_id" wire:model="prodi.fakultas_id"
-                                    class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
-                                    <option value="">Pilih Fakultas</option>
-                                    @foreach ($dataFakultas as $fakultas)
-                                        <option value="{{ $fakultas->id }}">{{ $fakultas->name }}</option>
-                                    @endforeach
+                                    <option value="">Pilih Operator</option>
+                                    <option value="<"> < </option>
+                                    <option value=">"> > </option>
+                                    <option value="<="> ≤ </option>
+                                    <option value=">="> ≥ </option>
+                                    <option value="="> = </option>
                                 </select>
-                                @error('prodi.fakultas_id')
+                                @error('ikm.operator')
                                     <span class="text-red-500 text-xs">{{ $message }}</span>
                                 @enderror
                             </div>
+                            <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                                <label for="nilai" class="text-sm">Nilai {{ $master }} :</label>
+                                <input type="number" min="0" max="1000" step="0.1" id="nilai" name="nilai" wire:model="ikm.nilai"
+                                    placeholder="Masukan nilai {{ $master }}"
+                                    class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                @error('ikm.nilai')
+                                    <span class="text-red-500 text-xs">{{ $message }}</span>
+                                @enderror
+                            </div>
+                           
                             <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12" color="info"
                                 type="submit">
                                 <span wire:loading.remove>
@@ -110,36 +113,32 @@
                     <thead>
                         <tr>
                             <th>No.</th>
-                            <th>Kode</th>
-                            <th>Nama</th>
-                            <th>Fakultas</th>
-                            <th>Aksi</th>
+                            <th>Grade</th>
+                            <th>Operator</th>
+                            <th>Nilai</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($dataProdi as $prodi)
+                    {{-- <tbody>
+                        @foreach ($dataIkm as $ikm)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $prodi['code'] }}</td>
-                                <td>{{ $prodi['name'] }}</td>
-                                <td>{{ $prodi->fakultas->name }}</td>
+
                                 <td>
                                     <div class="inline-flex gap-x-2">
                                         <!-- Edit button -->
                                         <x-button class="" color="info" size="sm"
-                                            onclick="window.location.href='{{ route('edit_prodi', $prodi['id']) }}'">
+                                            onclick="window.location.href='{{ route('edit_ikm', $ikm['id']) }}'">
                                             Edit
                                         </x-button>
                                         <!-- Delete button (if needed) -->
                                         <x-button class="" color="danger" size="sm"
-                                            onclick="confirmDelete({{ $prodi['id'] }})">
+                                            onclick="confirmDelete({{ $ikm['id'] }})">
                                             Hapus
                                         </x-button>
                                     </div>
                                 </td>
                             </tr>
                         @endforeach
-                    </tbody>
+                    </tbody> --}}
                 </table>
             </div>
         </div>
@@ -154,8 +153,8 @@
         </script>
         <script>
             function confirmDelete(id) {
-                if (confirm(`Hapus prodi?`)) {
-                    @this.call('deleteProdi', id);
+                if (confirm(`Hapus data IKM?`)) {
+                    @this.call('deleteIkm', id);
                 }
             }
         </script>

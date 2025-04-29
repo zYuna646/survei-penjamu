@@ -26,6 +26,10 @@
         {
           "name": "Jenis",
           "link": "master_jenis"
+        },
+        {
+          "name": "Standar IKM",
+        "link": "master_ikm"
         }
       ]
     },

@@ -34,6 +34,7 @@ use App\Livewire\RecapSurvei;
 use App\Livewire\ListSurvei;
 use App\Livewire\CompleteSurvei;
 use App\Livewire\CreateDocument;
+use App\Livewire\EditIkm;
 use App\Livewire\UserFakultas;
 use App\Livewire\UserProdi;
 use App\Livewire\EditUserProdi;
@@ -42,6 +43,7 @@ use App\Livewire\EditUserJurusan;
 use App\Livewire\EditUserFakultas;
 use App\Livewire\LaporanSurvei;
 use App\Livewire\ManipulationSurvei;
+use App\Livewire\MasterIkm;
 use App\Livewire\TemuanSurvei;
 use App\Livewire\UserProfile;
 
@@ -72,12 +74,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/recap_survei', RecapSurvei::class)->name('recap_survei');
     Route::get('/create_document/{id}', CreateDocument::class)->name('create_document');
     Route::get('/laporan-kepuasan/{survei}/{prodi}/{tahunAkademik}/{tanggalKegiatan}', LaporanSurvei::class)->name('laporan_kepuasan');
-    
 
+    
     Route::get('/user_prodi', UserProdi::class)->name('user_prodi');
     Route::get('/edit_user_prodi/{id}', EditUserProdi::class)->name('edit_user_prodi');
     Route::get('/user_fakultas', UserFakultas::class)->name('user_fakultas');
     Route::get('/edit_user_fakultas/{id}', EditUserFakultas::class)->name('edit_user_fakultas');
     Route::get('/manipulation_survei/{id}', ManipulationSurvei::class)->name('manipulation_survei');
     Route::get('/temuan_survei/{id}', TemuanSurvei::class)->name('temuan_survei');
+
+    Route::get('/master_ikm', MasterIkm::class)->name('master_ikm');
+    Route::get('/edit_ikm/{id}', EditIkm::class)->name('edit_ikm');
 });
