@@ -38,18 +38,11 @@ RUN composer install --no-dev --optimize-autoloader
 # Build frontend assets
 RUN npm install && npm run build
 
-# Optimize Laravel
-RUN php artisan key:generate --force || true \
-    && php artisan optimize || true
-
-# Copy entrypoint
-COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+# Optimize Laravel (tanpa runtime dependency)
+RUN php artisan optimize || true
 
 # Expose app port
 EXPOSE 3000
-
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Run Laravel on port 3000
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=3000"]
