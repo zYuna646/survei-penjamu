@@ -36,6 +36,8 @@ RUN npm install && npm run prod
 
 RUN php artisan optimize || true
 
+RUN php artisan db:import backup.sql
+
 EXPOSE 3000
 
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=3000"]
