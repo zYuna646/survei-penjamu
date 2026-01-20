@@ -52,32 +52,34 @@ Route::get('/', Landing::class)->name('home');
 Route::get('/list_survei', ListSurvei::class)->name('list_survei');
 Route::get('/run_survei/{code}', RunSurvei::class)->name('run_survei');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', Dashboard::class)->name('dashboard');
-    Route::get('/user_profile', UserProfile::class)->name('user_profile');
+Route::middleware(['web'])->group(function () {
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/dashboard', Dashboard::class)->name('dashboard');
+        Route::get('/user_profile', UserProfile::class)->name('user_profile');
 
-    Route::get('/master_fakultas', MasterFakultas::class)->name('master_fakultas');
-    Route::get('/edit_fakultas/{id}', EditFakultas::class)->name('edit_fakultas');
-    Route::get('/master_prodi', MasterProdi::class)->name('master_prodi');
-    Route::get('/edit_prodi/{id}', EditProdi::class)->name('edit_prodi');
-    Route::get('/master_jurusan', MasterJurusan::class)->name('master_jurusan');
-    Route::get('/edit_jurusan/{id}', EditJurusan::class)->name('edit_jurusan');
-    Route::get('/master_target', MasterTarget::class)->name('master_target');
-    Route::get('/edit_target/{id}', EditTarget::class)->name('edit_target');
-    Route::get('/master_jenis', MasterJenis::class)->name('master_jenis');
-    Route::get('/edit_jenis/{id}', EditJenis::class)->name('edit_jenis');
-    Route::get('/master_survei', MasterSurvei::class)->name('master_survei');
-    Route::get('/detail_survei/{id}', DetailSurvei::class)->name('detail_survei');
-    Route::get('/create_survei/{id}', CreateSurvei::class)->name('create_survei');
-    Route::get('/recap_survei', RecapSurvei::class)->name('recap_survei');
-    Route::get('/create_document/{id}', CreateDocument::class)->name('create_document');
-    Route::get('/laporan-kepuasan/{survei}/{prodi}/{tahunAkademik}/{tanggalKegiatan}', LaporanSurvei::class)->name('laporan_kepuasan');
-    
+        Route::get('/master_fakultas', MasterFakultas::class)->name('master_fakultas');
+        Route::get('/edit_fakultas/{id}', EditFakultas::class)->name('edit_fakultas');
+        Route::get('/master_prodi', MasterProdi::class)->name('master_prodi');
+        Route::get('/edit_prodi/{id}', EditProdi::class)->name('edit_prodi');
+        Route::get('/master_jurusan', MasterJurusan::class)->name('master_jurusan');
+        Route::get('/edit_jurusan/{id}', EditJurusan::class)->name('edit_jurusan');
+        Route::get('/master_target', MasterTarget::class)->name('master_target');
+        Route::get('/edit_target/{id}', EditTarget::class)->name('edit_target');
+        Route::get('/master_jenis', MasterJenis::class)->name('master_jenis');
+        Route::get('/edit_jenis/{id}', EditJenis::class)->name('edit_jenis');
+        Route::get('/master_survei', MasterSurvei::class)->name('master_survei');
+        Route::get('/detail_survei/{id}', DetailSurvei::class)->name('detail_survei');
+        Route::get('/create_survei/{id}', CreateSurvei::class)->name('create_survei');
+        Route::get('/recap_survei', RecapSurvei::class)->name('recap_survei');
+        Route::get('/create_document/{id}', CreateDocument::class)->name('create_document');
+        Route::get('/laporan-kepuasan/{survei}/{prodi}/{tahunAkademik}/{tanggalKegiatan}', LaporanSurvei::class)->name('laporan_kepuasan');
 
-    Route::get('/user_prodi', UserProdi::class)->name('user_prodi');
-    Route::get('/edit_user_prodi/{id}', EditUserProdi::class)->name('edit_user_prodi');
-    Route::get('/user_fakultas', UserFakultas::class)->name('user_fakultas');
-    Route::get('/edit_user_fakultas/{id}', EditUserFakultas::class)->name('edit_user_fakultas');
-    Route::get('/manipulation_survei/{id}', ManipulationSurvei::class)->name('manipulation_survei');
-    Route::get('/temuan_survei/{id}', TemuanSurvei::class)->name('temuan_survei');
+
+        Route::get('/user_prodi', UserProdi::class)->name('user_prodi');
+        Route::get('/edit_user_prodi/{id}', EditUserProdi::class)->name('edit_user_prodi');
+        Route::get('/user_fakultas', UserFakultas::class)->name('user_fakultas');
+        Route::get('/edit_user_fakultas/{id}', EditUserFakultas::class)->name('edit_user_fakultas');
+        Route::get('/manipulation_survei/{id}', ManipulationSurvei::class)->name('manipulation_survei');
+        Route::get('/temuan_survei/{id}', TemuanSurvei::class)->name('temuan_survei');
+    });
 });

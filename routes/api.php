@@ -37,3 +37,5 @@ Route::get('/temuan/fakultas/{id}/{fakultas_id}', [ApiController::class, 'getTem
 
 Route::get('/temuan/prodi/{id}', [ApiController::class, 'getTemuanProdi']);
 Route::get('/temuan/prodi/{id}/{prodi_id}', [ApiController::class, 'getTemuanProdiById']);
+Route::get('/survei/{id}/{fakultas_id}', [ApiController::class, 'getSurvei']);
+Route::get('/survei/{id}/prodi/{prodi_id}', [ApiController::class, 'getSurveiByProdi']);

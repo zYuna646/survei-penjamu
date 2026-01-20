@@ -147,7 +147,7 @@
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td style="text-transform: capitalize">{{ $item->name }}</td>
-                    <td>{{ $detail_rekapitulasi_aspek[$item->id]['ikm'] }}</td>
+                    <td>{{ number_format($detail_rekapitulasi_aspek[$item->id]['ikm'] ?? 0 , 2) }}</td>
                     {{-- <td>{{ $detail_rekapitulasi_aspek[$item->id]['kinerja_unit'] }}</td> --}}
                 </tr>
             @endforeach
@@ -164,6 +164,8 @@
                     'id' => $indi->id,
                     'name' => $indi->name,
                     'nilai_butir' => $detail_rekapitulasi[$item->id][$indi->id]['nilai_butir'],
+                    'ikm' => $detail_rekapitulasi[$item->id][$indi->id]['ikm'],
+                    
                 ];
             }
         }
@@ -183,7 +185,7 @@
     <ul class="list-decimal list-inside paragraf">
         @foreach ($lowestIndicators as $key => $indicator)
             <li class="paragraf" style="text-transform: capitalize">
-                {{ $indicator['name'] }} ({{ $indicator['nilai_butir'] }})
+                {{ $indicator['name'] }} ({{  number_format( $indicator['ikm'] ?? 0, 2) }})
             </li>
         @endforeach
     </ul>
@@ -197,15 +199,15 @@
             @php
                 // Fetch temuan related to the current indicator using its ID and prodi_id
               
-                if (Auth::user()->role->slug == 'prodi') {
+                if (Auth::user()->role->slug == 'prodi' || $prodi) {
                     $temuanCollection = App\Models\Temuan::where('indikator_id', $indicator['id'])
-                    ->where('prodi_id', Auth::user()->prodi_id)
+                    ->where('prodi_id', Auth::user()->prodi_id ?? $prodi->id)
                     ->get();
 
-                } elseif (Auth::user()->role->slug == 'fakultas') {
+                } elseif (Auth::user()->role->slug == 'fakultas' || $fakultas) {
                     $prodiIds = App\Models\Prodi::where('fakultas_id', Auth::user()->fakultas_id)->pluck('id');
                     $temuanCollection = App\Models\Temuan::where('indikator_id', $indicator['id'])
-                    ->whereIn('prodi_id', $prodiIds)
+                    ->where('fakultas_id', Auth::user()->fakultas_id || $fakultas->id)
                     ->get();
 
                 }
@@ -234,15 +236,15 @@
     <ul class="list-decimal list-inside paragraf">
         @foreach ($lowestIndicators as $indicator)
             @php
-                if (Auth::user()->role->slug == 'prodi') {
+                if (Auth::user()->role->slug == 'prodi' || $prodi) {
                     $temuanCollection = App\Models\Temuan::where('indikator_id', $indicator['id'])
-                    ->where('prodi_id', Auth::user()->prodi_id)
+                    ->where('prodi_id', Auth::user()->prodi_id ?? $prodi->id)
                     ->get();
 
-                } elseif (Auth::user()->role->slug == 'fakultas') {
+                } elseif (Auth::user()->role->slug == 'fakultas' || $fakultas) {
                     $prodiIds = App\Models\Prodi::where('fakultas_id', Auth::user()->fakultas_id)->pluck('id');
                     $temuanCollection = App\Models\Temuan::where('indikator_id', $indicator['id'])
-                    ->whereIn('prodi_id', $prodiIds)
+                    ->where('fakultas_id', Auth::user()->fakultas_id ?? $fakultas->id)
                     ->get();
 
                 }

@@ -1,4 +1,4 @@
-<main class="bg-[#f9fafc] min-h-screen" x-data="{ showToast: {{ session()->has('toastMessage') ? 'true' : 'false' }}, toastMessage: '{{ session('toastMessage') }}', toastType: '{{ session('toastType') }}', userRole: '{{ $userRole }}' }" x-init="if (showToast) {
+<main class="bg-[#f9fafc] min-h-screen" x-data="{ showToast: {{ session()->has('toastMessage') ? 'true' : 'false' }}, toastMessage: '{{ session('toastMessage') }}', toastType: '{{ session('toastType') }}', userRole: '{{ $userRole }}', addModal: false, duplicateModal: false }" x-init="if (showToast) {
     setTimeout(() => showToast = false, 5000);
 }">
     <!-- Toast -->
@@ -19,7 +19,7 @@
             <span><i class="fas fa-times"></i></span>
         </button>
     </div>
-    <section class="max-w-screen-xl w-full mx-auto px-4 pt-24" x-data="{ addModal: false }">
+    <section class="max-w-screen-xl w-full mx-auto px-4 pt-24">
 
         <div
             class="mt-4 p-6 bg-white flex flex-col lg:flex-row lg:items-center gap-y-2 justify-between rounded-lg border border-slate-100 shadow-sm">
@@ -114,6 +114,54 @@
                 </div>
             </div>
         </div>
+        {{-- duplicate modal --}}
+        @if ($showDuplicateModal)
+            <div style="display: block"
+                class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 h-full max-h-full bg-black/20">
+                <div class="relative p-4 w-full max-w-2xl max-h-full">
+                    <div class="relative bg-white rounded-lg shadow ">
+                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
+                            <h3 class="text-lg font-bold text-gray-900 ">
+                                Duplikasi Data {{ $master }}
+                            </h3>
+                            <button type="button" wire:click="closeDuplicateModal"
+                                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
+                                data-modal-hide="duplicate-modal">
+                                <span>
+                                    <i class="fas fa-times"></i>
+                                </span>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
+                        <div class="p-4 md:p-5 space-y-4">
+                            <form wire:submit.prevent="duplicateSurvei" class="grid grid-cols-12 p-2">
+                                <div class="flex flex-col gap-y-2 col-span-12 mb-4">
+                                    <label for="duplicate_nama" class="text-sm ">Nama {{ $master }} Baru :</label>
+                                    <input type="text" id="duplicate_nama" name="duplicate_nama" wire:model="duplicate.name"
+                                        placeholder="Masukan Nama {{ $master }}"
+                                        class="p-4 text-sm rounded-md bg-neutral-100 text-slate-600 focus:outline-none focus:outline-color-info-500 border border-neutral-200">
+                                    @error('duplicate.name')
+                                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <x-button class="inline-flex items-center w-fit gap-x-2 col-span-12" color="info"
+                                    type="submit">
+                                    <span wire:loading.remove>
+                                        <i class="fas fa-copy"></i>
+                                    </span>
+                                    <span wire:loading class="animate-spin">
+                                        <i class="fas fa-circle-notch "></i>
+                                    </span>
+                                    Duplikasi {{ $master }}
+                                </x-button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     </section>
     <section class="max-w-screen-xl w-full mx-auto px-4 mt-4 pb-12">
         <div class="p-4 bg-white rounded-lg border-slate-100 shadow-sm ">
@@ -229,6 +277,15 @@
                                             </span>
                                         </x-button>
 
+                                        @if ($userRole === 'universitas')
+                                            <x-button class="" color="info" size="sm"
+                                                onclick="openDuplicate({{ $survei['id'] }})">
+                                                <span>
+                                                    <i class="fas fa-copy"></i>
+                                                </span>
+                                            </x-button>
+                                        @endif
+
                                         <!-- Detail Button -->
                                         <x-button class="" color="info" size="sm"
                                             onclick="window.location.href='{{ route('detail_survei', $survei['id']) }}'">
@@ -279,6 +336,11 @@
                 if (confirm(`Ubah Update Survei?`)) {
                     @this.call('changeSurveiUpdate', id);
                 }
+            }
+        </script>
+        <script>
+            function openDuplicate(id) {
+                @this.call('openDuplicateModal', id);
             }
         </script>
     @endpush

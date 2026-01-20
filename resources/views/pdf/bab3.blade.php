@@ -213,7 +213,7 @@
                             {{ $tabelProdi[$item->id]['sm'] }}
                         </td> --}}
                         <td>
-                            {{ $tabelFakultas[$item->id]['total']  }}
+                            {{ $tabelProdi[$item->id]['total']  }}
 
                         </td>
                     </tr>
@@ -247,6 +247,7 @@
         </thead>
         <tbody>
             @foreach ($survei->aspek as $index => $item)
+          		php
                 <tr>
                     <td>{{ $item->id }}</td>
                     <td>{{ ucwords(strtolower($item->name)) }}</td>
@@ -298,7 +299,7 @@
                             <tr>
                                 <td class="p-2 border border-gray-600">{{ $index + 1 }}</td>
                                 <td class="p-2 border border-gray-600">
-                                    {{ ucwords(strtolower($item->name)) }}</td>
+                                    {{ ucwords(strtolower($indi->name)) }}</td>
                                 <td class="p-2 border border-gray-600" style="text-transform: capitalize">
                                     {{ number_format($detail_rekapitulasi[$item->id][$indi->id]['ikm'] ?? 0, 2) }}</td>
                                 <td class="p-2 border border-gray-600">
@@ -324,16 +325,16 @@
                         @endforeach
                     </tbody>
                 </table>
-                <p class="paragraf">
+                    <p class="paragraf">
                     Dapat diamati pada tabel diatas bahwa seluruh butir pernyataan pada aspek
                     Keandalan semua kinerja layanan masuk ke dalam kategori BAIK. Dari
                     {{ $item->indicator->count() }} butir
-                    pernyataan, nilai IKM yang paling rendah adalah <strong>{{ $lowestIKM }}</strong>
+                    pernyataan, nilai IKM yang paling rendah adalah <strong>{{ number_format($lowestIKM,2) }}</strong>
                     <span style="text-transform: capitalize">({{ $lowestIndi }})</span> .
                     Sedangkan indikator yang memiliki
                     nilai IKM paling tinggi adalah pernyataan tentang <strong
                         style="text-transform: capitalize">{{ $highestIndi }}</strong>
-                    ({{ $highestIKM }}).
+                    ({{ number_format($highestIKM,2) }}).
                 </p>
             </li>
         @endforeach

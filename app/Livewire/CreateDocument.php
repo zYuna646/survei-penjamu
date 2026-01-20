@@ -81,18 +81,17 @@ class CreateDocument extends Component
     public function downloadDocument(SatisfactionChart $satisfactionChart)
     {
         $this->validate();
-        // Render PDF using the updated data
-        $this->getDetailSurvey();
-        $this->calculateTabel();
+     
         // $this->selectedProdi = Prodi::find($this->createDocument['prodi_id']);
         $this->prodi = Prodi::where('code', '!=', 0)->get();
         $this->fakultas = Fakultas::where('code', '!=', '0')->get();
         $this->user = Auth::user();
         $this->selectedFakultas = isset($this->createDocument['fakultas_id']) ? Fakultas::find($this->createDocument['fakultas_id']) : null;
         $this->selectedProdi = isset($this->createDocument['prodi_id']) ? Prodi::find($this->createDocument['prodi_id']) : null;
-        $this->user = Auth::user();
 
         // Load the survey data
+    
+
         switch ($this->user->role->slug) {
             case 'fakultas':
                 # code...
@@ -106,6 +105,9 @@ class CreateDocument extends Component
                 # code...
                 break;
         }
+      
+         $this->getDetailSurvey();
+        $this->calculateTabel();
 
         $pdfMerger = PDFMerger::init();
 
@@ -205,6 +207,7 @@ class CreateDocument extends Component
 
 
         $pdfMerger = PDFMerger::init();
+      
 
         $cover = PDF::loadView('pdf.cover', [
             'survei' => $this->survei,
@@ -229,7 +232,9 @@ class CreateDocument extends Component
         $daftar = PDF::loadView('pdf.daftar_isi', [])->setPaper('a4', 'potrait')->output();
         $pdfMerger->addString($daftar);
 
-        $bab1 = PDF::loadView('pdf.bab1', [])->setPaper('a4', 'potrait')->output();
+        $bab1 = PDF::loadView('pdf.bab1', [
+            'survei' => $this->survei,
+        ])->setPaper('a4', 'potrait')->output();
         $pdfMerger->addString($bab1);
 
         $bab2 = PDF::loadView('pdf.bab2', [
@@ -267,10 +272,21 @@ class CreateDocument extends Component
             'totalRespoondenProdi' => $this->countRespondenByProdi(),
             'survei' => $this->survei,
             'tahunAkademik' => $tahunAkademik,
+                'prodi' => $this->selectedProdi,
+            'fakultas' => $this->selectedFakultas,
 
         ])->setPaper('a4', 'potrait')->output();
+        $fileName = 'Laporan_SURVEI_' . $this->survei->name;
+        if ($this->selectedProdi) {
+            $fileName .= '_' . $this->selectedProdi->name;
+        } elseif ($this->selectedFakultas) {
+            $fileName .= '_' . $this->selectedFakultas->name;
+        }else
+        {
+            $fileName .= '_UNIVERSITAS_NEGERI_GORONTALO';
+        }
         $pdfMerger->addString($bab4);
-        $filePath = storage_path('app/public/Laporan_SURVEI_' . $this->survei->name . '.pdf');
+        $filePath = storage_path('app/public/Laporan_SURVEI_'. $fileName  .'.pdf');
         $pdfMerger->merge();
         $pdfMerger->save($filePath);
 
@@ -515,9 +531,9 @@ class CreateDocument extends Component
         $fakultasTabel = [];
         $prodiTabel = [];
         $chartData = [];
+      
         // Ottieni tutti i dati necessari da una singola query (se possibile)
-        if (isset($this->createDocument['fakultas_id'])) {
-        dd($this->createDocument['fakultas_id']);
+        if (isset($this->createDocument['fakultas_id']) || $this->selectedFakultas) {
             foreach ($this->dataProdi as $prodi) {
                 $tmp = $this->calculateProdiSatisfactionDistribution($prodi->id);
 
@@ -525,7 +541,6 @@ class CreateDocument extends Component
             }
         }
 
-        dd($prodiTabel);
 
         // if (isset($this->createDocument['prodi_id'])) {
         //     foreach ($this->dataProdi as $prodi) {

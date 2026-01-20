@@ -144,10 +144,7 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Fakultas</th>
-                                        <th>Tidak Memuaskan</th>
-                                        <th>Cukup Memuaskan</th>
-                                        <th>Memuaskan</th>
-                                        <th>Sangat Memuaskan</th>
+                                        
                                         <th>Total Responden</th>
                                     </tr>
                                 </thead>
@@ -160,18 +157,7 @@
                                             <td>
                                                 {{ $fakultas->name }}
                                             </td>
-                                            <td>
-                                                {{ $tabelFakultas[$fakultas->id]['tm'] }}
-                                            </td>
-                                            <td>
-                                                {{ $tabelFakultas[$fakultas->id]['cm'] }}
-                                            </td>
-                                            <td>
-                                                {{ $tabelFakultas[$fakultas->id]['m'] }}
-                                            </td>
-                                            <td>
-                                                {{ $tabelFakultas[$fakultas->id]['sm'] }}
-                                            </td>
+                                            
                                             <td>
                                                 {{ $tabelFakultas[$fakultas->id]['total']}}
                                             </td>
@@ -201,10 +187,7 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Prodi</th>
-                                        <th>Tidak Memuaskan</th>
-                                        <th>Cukup Memuaskan</th>
-                                        <th>Memuaskan</th>
-                                        <th>Sangat Memuaskan</th>
+                                       
                                         <th>Total Responden</th>
                                     </tr>
                                 </thead>
@@ -217,18 +200,7 @@
                                             <td>
                                                 {{ $fakultas->name }}
                                             </td>
-                                            <td>
-                                                {{ $tabelProdi[$fakultas->id]['tm'] }}
-                                            </td>
-                                            <td>
-                                                {{ $tabelProdi[$fakultas->id]['cm'] }}
-                                            </td>
-                                            <td>
-                                                {{ $tabelProdi[$fakultas->id]['m'] }}
-                                            </td>
-                                            <td>
-                                                {{ $tabelProdi[$fakultas->id]['sm'] }}
-                                            </td>
+                                           
                                             <td>
                                                 {{ $tabelProdi[$fakultas->id]['total']  }}
                                             </td>
@@ -261,10 +233,7 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Fakultas</th>
-                                        <th>Tidak Memuaskan</th>
-                                        <th>Cukup Memuaskan</th>
-                                        <th>Memuaskan</th>
-                                        <th>Sangat Memuaskan</th>
+                                       
                                         <th>Total Responden</th>
                                     </tr>
                                 </thead>
@@ -277,23 +246,9 @@
                                             <td>
                                                 {{ $fakultas->name }}
                                             </td>
+                                           
                                             <td>
-                                                {{ $tabelFakultas[$fakultas->id]['tm'] }}
-                                            </td>
-                                            <td>
-                                                {{ $tabelFakultas[$fakultas->id]['cm'] }}
-                                            </td>
-                                            <td>
-                                                {{ $tabelFakultas[$fakultas->id]['m'] }}
-                                            </td>
-                                            <td>
-                                                {{ $tabelFakultas[$fakultas->id]['sm'] }}
-                                            </td>
-                                            <td>
-                                                {{ $tabelFakultas[$fakultas->id]['tm'] +
-                                                    $tabelFakultas[$fakultas->id]['cm'] +
-                                                    $tabelFakultas[$fakultas->id]['m'] +
-                                                    $tabelFakultas[$fakultas->id]['sm'] }}
+                                               {{ $tabelFakultas[$fakultas->id]['total']}}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -322,10 +277,7 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Prodi</th>
-                                        <th>Tidak Memuaskan</th>
-                                        <th>Cukup Memuaskan</th>
-                                        <th>Memuaskan</th>
-                                        <th>Sangat Memuaskan</th>
+                                       
                                         <th>Total Responden</th>
                                     </tr>
                                 </thead>
@@ -338,23 +290,9 @@
                                             <td>
                                                 {{ $fakultas->name }}
                                             </td>
+                                            
                                             <td>
-                                                {{ $tabelProdi[$fakultas->id]['tm'] }}
-                                            </td>
-                                            <td>
-                                                {{ $tabelProdi[$fakultas->id]['cm'] }}
-                                            </td>
-                                            <td>
-                                                {{ $tabelProdi[$fakultas->id]['m'] }}
-                                            </td>
-                                            <td>
-                                                {{ $tabelProdi[$fakultas->id]['sm'] }}
-                                            </td>
-                                            <td>
-                                                {{ $tabelProdi[$fakultas->id]['tm'] +
-                                                    $tabelProdi[$fakultas->id]['cm'] +
-                                                    $tabelProdi[$fakultas->id]['m'] +
-                                                    $tabelProdi[$fakultas->id]['sm'] }}
+                                                   {{ $tabelProdi[$fakultas->id]['total']  }}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -386,10 +324,7 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Prodi</th>
-                                        <th>Tidak Memuaskan</th>
-                                        <th>Cukup Memuaskan</th>
-                                        <th>Memuaskan</th>
-                                        <th>Sangat Memuaskan</th>
+                                       
                                         <th>Total Responden</th>
                                     </tr>
                                 </thead>
@@ -402,23 +337,9 @@
                                             <td>
                                                 {{ $fakultas->name }}
                                             </td>
+                                           
                                             <td>
-                                                {{ $tabelProdi[$fakultas->id]['tm'] }}
-                                            </td>
-                                            <td>
-                                                {{ $tabelProdi[$fakultas->id]['cm'] }}
-                                            </td>
-                                            <td>
-                                                {{ $tabelProdi[$fakultas->id]['m'] }}
-                                            </td>
-                                            <td>
-                                                {{ $tabelProdi[$fakultas->id]['sm'] }}
-                                            </td>
-                                            <td>
-                                                {{ $tabelProdi[$fakultas->id]['tm'] +
-                                                    $tabelProdi[$fakultas->id]['cm'] +
-                                                    $tabelProdi[$fakultas->id]['m'] +
-                                                    $tabelProdi[$fakultas->id]['sm'] }}
+                                                {{ $tabelProdi[$fakultas->id]['total']  }}
                                             </td>
                                         </tr>
                                     @endforeach

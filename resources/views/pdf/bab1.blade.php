@@ -140,7 +140,7 @@
         B. Tujuan Kegiatan
     </h6>
     <p class="paragraf">
-        Laporan kegiatan survei kepuasan Dosen bertujuan untuk: Mengetahui indeks kepuasan Dosen terhadap layanan yang
+        Laporan {{$survei->name}} bertujuan untuk: Mengetahui indeks kepuasan {{$survei->target->name}} terhadap layanan yang
         diberikan oleh Universitas Negeri Gorontalo.
     </p>
     <h6>

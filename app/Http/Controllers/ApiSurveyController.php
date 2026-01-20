@@ -258,7 +258,8 @@ class ApiSurveyController extends Controller
                 return $a['nilai_butir'] <=> $b['nilai_butir'];
             });
 
-            $lowestIndicators = array_slice($allIndicators, 0, 5);
+            $totalItem = (int) $request->query('total_item', 0);
+            $lowestIndicators = $totalItem > 0 ? array_slice($allIndicators, 0, $totalItem) : $allIndicators;
 
             return response()->json([
                 'success' => true,

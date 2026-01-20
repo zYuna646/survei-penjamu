@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Target;
 use App\Models\Jenis;
 use App\Models\Survey;
+use App\Models\Aspek;
+use App\Models\Indikator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,6 +26,13 @@ class MasterSurvei extends Component
         'target_id' => '',
     ];
     public $indikators = [];
+
+    public $duplicate = [
+        'id' => null,
+        'name' => '',
+    ];
+
+    public $showDuplicateModal = false;
 
     public $dataSurvei;
     public $dataTarget;
@@ -75,6 +84,89 @@ class MasterSurvei extends Component
             });
 
             session()->flash('toastMessage', 'Data berhasil ditambahkan');
+            session()->flash('toastType', 'success');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('toastMessage', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('toastType', 'error');
+        }
+
+        return redirect()->to('master_survei');
+    }
+
+    public function prepareDuplicate($id)
+    {
+        $this->duplicate['id'] = $id;
+        $this->duplicate['name'] = '';
+
+        $survey = Survey::find($id);
+        if ($survey) {
+            $this->duplicate['name'] = $survey->name . ' (Copy)';
+        }
+    }
+
+    public function openDuplicateModal($id)
+    {
+        $this->prepareDuplicate($id);
+        $this->showDuplicateModal = true;
+    }
+
+    public function closeDuplicateModal()
+    {
+        $this->showDuplicateModal = false;
+    }
+
+    public function duplicateSurvei()
+    {
+        $this->validate([
+            'duplicate.id' => 'required|exists:surveys,id',
+            'duplicate.name' => 'required|string|max:255',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $source = Survey::with(['aspek.indicator', 'jenis', 'target'])->find($this->duplicate['id']);
+
+            $newSurvey = Survey::create([
+                'name' => $this->duplicate['name'],
+                'jenis_id' => $source->jenis_id,
+                'target_id' => $source->target_id,
+                'isAktif' => $source->isAktif,
+                'isUpdate' => $source->isUpdate,
+            ]);
+
+            foreach ($source->aspek as $aspek) {
+                $newAspek = $aspek->replicate();
+                $newAspek->survey_id = $newSurvey->id;
+                $newAspek->save();
+
+                foreach ($aspek->indicator as $indikator) {
+                    $newIndikator = $indikator->replicate();
+                    $newIndikator->aspek_id = $newAspek->id;
+                    $newIndikator->save();
+                }
+            }
+
+            DB::commit();
+
+            $newSurvey = Survey::with(['aspek.indicator'])->find($newSurvey->id);
+
+            Schema::dropIfExists($newSurvey->id);
+            Schema::create($newSurvey->id, function (Blueprint $table) use ($newSurvey) {
+                $table->id();
+                $table->timestamps();
+                $table->unsignedBigInteger('prodi_id')->nullable();
+                $table->foreign('prodi_id')->references('id')->on('prodis')->onDelete('cascade');
+                foreach ($newSurvey->aspek as $aspek) {
+                    foreach ($aspek->indicator as $indikator) {
+                        $table->enum($indikator->id, [1, 2, 3, 4])->nullable();
+                    }
+                }
+            });
+
+            session()->flash('toastMessage', 'Survei berhasil diduplikasi');
             session()->flash('toastType', 'success');
         } catch (\Exception $e) {
             DB::rollBack();
