@@ -30,6 +30,10 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 
 COPY . .
 
+RUN mkdir -p storage/tmp \
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
+
 RUN composer install --no-dev --optimize-autoloader
 
 RUN npm install && npm run prod

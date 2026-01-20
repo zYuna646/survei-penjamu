@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `2`
 --
 
-CREATE TABLE `2` (
+CREATE TABLE IF NOT EXISTS `2` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -1282,7 +1282,7 @@ INSERT INTO `2` (`id`, `created_at`, `updated_at`, `prodi_id`, `3`, `4`, `5`, `6
 -- Table structure for table `3`
 --
 
-CREATE TABLE `3` (
+CREATE TABLE IF NOT EXISTS `3` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -8407,7 +8407,7 @@ INSERT INTO `3` (`id`, `created_at`, `updated_at`, `prodi_id`, `8`, `9`, `10`, `
 -- Table structure for table `4`
 --
 
-CREATE TABLE `4` (
+CREATE TABLE IF NOT EXISTS `4` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -8767,7 +8767,7 @@ INSERT INTO `4` (`id`, `created_at`, `updated_at`, `prodi_id`, `112`, `113`, `11
 -- Table structure for table `9`
 --
 
-CREATE TABLE `9` (
+CREATE TABLE IF NOT EXISTS `9` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -9479,7 +9479,7 @@ INSERT INTO `9` (`id`, `created_at`, `updated_at`, `prodi_id`, `262`, `263`, `26
 -- Table structure for table `10`
 --
 
-CREATE TABLE `10` (
+CREATE TABLE IF NOT EXISTS `10` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -13631,7 +13631,7 @@ INSERT INTO `10` (`id`, `created_at`, `updated_at`, `prodi_id`, `319`, `320`, `3
 -- Table structure for table `11`
 --
 
-CREATE TABLE `11` (
+CREATE TABLE IF NOT EXISTS `11` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -13828,7 +13828,7 @@ INSERT INTO `11` (`id`, `created_at`, `updated_at`, `prodi_id`, `371`, `372`, `3
 -- Table structure for table `aspeks`
 --
 
-CREATE TABLE `aspeks` (
+CREATE TABLE IF NOT EXISTS `aspeks` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `survey_id` bigint(20) UNSIGNED NOT NULL,
@@ -13872,7 +13872,7 @@ INSERT INTO `aspeks` (`id`, `name`, `survey_id`, `created_at`, `updated_at`) VAL
 -- Table structure for table `failed_jobs`
 --
 
-CREATE TABLE `failed_jobs` (
+CREATE TABLE IF NOT EXISTS `failed_jobs` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `uuid` varchar(255) NOT NULL,
   `connection` text NOT NULL,
@@ -13888,7 +13888,7 @@ CREATE TABLE `failed_jobs` (
 -- Table structure for table `fakultas`
 --
 
-CREATE TABLE `fakultas` (
+CREATE TABLE IF NOT EXISTS `fakultas` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `code` varchar(255) NOT NULL,
@@ -13922,7 +13922,7 @@ INSERT INTO `fakultas` (`id`, `name`, `code`, `created_at`, `updated_at`) VALUES
 -- Table structure for table `indikators`
 --
 
-CREATE TABLE `indikators` (
+CREATE TABLE IF NOT EXISTS `indikators` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `aspek_id` bigint(20) UNSIGNED NOT NULL,
@@ -14214,7 +14214,7 @@ INSERT INTO `indikators` (`id`, `name`, `aspek_id`, `created_at`, `updated_at`) 
 -- Table structure for table `jenis`
 --
 
-CREATE TABLE `jenis` (
+CREATE TABLE IF NOT EXISTS `jenis` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -14235,7 +14235,7 @@ INSERT INTO `jenis` (`id`, `name`, `created_at`, `updated_at`) VALUES
 -- Table structure for table `jurusans`
 --
 
-CREATE TABLE `jurusans` (
+CREATE TABLE IF NOT EXISTS `jurusans` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `code` varchar(255) NOT NULL,
@@ -14250,7 +14250,7 @@ CREATE TABLE `jurusans` (
 -- Table structure for table `migrations`
 --
 
-CREATE TABLE `migrations` (
+CREATE TABLE IF NOT EXISTS `migrations` (
   `id` int(10) UNSIGNED NOT NULL,
   `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL
@@ -14283,7 +14283,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 -- Table structure for table `password_reset_tokens`
 --
 
-CREATE TABLE `password_reset_tokens` (
+CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
   `email` varchar(255) NOT NULL,
   `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
@@ -14295,7 +14295,7 @@ CREATE TABLE `password_reset_tokens` (
 -- Table structure for table `personal_access_tokens`
 --
 
-CREATE TABLE `personal_access_tokens` (
+CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `tokenable_type` varchar(255) NOT NULL,
   `tokenable_id` bigint(20) UNSIGNED NOT NULL,
@@ -14314,7 +14314,7 @@ CREATE TABLE `personal_access_tokens` (
 -- Table structure for table `prodis`
 --
 
-CREATE TABLE `prodis` (
+CREATE TABLE IF NOT EXISTS `prodis` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `code` varchar(255) NOT NULL,
@@ -14447,7 +14447,7 @@ INSERT INTO `prodis` (`id`, `name`, `code`, `fakultas_id`, `created_at`, `update
 -- Table structure for table `program_studis`
 --
 
-CREATE TABLE `program_studis` (
+CREATE TABLE IF NOT EXISTS `program_studis` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -14459,7 +14459,7 @@ CREATE TABLE `program_studis` (
 -- Table structure for table `roles`
 --
 
-CREATE TABLE `roles` (
+CREATE TABLE IF NOT EXISTS `roles` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `slug` varchar(255) NOT NULL,
@@ -14483,7 +14483,7 @@ INSERT INTO `roles` (`id`, `name`, `slug`, `created_at`, `updated_at`) VALUES
 -- Table structure for table `surveys`
 --
 
-CREATE TABLE `surveys` (
+CREATE TABLE IF NOT EXISTS `surveys` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `code` varchar(255) NOT NULL,
@@ -14513,7 +14513,7 @@ INSERT INTO `surveys` (`id`, `name`, `code`, `isUpdate`, `isAktif`, `jenis_id`, 
 -- Table structure for table `targets`
 --
 
-CREATE TABLE `targets` (
+CREATE TABLE IF NOT EXISTS `targets` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -14536,7 +14536,7 @@ INSERT INTO `targets` (`id`, `name`, `created_at`, `updated_at`) VALUES
 -- Table structure for table `temuans`
 --
 
-CREATE TABLE `temuans` (
+CREATE TABLE IF NOT EXISTS `temuans` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `prodi_id` bigint(20) UNSIGNED DEFAULT NULL,
   `fakultas_id` bigint(20) UNSIGNED DEFAULT NULL,
@@ -14710,7 +14710,7 @@ INSERT INTO `temuans` (`id`, `prodi_id`, `fakultas_id`, `indikator_id`, `solusi`
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
