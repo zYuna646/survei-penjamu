@@ -32,7 +32,7 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-RUN npm install && npm run build
+RUN npm install && npm run prod
 
 RUN php artisan optimize || true
 
