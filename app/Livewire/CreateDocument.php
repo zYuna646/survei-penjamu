@@ -40,7 +40,7 @@ class CreateDocument extends Component
     public $chartData;
 
     protected $rules = [
-        'createDocument.tahun_akademik' => 'required|numeric|min:2000|max:3000',
+        'createDocument.tahun_akademik' => 'required|string',
         'createDocument.tanggal-mulai' => 'required|date',
         'createDocument.tanggal-selesai' => 'required|date',
         // 'createDocument.fakultas_id' => 'required',
